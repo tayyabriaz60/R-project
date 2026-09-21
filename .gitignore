@@ -1,0 +1,23 @@
+﻿# Client / local-only (never commit)
+data/real/
+output/
+docs/spec/
+*.zip
+*.docx
+
+# R
+.Rhistory
+.RData
+.Rproj.user/
+.Ruserdata
+
+# OS / editor junk
+.DS_Store
+Thumbs.db
+Desktop.ini
+*~
+*.swp
+*.swo
+*.tmp
+.vscode/
+.idea/

@@ -1,0 +1,469 @@
+[
+  {
+    "docx": {
+      "file": "Data_Dictionary_Column_Structure_Studies_1_3_FINAL.docx",
+      "bytes": 46672,
+      "core": {
+        "title": "",
+        "author": "python-docx",
+        "last_modified_by": "",
+        "created": "2013-12-23 23:15:00+00:00",
+        "modified": "2013-12-23 23:15:00+00:00",
+        "revision": 1
+      },
+      "paragraphs": 50,
+      "empty_paragraphs": 13,
+      "headings": 18,
+      "heading_texts": [
+        "Heading 1: 1. Scope and use",
+        "Heading 1: 2. Raw files supplied",
+        "Heading 1: 3. Common identifiers and event fields",
+        "Heading 1: 4. Study 1",
+        "Heading 2: 4.1 Discrimination task",
+        "Heading 2: 4.2 Pairwise task",
+        "Heading 1: 5. Study 2",
+        "Heading 2: 5.1 Discrimination task",
+        "Heading 2: 5.2 Pairwise task",
+        "Heading 1: 6. Study 3",
+        "Heading 2: 6.1 Discrimination task",
+        "Heading 2: 6.2 Pairwise task",
+        "Heading 1: 7. Vision-screen structure",
+        "Heading 1: 8. Canonical synthetic-data file structures",
+        "Heading 1: 9. Structural validation checks",
+        "Heading 1: 10. Raw-event row selection guidance",
+        "Heading 1: 11. Fields not required for the frozen primary analyses",
+        "Heading 1: 12. Handoff rule"
+      ],
+      "list_paragraphs": 0,
+      "tables": 13,
+      "table_details": [
+        {
+          "index": 1,
+          "rows": 5,
+          "cols": 2,
+          "header": [
+            "Document control",
+            "Value"
+          ]
+        },
+        {
+          "index": 2,
+          "rows": 4,
+          "cols": 3,
+          "header": [
+            "Study",
+            "Raw export file(s)",
+            "Core task names"
+          ]
+        },
+        {
+          "index": 3,
+          "rows": 10,
+          "cols": 4,
+          "header": [
+            "Raw Gorilla column",
+            "Canonical name",
+            "Type",
+            "Use / rule"
+          ]
+        },
+        {
+          "index": 4,
+          "rows": 12,
+          "cols": 4,
+          "header": [
+            "Raw column",
+            "Canonical variable",
+            "Values / derivation",
+            "Analysis role"
+          ]
+        },
+        {
+          "index": 5,
+          "rows": 11,
+          "cols": 3,
+          "header": [
+            "Raw column",
+            "Canonical variable",
+            "Derivation / rule"
+          ]
+        },
+        {
+          "index": 6,
+          "rows": 12,
+          "cols": 4,
+          "header": [
+            "Raw column",
+            "Canonical variable",
+            "Values / derivation",
+            "Analysis role"
+          ]
+        },
+        {
+          "index": 7,
+          "rows": 13,
+          "cols": 4,
+          "header": [
+            "Raw column",
+            "Canonical variable",
+            "Derivation / rule",
+            "Analysis role"
+          ]
+        },
+        {
+          "index": 8,
+          "rows": 18,
+          "cols": 4,
+          "header": [
+            "Raw column",
+            "Canonical variable",
+            "Values / derivation",
+            "Analysis role"
+          ]
+        },
+        {
+          "index": 9,
+          "rows": 13,
+          "cols": 3,
+          "header": [
+            "Raw column",
+            "Canonical variable",
+            "Values / derivation"
+          ]
+        },
+        {
+          "index": 10,
+          "rows": 7,
+          "cols": 3,
+          "header": [
+            "Raw column",
+            "Canonical variable",
+            "Rule"
+          ]
+        },
+        {
+          "index": 11,
+          "rows": 10,
+          "cols": 2,
+          "header": [
+            "File",
+            "Required columns"
+          ]
+        },
+        {
+          "index": 12,
+          "rows": 13,
+          "cols": 2,
+          "header": [
+            "Check",
+            "Expected rule"
+          ]
+        },
+        {
+          "index": 13,
+          "rows": 10,
+          "cols": 2,
+          "header": [
+            "Study/task",
+            "Rows to retain for trial-level analysis"
+          ]
+        }
+      ],
+      "styles": {
+        "Title": 1,
+        "Normal": 27,
+        "Heading 1": 12,
+        "List Bullet": 4,
+        "Heading 2": 6
+      },
+      "xml": {
+        "comments": 0,
+        "comment_texts": [],
+        "footnotes": 0,
+        "footnote_texts": [],
+        "endnotes": 0,
+        "ins": 0,
+        "del": 0,
+        "images_rels": 0,
+        "drawing_blips": 0,
+        "headers": [],
+        "footers": [
+          {
+            "file": "word/footer1.xml",
+            "text": "Data Dictionary and Column Structure — Final SAP implementation support"
+          }
+        ],
+        "hyperlinks": 0,
+        "sectPr": 1,
+        "media_files": [],
+        "media_count": 0
+      },
+      "zip_entry_count": 18
+    },
+    "md": {
+      "chars": 19795,
+      "lines": 285,
+      "headings": 18,
+      "heading_texts": [
+        "# 1. Scope and use",
+        "# 2. Raw files supplied",
+        "# 3. Common identifiers and event fields",
+        "# 4. Study 1",
+        "## 4.1 Discrimination task",
+        "## 4.2 Pairwise task",
+        "# 5. Study 2",
+        "## 5.1 Discrimination task",
+        "## 5.2 Pairwise task",
+        "# 6. Study 3",
+        "## 6.1 Discrimination task",
+        "## 6.2 Pairwise task",
+        "# 7. Vision-screen structure",
+        "# 8. Canonical synthetic-data file structures",
+        "# 9. Structural validation checks",
+        "# 10. Raw-event row selection guidance",
+        "# 11. Fields not required for the frozen primary analyses",
+        "# 12. Handoff rule"
+      ],
+      "tables_est": 13,
+      "list_items": 6,
+      "images": 0,
+      "image_refs": [],
+      "footnote_markers": 0,
+      "html_comments": 0,
+      "pipe_rows": 151
+    },
+    "issues": []
+  },
+  {
+    "docx": {
+      "file": "Final_Analysis_Implementation_Brief_Tayyab_FINAL.docx",
+      "bytes": 45709,
+      "core": {
+        "title": "Final Analysis Implementation Brief - Categorical Colormap Optimization",
+        "author": "",
+        "last_modified_by": "",
+        "created": "2013-12-23 23:15:00+00:00",
+        "modified": "2013-12-23 23:15:00+00:00",
+        "revision": 1
+      },
+      "paragraphs": 136,
+      "empty_paragraphs": 3,
+      "headings": 27,
+      "heading_texts": [
+        "Heading 1: 1. Purpose and scope",
+        "Heading 1: 2. Required inputs before coding is frozen",
+        "Heading 1: 3. Required analysis pipeline order",
+        "Heading 1: 4. Pairwise-choice data QA and derivation",
+        "Heading 1: 5. Study 1 implementation",
+        "Heading 2: 5.1 Accuracy - H1 and H2",
+        "Heading 2: 5.2 Pairwise choice - H3",
+        "Heading 1: 6. Study 2 implementation",
+        "Heading 2: 6.1 Analysis population",
+        "Heading 2: 6.2 Accuracy - H1 and H2",
+        "Heading 2: 6.3 Pairwise choice - H3",
+        "Heading 1: 7. Study 3 implementation",
+        "Heading 2: 7.1 Accuracy - H4 and H5",
+        "Heading 2: 7.2 Pairwise choice - H6 and H7",
+        "Heading 1: 8. Secondary outcomes",
+        "Heading 2: 8.1 Response time (RT)",
+        "Heading 2: 8.2 Absolute Error",
+        "Heading 2: 8.3 Signed Error",
+        "Heading 1: 9. Assumptions, fallbacks and non-parametric implementation",
+        "Heading 2: 9.1 Wilcoxon zero differences",
+        "Heading 1: 10. Effect sizes, confidence intervals and reporting conventions",
+        "Heading 1: 11. Vision-screen sensitivity analyses",
+        "Heading 1: 12. Reproducibility, version control and analysis log",
+        "Heading 1: 13. Synthetic-data-only development and troubleshooting workflow",
+        "Heading 1: 14. Required deliverables",
+        "Heading 1: 15. Implementation guardrails - do not do the following",
+        "Heading 1: 16. Pre-delivery acceptance checklist"
+      ],
+      "list_paragraphs": 0,
+      "tables": 5,
+      "table_details": [
+        {
+          "index": 1,
+          "rows": 5,
+          "cols": 2,
+          "header": [
+            "Governing document",
+            "Final frozen Statistical Analysis Plan (SAP)"
+          ]
+        },
+        {
+          "index": 2,
+          "rows": 1,
+          "cols": 1,
+          "header": [
+            "Authority of this brief The frozen SAP is the governing methodological document. This brief clarifies implementation and quality-control details; it does not create new hypotheses or replace the SAP. If this brief appears to conflict with the frozen SAP, stop and ask Fatimah before changing the analysis. Do not make independent methodological changes. Any methodological concern or proposed deviation must be flagged before implementation."
+          ]
+        },
+        {
+          "index": 3,
+          "rows": 6,
+          "cols": 3,
+          "header": [
+            "Item",
+            "Status",
+            "Implementation rule"
+          ]
+        },
+        {
+          "index": 4,
+          "rows": 4,
+          "cols": 3,
+          "header": [
+            "Study",
+            "Primary N",
+            "Vision-screen subset"
+          ]
+        },
+        {
+          "index": 5,
+          "rows": 1,
+          "cols": 1,
+          "header": [
+            "Do not: Use mixed-effects models as the primary analysis strategy. Treat Study 1 configuration variations as Difficulty. Add Difficulty as a standalone primary factor in Study 2. Change H2 Friedman follow-ups to a different question. Introduce new outlier trimming or RT trimming beyond the SAP. Invent numerical fallback thresholds that are not in the frozen SAP. Add inferential tests for Signed Error or the additional Absolute Error by-K descriptives. Interpret the Study 1 recorded response label directly as Optimized/Original, or recode the mapping from observed outcome patterns. Change a methodological decision without first flagging it to Fatimah."
+          ]
+        }
+      ],
+      "styles": {
+        "Title": 1,
+        "Normal": 18,
+        "Heading 1": 16,
+        "List Bullet": 80,
+        "List Number": 10,
+        "Heading 2": 11
+      },
+      "xml": {
+        "comments": 0,
+        "comment_texts": [],
+        "footnotes": 0,
+        "footnote_texts": [],
+        "endnotes": 0,
+        "ins": 0,
+        "del": 0,
+        "images_rels": 0,
+        "drawing_blips": 0,
+        "headers": [
+          {
+            "file": "word/header1.xml",
+            "text": "Categorical Colormap Optimization | Final Analysis Implementation Brief"
+          }
+        ],
+        "footers": [
+          {
+            "file": "word/footer1.xml",
+            "text": "For R implementation by Tayyab Riaz  |  Page "
+          }
+        ],
+        "hyperlinks": 0,
+        "sectPr": 1,
+        "media_files": [],
+        "media_count": 0
+      },
+      "zip_entry_count": 19
+    },
+    "md": {
+      "chars": 18451,
+      "lines": 478,
+      "headings": 27,
+      "heading_texts": [
+        "# 1. Purpose and scope",
+        "# 2. Required inputs before coding is frozen",
+        "# 3. Required analysis pipeline order",
+        "# 4. Pairwise-choice data QA and derivation",
+        "# 5. Study 1 implementation",
+        "## 5.1 Accuracy - H1 and H2",
+        "## 5.2 Pairwise choice - H3",
+        "# 6. Study 2 implementation",
+        "## 6.1 Analysis population",
+        "## 6.2 Accuracy - H1 and H2",
+        "## 6.3 Pairwise choice - H3",
+        "# 7. Study 3 implementation",
+        "## 7.1 Accuracy - H4 and H5",
+        "## 7.2 Pairwise choice - H6 and H7",
+        "# 8. Secondary outcomes",
+        "## 8.1 Response time (RT)",
+        "## 8.2 Absolute Error",
+        "## 8.3 Signed Error",
+        "# 9. Assumptions, fallbacks and non-parametric implementation",
+        "## 9.1 Wilcoxon zero differences",
+        "# 10. Effect sizes, confidence intervals and reporting conventions",
+        "# 11. Vision-screen sensitivity analyses",
+        "# 12. Reproducibility, version control and analysis log",
+        "# 13. Synthetic-data-only development and troubleshooting workflow",
+        "# 14. Required deliverables",
+        "# 15. Implementation guardrails - do not do the following",
+        "# 16. Pre-delivery acceptance checklist"
+      ],
+      "tables_est": 3,
+      "list_items": 90,
+      "images": 0,
+      "image_refs": [],
+      "footnote_markers": 0,
+      "html_comments": 0,
+      "pipe_rows": 18
+    },
+    "issues": [
+      "TABLE COUNT mismatch: docx=5 md_sep_rows=3 md_pipe_rows=18"
+    ]
+  },
+  {
+    "docx": {
+      "file": "SAP Categorical Colormap Optimization.docx",
+      "bytes": 26832,
+      "core": {
+        "title": "",
+        "author": "Fatimah Alqahtani",
+        "last_modified_by": "Fatimah Alqahtani",
+        "created": "2026-09-21 16:30:00+00:00",
+        "modified": "2026-09-21 16:43:00+00:00",
+        "revision": 1
+      },
+      "paragraphs": 149,
+      "empty_paragraphs": 1,
+      "headings": 0,
+      "heading_texts": [],
+      "list_paragraphs": 13,
+      "tables": 0,
+      "table_details": [],
+      "styles": {
+        "Normal": 148,
+        "pdq2pg_selectionanchorcontainer": 1
+      },
+      "xml": {
+        "comments": 0,
+        "comment_texts": [],
+        "footnotes": 0,
+        "footnote_texts": [],
+        "endnotes": 0,
+        "ins": 0,
+        "del": 0,
+        "images_rels": 0,
+        "drawing_blips": 0,
+        "headers": [],
+        "footers": [],
+        "hyperlinks": 0,
+        "sectPr": 1,
+        "media_files": [],
+        "media_count": 0
+      },
+      "zip_entry_count": 12
+    },
+    "md": {
+      "chars": 25086,
+      "lines": 583,
+      "headings": 0,
+      "heading_texts": [],
+      "tables_est": 0,
+      "list_items": 15,
+      "images": 0,
+      "image_refs": [],
+      "footnote_markers": 0,
+      "html_comments": 0,
+      "pipe_rows": 0
+    },
+    "issues": []
+  }
+]

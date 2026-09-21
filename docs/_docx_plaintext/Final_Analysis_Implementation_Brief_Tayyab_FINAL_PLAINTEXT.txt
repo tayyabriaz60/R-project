@@ -1,0 +1,169 @@
+FILE: Final_Analysis_Implementation_Brief_Tayyab_FINAL.docx
+PARAGRAPHS: 136
+TABLES: 5
+
+===== PARAGRAPHS =====
+[1|Title] Final Analysis Implementation Brief
+[2|Normal] Categorical Colormap Optimization - Studies 1, 2 and 3
+[3|Normal] Prepared for R implementation by Tayyab Riaz
+[4|Normal] 
+[5|Normal] 
+[6|Heading 1] 1. Purpose and scope
+[7|Normal] The purpose of this brief is to make the frozen SAP executable in R without requiring the analyst to make new methodological decisions. The primary inferential strategy is participant-level conventional repeated-measures / paired analysis, not mixed-effects modelling.
+[8|List Bullet] Use participant-level summary measures for the primary inferential analyses, as specified in the SAP.
+[9|List Bullet] Use alpha = .05 for each prespecified primary hypothesis; do not add an across-hypothesis multiplicity correction.
+[10|List Bullet] Apply Holm correction only to the follow-up comparison families specified in the SAP.
+[11|List Bullet] Do not add new primary hypotheses, new inferential factors, post-hoc models, or additional trimming rules.
+[12|List Bullet] No participant or trial exclusion may be based on the observed outcome. Report all missing/excluded observations and the final N used in each analysis.
+[13|Heading 1] 2. Required inputs before coding is frozen
+[14|Heading 1] 3. Required analysis pipeline order
+[15|List Number] Confirm analysis populations and apply only predefined exclusions.
+[16|List Number] Run data-structure and pairwise-mapping quality checks before deriving analysis variables.
+[17|List Number] Calculate the required participant-level summary measures.
+[18|List Number] Produce descriptive statistics and planned visualizations.
+[19|List Number] Perform the SAP-specified assumption diagnostics.
+[20|List Number] Conduct the primary hypothesis tests and any prespecified fallbacks.
+[21|List Number] Run follow-up comparisons only when the SAP trigger is met; apply the specified Holm correction.
+[22|List Number] Preprocess and analyse secondary outcomes.
+[23|List Number] Run the prespecified vision-screen sensitivity analyses.
+[24|List Number] Export tables, figures, analysis outputs and the analysis log; verify that the full pipeline regenerates all deliverables from start to finish.
+[25|Heading 1] 4. Pairwise-choice data QA and derivation
+[26|List Bullet] Before calculating chose_optimized, verify the distribution of optimized_side within participants and validate that every analysed pairwise trial contains exactly one Optimized image and one Original/baseline image.
+[27|List Bullet] Study 1 Gorilla mapping is fixed as follows: clicking the left image records the trial-specific value in left_option, and clicking the right image records the trial-specific value in right_option. Do not interpret the semantic response label (for example, optimized.png or baseline.png) directly as the selected stimulus type.
+[28|List Bullet] First reconstruct the selected physical side from the recorded Gorilla response: if the response equals left_option, set preferred_side = "left"; if it equals right_option, set preferred_side = "right". Independently derive optimized_side from the actual stimulus filenames in image_left and image_right. Then calculate chose_optimized = (preferred_side == optimized_side). If a row fails these mapping checks, flag it as a data-structure/QA issue rather than guessing or recoding from observed outcomes.
+[29|List Bullet] Keep a QA record showing the response-to-side reconstruction, optimized_side derivation, validation results, and the final chose_optimized derivation used for Study 1.
+[30|Heading 1] 5. Study 1 implementation
+[31|Heading 2] 5.1 Accuracy - H1 and H2
+[32|List Bullet] Calculate exact class-count accuracy for each participant within each Condition x K cell.
+[33|List Bullet] Average across the three configuration instances within each Condition x K cell.
+[34|List Bullet] Treat the three variations only as configuration instances. Easy/Medium/Hard Difficulty was not implemented in Study 1 and must not be analysed or interpreted as Difficulty.
+[35|List Bullet] Primary test: 2 x 4 repeated-measures ANOVA with within-subject factors Condition (Original, Optimized) and K (5, 10, 20, 30).
+[36|List Bullet] H1 = Condition main effect. H2 = Condition x K interaction.
+[37|List Bullet] If the Condition x K interaction is significant, run paired Original vs Optimized comparisons separately at K = 5, 10, 20 and 30, with Holm correction across the four comparisons.
+[38|List Bullet] Zero-variance rule: if the within-participant Optimized - Original difference at a given K has exactly zero variance, do not compute the inferential follow-up or standardized paired effect size for that K. Report descriptives for that K and apply Holm correction across the remaining estimable K-specific comparisons.
+[39|List Bullet] Keep K = 30 in the analysis and retain its SAP interpretation as a palette-capacity boundary condition.
+[40|Heading 2] 5.2 Pairwise choice - H3
+[41|List Bullet] For each participant, calculate the proportion of pairwise trials on which Optimized was selected, after the QA/mapping checks in Section 4.
+[42|List Bullet] Primary test: two-sided one-sample t-test against 0.50, with the SAP-specified Wilcoxon fallback if required.
+[43|List Bullet] The fixed pairwise trial order requires no analytical adjustment; retain it as a reporting limitation only.
+[44|Heading 1] 6. Study 2 implementation
+[45|Heading 2] 6.1 Analysis population
+[46|List Bullet] Exclude the predefined researcher session from all analyses; the SAP primary analysis population is N = 50.
+[47|Heading 2] 6.2 Accuracy - H1 and H2
+[48|List Bullet] Use the same participant-level 2 x 4 repeated-measures ANOVA framework, assumptions, fallbacks, follow-ups and reporting rules as Study 1.
+[49|List Bullet] In Study 2, Easy, Medium and Hard Difficulty levels were implemented. Difficulty is not a standalone primary factor in the frozen SAP.
+[50|List Bullet] For the primary Condition x K analysis, average participant-level accuracy across the three Difficulty levels within each Condition x K cell.
+[51|List Bullet] Do not add a standalone Difficulty hypothesis or Condition x Difficulty / higher-order inferential model unless the frozen SAP is formally amended before analysis.
+[52|Heading 2] 6.3 Pairwise choice - H3
+[53|List Bullet] Use the same participant-level pairwise-choice procedure, assumptions, fallback and reporting rules as Study 1, following the pairwise QA rules in Section 4.
+[54|Heading 1] 7. Study 3 implementation
+[55|Heading 2] 7.1 Accuracy - H4 and H5
+[56|List Bullet] For each participant, calculate exact class-count accuracy within each Condition x Background cell, averaging across both K and Difficulty.
+[57|List Bullet] Primary test: 2 x 2 repeated-measures ANOVA with within-subject factors Condition (Original, Optimized) and Background (White, Black).
+[58|List Bullet] H4 = Condition main effect. H5 = Condition x Background interaction.
+[59|List Bullet] If the Condition x Background interaction is significant, compare Original vs Optimized separately within White and Black backgrounds, with Holm correction across the two comparisons.
+[60|List Bullet] Condition order and Background order were counterbalanced; do not include them as predictors in the primary analysis. Document them as design features.
+[61|Heading 2] 7.2 Pairwise choice - H6 and H7
+[62|List Bullet] H6: calculate each participant's overall Optimized-choice proportion across the 18 pairwise trials and use the SAP-specified two-sided one-sample test against 0.50.
+[63|List Bullet] H7: calculate each participant's Optimized-choice proportion separately for White and Black backgrounds and use the SAP-specified paired comparison.
+[64|Heading 1] 8. Secondary outcomes
+[65|Heading 2] 8.1 Response time (RT)
+[66|List Bullet] Include all valid trials regardless of response accuracy.
+[67|List Bullet] Exclude only missing or non-positive RT values and RT values affected by a documented recording/technical error. Apply no other trimming.
+[68|List Bullet] Calculate the skewness coefficient of the trial-level RT distribution. If skewness > 1, apply the natural-log transformation using log() in R before calculating participant-level means, exactly as specified by the SAP transformation rule.
+[69|List Bullet] For Studies 1 and 2, calculate participant-level mean RT separately for Original and Optimized trials, averaging across K, using the raw or transformed scale selected by the SAP rule.
+[70|List Bullet] For Study 3, calculate participant-level mean RT within each Condition x Background cell and use the SAP-specified 2 x 2 repeated-measures ANOVA and follow-ups.
+[71|List Bullet] Pairwise-task RT remains descriptive unless a separate inferential question is explicitly added to the frozen SAP.
+[72|List Bullet] If inference is conducted on natural-log-transformed RT, continue to report untransformed descriptive RT values in milliseconds. In addition, exponentiate the estimated paired log difference and its 95% CI. Where the analysed contrast is Original - Optimized, label the back-transformed estimate explicitly as the Original/Optimized geometric-mean ratio.
+[73|Heading 2] 8.2 Absolute Error
+[74|List Bullet] Retain the SAP-specified inferential analysis of mean Absolute Error; do not replace it with a K-specific inferential model.
+[75|List Bullet] Additionally produce descriptive Absolute Error summaries by Condition x K (mean and SD; include a 95% CI if this is part of the final reporting template). These summaries are descriptive only and do not create additional hypothesis tests.
+[76|List Bullet] For Study 3, descriptive Absolute Error may also be reported separately for White and Black backgrounds, as allowed by the SAP.
+[77|Heading 2] 8.3 Signed Error
+[78|List Bullet] Treat Signed Error as a descriptive secondary outcome only. No inferential test should be added.
+[79|List Bullet] Use negative values to describe underestimation and positive values to describe overestimation. Report mean and SD by the SAP-specified conditions.
+[80|Heading 1] 9. Assumptions, fallbacks and non-parametric implementation
+[81|List Bullet] Use only the diagnostics and fallbacks prespecified in the SAP.
+[82|List Bullet] Do not create a new universal numerical fallback threshold (for example, |skewness| > 1) for ANOVA/t-test decisions. The SAP threshold skewness > 1 applies to the RT transformation rule only.
+[83|List Bullet] Where the SAP uses qualitative wording such as severe deviations, severely non-normal, very skewed or extremely skewed without a numerical cutoff, do not invent a cutoff. Produce the specified diagnostic, flag it to Fatimah before switching analysis, and record the agreed decision in the analysis log.
+[84|List Bullet] Fallback decisions must be documented before examining the statistical significance or direction of the Condition effect.
+[85|List Bullet] For H2 non-parametric fallback, preserve the SAP logic: calculate Optimized - Original accuracy differences at each K, use Friedman to test whether those difference scores vary across K, and if significant compare the difference scores between K levels with pairwise Wilcoxon signed-rank tests and Holm correction across the six comparisons. Do not replace this with Original vs Optimized tests at each K as the Friedman follow-up.
+[86|Heading 2] 9.1 Wilcoxon zero differences
+[87|List Bullet] Use one prespecified and consistent convention for zero paired differences.
+[88|List Bullet] If the standard Wilcoxon convention is used, omit zero differences from the signed-rank calculation and report the effective number of non-zero pairs.
+[89|List Bullet] Document the exact R function/package used for the Wilcoxon test, rank-biserial correlation and its 95% CI.
+[90|Heading 1] 10. Effect sizes, confidence intervals and reporting conventions
+[91|List Bullet] Report effect sizes and 95% confidence intervals exactly where required by the SAP.
+[92|List Bullet] Document the exact package, function and convention used for partial eta-squared, paired-samples Cohen's d, one-sample Cohen's d, rank-biserial correlation, Kendall's W and their confidence intervals where applicable.
+[93|List Bullet] If the SAP wording permits more than one standard computational convention (for example, alternative definitions of paired Cohen's d or alternative CI methods), do not choose silently. Flag the proposed convention to Fatimah before the final code is frozen, then use the approved convention consistently across all studies.
+[94|List Bullet] Do not substitute a different effect-size family for the effect size named in the SAP.
+[95|Heading 1] 11. Vision-screen sensitivity analyses
+[96|Normal] Repeat only the SAP-defined primary accuracy and pairwise-choice analyses in the relevant vision-screen subset and report whether the substantive conclusions change. Do not redefine the primary analysis population.
+[97|Heading 1] 12. Reproducibility, version control and analysis log
+[98|List Bullet] Frozen SAP version: Final. SAP freeze date: 21 September 2026.
+[99|List Bullet] Final local execution R version: R 4.6.1 (2026-06-24).
+[100|List Bullet] Pin package versions with renv and include setup/run instructions in a README.
+[101|List Bullet] The analysis log must record: analysis population/exclusions, missing observations, QA/mapping checks, assumption diagnostics, any fallback invoked and why, zero-difference handling, zero-variance follow-ups, package/functions used for effect sizes/CIs, and any technical issue encountered.
+[102|List Bullet] The final pipeline must regenerate all analyses, tables and figures from start to finish without manual editing of numerical results.
+[103|Heading 1] 13. Synthetic-data-only development and troubleshooting workflow
+[104|List Bullet] Build and test the full R workflow using the synthetic dataset with the same column structure as the real data.
+[105|List Bullet] Fatimah will run the final scripts locally on the real data.
+[106|List Bullet] Do not require access to the real participant-level dataset for development or final delivery.
+[107|List Bullet] Troubleshooting on the real run may use error messages and non-sensitive outputs supplied by Fatimah, provided the work remains within the frozen SAP.
+[108|List Bullet] Avoid dataset-specific hard-coding that would prevent the scripts from running on the real dataset with the documented structure.
+[109|Heading 1] 14. Required deliverables
+[110|List Bullet] Participant-level summary measures used by the analyses.
+[111|List Bullet] All primary hypothesis tests (H1-H7 as applicable by study).
+[112|List Bullet] All SAP-specified assumption checks and predefined fallback analyses.
+[113|List Bullet] All triggered follow-up comparisons with the specified multiplicity correction.
+[114|List Bullet] Effect sizes and 95% confidence intervals as specified in the SAP.
+[115|List Bullet] Response-time, Absolute Error and Signed Error analyses/descriptives specified in the SAP and this brief.
+[116|List Bullet] Vision-screen sensitivity analyses.
+[117|List Bullet] Publication-ready summary tables for primary and secondary analyses.
+[118|List Bullet] Figures/plots specified by the SAP/reporting plan, with clear labels and thesis/publication-suitable formatting.
+[119|List Bullet] Exported analysis outputs, tables and figures in reusable formats.
+[120|List Bullet] One clean, reproducible R pipeline that regenerates the complete analysis from start to finish.
+[121|List Bullet] renv lockfile/environment and a README with setup and run instructions.
+[122|List Bullet] Analysis log documenting the implementation decisions and diagnostics listed above.
+[123|Heading 1] 15. Implementation guardrails - do not do the following
+[124|Normal] 
+[125|Heading 1] 16. Pre-delivery acceptance checklist
+[126|Normal] ☐  SAP version = Final, freeze date = 21 September 2026, and R version = 4.6.1 (2026-06-24) are recorded in the README / analysis log.
+[127|Normal] ☐  Study 1 pairwise mapping QA has passed: response -> preferred_side is reconstructed using left_option/right_option; optimized_side is derived from image_left/image_right; chose_optimized is then computed from side agreement.
+[128|Normal] ☐  Synthetic dataset runs from raw input to all outputs without manual intervention.
+[129|Normal] ☐  All participant-level summaries match the SAP aggregation rules for each study.
+[130|Normal] ☐  All fallback decisions, if any, are documented before interpretation of hypothesis results.
+[131|Normal] ☐  Holm correction is applied only to the prespecified follow-up families.
+[132|Normal] ☐  All requested effect sizes and 95% CIs are present and their computational conventions are documented.
+[133|Normal] ☐  RT reporting preserves untransformed millisecond descriptives even if inference uses log RT.
+[134|Normal] ☐  Vision-screen sensitivity analyses are complete for Studies 1-3.
+[135|Normal] ☐  Tables, figures, reusable exports, README, renv files and analysis log are included.
+[136|Normal] End of implementation brief
+
+===== TABLES =====
+--- TABLE 1 (5x2) ---
+R0: Governing document || Final frozen Statistical Analysis Plan (SAP)
+R1: SAP version || Final
+R2: SAP freeze date || 21 September 2026
+R3: R version || R 4.6.1 (2026-06-24)
+R4: Data-access model || Synthetic-data development/testing; final scripts run locally by Fatimah on the real data
+
+--- TABLE 2 (1x1) ---
+R0: Authority of this brief | The frozen SAP is the governing methodological document. This brief clarifies implementation and quality-control details; it does not create new hypotheses or replace the SAP. | If this brief appears to conflict with the frozen SAP, stop and ask Fatimah before changing the analysis. | Do not make independent methodological changes. Any methodological concern or proposed deviation must be flagged before implementation.
+
+--- TABLE 3 (6x3) ---
+R0: Item || Status || Implementation rule
+R1: Final frozen SAP || Required || Use as the methodological source of truth.
+R2: Data dictionary / column structure || Required || Variable names, coding and derivations must follow this document.
+R3: Synthetic dataset || Required || Build and test the full pipeline using the synthetic structure only.
+R4: R version || Confirmed || Use R 4.6.1 (2026-06-24) for the final local execution; pin package versions with renv.
+R5: Exact Study 1 pairwise response-side mapping correction || Confirmed || Gorilla mapping is fixed: clicking the left image records left_option and clicking the right image records right_option. Reconstruct preferred_side from the recorded response, derive optimized_side from image_left/image_right, then compute chose_optimized = (preferred_side == optimized_side). See Section 4 for the exact QA/derivation rule.
+
+--- TABLE 4 (4x3) ---
+R0: Study || Primary N || Vision-screen subset
+R1: Study 1 || 50 || 48
+R2: Study 2 || 50 || 43
+R3: Study 3 || 50 || 46
+
+--- TABLE 5 (1x1) ---
+R0: Do not: | Use mixed-effects models as the primary analysis strategy. | Treat Study 1 configuration variations as Difficulty. | Add Difficulty as a standalone primary factor in Study 2. | Change H2 Friedman follow-ups to a different question. | Introduce new outlier trimming or RT trimming beyond the SAP. | Invent numerical fallback thresholds that are not in the frozen SAP. | Add inferential tests for Signed Error or the additional Absolute Error by-K descriptives. | Interpret the Study 1 recorded response label directly as Optimized/Original, or recode the mapping from observed outcome patterns. | Change a methodological decision without first flagging it to Fatimah.

@@ -1,0 +1,1034 @@
+================================================================================
+STUDY1 DISC G1
+path=study1_discrimination_G1_SYNTHETIC.csv rows=600 cols=63 bytes=276861
+fully_blank_rows=0 duplicate_rows=0
+COLUMNS:
+    1. 'Event Index' dtype=int64 missing=0 min=1 max=600 n<=0=0
+    2. 'UTC Timestamp' dtype=int64 missing=0 min=1789992007000 max=1789996200000 n<=0=0
+    3. 'UTC Date and Time' dtype=object missing=0 nunique=600
+    4. 'Local Timestamp' dtype=int64 missing=0 min=1789992007000 max=1789996200000 n<=0=0
+    5. 'Local Timezone' dtype=int64 missing=0 min=1 max=1 n<=0=0
+    6. 'Local Date and Time' dtype=object missing=0 nunique=600
+    7. 'Experiment ID' dtype=int64 missing=0 min=229051 max=229051 n<=0=0
+    8. 'Experiment Version' dtype=int64 missing=0 min=38 max=38 n<=0=0
+    9. 'Tree Node Key' dtype=object missing=0 nunique=1
+   10. 'Repeat Key' dtype=float64 missing=600
+   11. 'Schedule ID' dtype=object missing=0 nunique=25
+   12. 'Participant Public ID' dtype=object missing=0 nunique=1
+   13. 'Participant Private ID' dtype=object missing=0 nunique=25
+   14. 'Participant Starting Group' dtype=float64 missing=600
+   15. 'Participant Status' dtype=object missing=0 nunique=1
+   16. 'Participant Completion Code' dtype=object missing=0 nunique=1
+   17. 'Participant External Session ID' dtype=float64 missing=600
+   18. 'Participant Device Type' dtype=object missing=0 nunique=1
+   19. 'Participant Device' dtype=object missing=0 nunique=1
+   20. 'Participant OS' dtype=object missing=0 nunique=1
+   21. 'Participant Browser' dtype=object missing=0 nunique=1
+   22. 'Participant Monitor Size' dtype=object missing=0 nunique=1
+   23. 'Participant Viewport Size' dtype=object missing=0 nunique=1
+   24. 'Checkpoint' dtype=float64 missing=600
+   25. 'Room ID' dtype=float64 missing=600
+   26. 'Room Order' dtype=float64 missing=600
+   27. 'Task Name' dtype=object missing=0 nunique=1
+   28. 'Task Version' dtype=object missing=0 nunique=1
+   29. 'randomiser-m119' dtype=object missing=0 nunique=1
+   30. 'Manipulation: Spreadsheet' dtype=object missing=0 nunique=1
+   31. 'Current Spreadsheet' dtype=object missing=0 nunique=1
+   32. 'Trial Number' dtype=int64 missing=0 min=1 max=24 n<=0=0
+   33. 'Display' dtype=object missing=0 nunique=1
+   34. 'Screen' dtype=object missing=0 nunique=1
+   35. 'Screen ID' dtype=float64 missing=600
+   36. 'Screen Counter' dtype=float64 missing=600
+   37. 'Response Type' dtype=object missing=0 nunique=1
+   38. 'Response' dtype=int64 missing=0 min=4 max=35 n<=0=0
+   39. 'Context' dtype=float64 missing=600
+   40. 'Onset Time' dtype=float64 missing=600
+   41. 'Clock Time' dtype=float64 missing=600
+   42. 'Reaction Time' dtype=float64 missing=0 min=1237.0 max=18731.5 n<=0=0
+   43. 'Absolute Onset Time' dtype=float64 missing=600
+   44. 'Absolute Clock Time' dtype=float64 missing=600
+   45. 'Absolute Reaction Time' dtype=float64 missing=0 min=1237.0 max=18731.5 n<=0=0
+   46. 'Correct' dtype=int64 missing=0 min=0 max=1 n<=0=109
+   47. 'Response Duration' dtype=float64 missing=0 min=1237.0 max=18731.5 n<=0=0
+   48. 'Proportion' dtype=float64 missing=600
+   49. 'Tag' dtype=float64 missing=600
+   50. 'Component Name' dtype=float64 missing=600
+   51. 'Object Name' dtype=float64 missing=600
+   52. 'Object Number' dtype=float64 missing=600
+   53. 'Object ID' dtype=float64 missing=600
+   54. 'Spreadsheet: display' dtype=object missing=0 nunique=1
+   55. 'Spreadsheet: image' dtype=object missing=0 nunique=24
+   56. 'Spreadsheet: num_classes' dtype=int64 missing=0 min=5 max=30 n<=0=0
+   57. 'Spreadsheet: colormap' dtype=object missing=0 nunique=2
+   58. 'Spreadsheet: variation' dtype=int64 missing=0 min=1 max=3 n<=0=0
+   59. 'Spreadsheet: condition' dtype=object missing=0 nunique=2
+   60. 'Spreadsheet: trial_type' dtype=object missing=0 nunique=1
+   61. 'Spreadsheet: question' dtype=object missing=0 nunique=1
+   62. 'Spreadsheet: correct_answer' dtype=int64 missing=0 min=5 max=30 n<=0=0
+   63. 'Spreadsheet: group_number' dtype=int64 missing=0 min=1 max=1 n<=0=0
+================================================================================
+STUDY1 DISC G2
+path=study1_discrimination_G2_SYNTHETIC.csv rows=600 cols=63 bytes=276883
+fully_blank_rows=0 duplicate_rows=0
+COLUMNS:
+    1. 'Event Index' dtype=int64 missing=0 min=1 max=600 n<=0=0
+    2. 'UTC Timestamp' dtype=int64 missing=0 min=1789992007000 max=1789996200000 n<=0=0
+    3. 'UTC Date and Time' dtype=object missing=0 nunique=600
+    4. 'Local Timestamp' dtype=int64 missing=0 min=1789992007000 max=1789996200000 n<=0=0
+    5. 'Local Timezone' dtype=int64 missing=0 min=1 max=1 n<=0=0
+    6. 'Local Date and Time' dtype=object missing=0 nunique=600
+    7. 'Experiment ID' dtype=int64 missing=0 min=229051 max=229051 n<=0=0
+    8. 'Experiment Version' dtype=int64 missing=0 min=38 max=38 n<=0=0
+    9. 'Tree Node Key' dtype=object missing=0 nunique=1
+   10. 'Repeat Key' dtype=float64 missing=600
+   11. 'Schedule ID' dtype=object missing=0 nunique=25
+   12. 'Participant Public ID' dtype=object missing=0 nunique=1
+   13. 'Participant Private ID' dtype=object missing=0 nunique=25
+   14. 'Participant Starting Group' dtype=float64 missing=600
+   15. 'Participant Status' dtype=object missing=0 nunique=1
+   16. 'Participant Completion Code' dtype=object missing=0 nunique=1
+   17. 'Participant External Session ID' dtype=float64 missing=600
+   18. 'Participant Device Type' dtype=object missing=0 nunique=1
+   19. 'Participant Device' dtype=object missing=0 nunique=1
+   20. 'Participant OS' dtype=object missing=0 nunique=1
+   21. 'Participant Browser' dtype=object missing=0 nunique=1
+   22. 'Participant Monitor Size' dtype=object missing=0 nunique=1
+   23. 'Participant Viewport Size' dtype=object missing=0 nunique=1
+   24. 'Checkpoint' dtype=float64 missing=600
+   25. 'Room ID' dtype=float64 missing=600
+   26. 'Room Order' dtype=float64 missing=600
+   27. 'Task Name' dtype=object missing=0 nunique=1
+   28. 'Task Version' dtype=object missing=0 nunique=1
+   29. 'randomiser-m119' dtype=object missing=0 nunique=1
+   30. 'Manipulation: Spreadsheet' dtype=object missing=0 nunique=1
+   31. 'Current Spreadsheet' dtype=object missing=0 nunique=1
+   32. 'Trial Number' dtype=int64 missing=0 min=1 max=24 n<=0=0
+   33. 'Display' dtype=object missing=0 nunique=1
+   34. 'Screen' dtype=object missing=0 nunique=1
+   35. 'Screen ID' dtype=float64 missing=600
+   36. 'Screen Counter' dtype=float64 missing=600
+   37. 'Response Type' dtype=object missing=0 nunique=1
+   38. 'Response' dtype=int64 missing=0 min=4 max=36 n<=0=0
+   39. 'Context' dtype=float64 missing=600
+   40. 'Onset Time' dtype=float64 missing=600
+   41. 'Clock Time' dtype=float64 missing=600
+   42. 'Reaction Time' dtype=float64 missing=0 min=1202.9 max=16912.4 n<=0=0
+   43. 'Absolute Onset Time' dtype=float64 missing=600
+   44. 'Absolute Clock Time' dtype=float64 missing=600
+   45. 'Absolute Reaction Time' dtype=float64 missing=0 min=1202.9 max=16912.4 n<=0=0
+   46. 'Correct' dtype=int64 missing=0 min=0 max=1 n<=0=110
+   47. 'Response Duration' dtype=float64 missing=0 min=1202.9 max=16912.4 n<=0=0
+   48. 'Proportion' dtype=float64 missing=600
+   49. 'Tag' dtype=float64 missing=600
+   50. 'Component Name' dtype=float64 missing=600
+   51. 'Object Name' dtype=float64 missing=600
+   52. 'Object Number' dtype=float64 missing=600
+   53. 'Object ID' dtype=float64 missing=600
+   54. 'Spreadsheet: display' dtype=object missing=0 nunique=1
+   55. 'Spreadsheet: image' dtype=object missing=0 nunique=24
+   56. 'Spreadsheet: num_classes' dtype=int64 missing=0 min=5 max=30 n<=0=0
+   57. 'Spreadsheet: colormap' dtype=object missing=0 nunique=2
+   58. 'Spreadsheet: variation' dtype=int64 missing=0 min=1 max=3 n<=0=0
+   59. 'Spreadsheet: condition' dtype=object missing=0 nunique=2
+   60. 'Spreadsheet: trial_type' dtype=object missing=0 nunique=1
+   61. 'Spreadsheet: question' dtype=object missing=0 nunique=1
+   62. 'Spreadsheet: correct_answer' dtype=int64 missing=0 min=5 max=30 n<=0=0
+   63. 'Spreadsheet: group_number' dtype=int64 missing=0 min=2 max=2 n<=0=0
+================================================================================
+STUDY1 DISC COMBINED
+rows=1200
+  VALUE COUNTS Participant Public ID:
+    'BLINDED': 1200
+  VALUE COUNTS Participant Private ID:
+    'S1_PRIV_001': 24
+    'S1_PRIV_002': 24
+    'S1_PRIV_003': 24
+    'S1_PRIV_004': 24
+    'S1_PRIV_005': 24
+    'S1_PRIV_006': 24
+    'S1_PRIV_007': 24
+    'S1_PRIV_008': 24
+    'S1_PRIV_009': 24
+    'S1_PRIV_010': 24
+    'S1_PRIV_011': 24
+    'S1_PRIV_012': 24
+    'S1_PRIV_013': 24
+    'S1_PRIV_014': 24
+    'S1_PRIV_015': 24
+    'S1_PRIV_016': 24
+    'S1_PRIV_017': 24
+    'S1_PRIV_018': 24
+    'S1_PRIV_019': 24
+    'S1_PRIV_020': 24
+    'S1_PRIV_021': 24
+    'S1_PRIV_022': 24
+    'S1_PRIV_023': 24
+    'S1_PRIV_024': 24
+    'S1_PRIV_025': 24
+    'S1_PRIV_026': 24
+    'S1_PRIV_027': 24
+    'S1_PRIV_028': 24
+    'S1_PRIV_029': 24
+    'S1_PRIV_030': 24
+  VALUE COUNTS Task Name:
+    'Discrimination Task G1': 600
+    'Discrimination Task G2': 600
+  VALUE COUNTS Response Type:
+    'response': 1200
+  VALUE COUNTS Object Name:
+    nan: 1200
+  VALUE COUNTS Spreadsheet: condition:
+    'sa': 600
+    'baseline': 600
+  VALUE COUNTS Spreadsheet: colormap:
+    'tab20sa': 600
+    'tab20': 600
+  VALUE COUNTS Spreadsheet: num_classes:
+    20: 300
+    30: 300
+    5: 300
+    10: 300
+  VALUE COUNTS Spreadsheet: variation:
+    3: 400
+    1: 400
+    2: 400
+  VALUE COUNTS Correct:
+    1: 981
+    0: 219
+  VALUE COUNTS Response:
+    5: 281
+    10: 281
+    20: 232
+    30: 187
+    16: 20
+    24: 18
+    29: 18
+    18: 18
+    25: 17
+    26: 14
+    4: 13
+    19: 12
+    9: 12
+    28: 12
+    17: 9
+    27: 9
+    32: 8
+    6: 6
+    33: 6
+    31: 5
+    8: 4
+    35: 4
+    21: 3
+    36: 3
+    22: 2
+    34: 2
+    11: 2
+    12: 1
+    23: 1
+
+Study1 disc IDs:
+  public unique=1 values=['BLINDED']
+  private unique=50
+  rows per private: {24: 50}
+  G1 private n=25 G2 private n=25
+  private overlap G1&G2=0
+  accuracy recalc vs Correct mismatches=0
+  response missing=0 correct_answer missing=0
+  response range=4..36 answer range=5..30
+  RT missing=0 min=1202.9 max=18731.5 n<=0=0 skew=1.1808242996650984
+  rows per id x cond x K x var: {1: 1200}
+  cond x K x var counts:
+Spreadsheet: variation                            1   2   3
+Spreadsheet: condition Spreadsheet: num_classes            
+baseline               5                         50  50  50
+                       10                        50  50  50
+                       20                        50  50  50
+                       30                        50  50  50
+sa                     5                         50  50  50
+                       10                        50  50  50
+                       20                        50  50  50
+                       30                        50  50  50
+================================================================================
+STUDY1 PAIRWISE
+path=study1_pairwise_SYNTHETIC.csv rows=600 cols=61 bytes=313453
+fully_blank_rows=0 duplicate_rows=0
+COLUMNS:
+    1. 'Event Index' dtype=int64 missing=0 min=1 max=600 n<=0=0
+    2. 'UTC Timestamp' dtype=int64 missing=0 min=1789992007000 max=1789996200000 n<=0=0
+    3. 'UTC Date and Time' dtype=object missing=0 nunique=600
+    4. 'Local Timestamp' dtype=int64 missing=0 min=1789992007000 max=1789996200000 n<=0=0
+    5. 'Local Timezone' dtype=int64 missing=0 min=1 max=1 n<=0=0
+    6. 'Local Date and Time' dtype=object missing=0 nunique=600
+    7. 'Experiment ID' dtype=int64 missing=0 min=229051 max=229051 n<=0=0
+    8. 'Experiment Version' dtype=int64 missing=0 min=38 max=38 n<=0=0
+    9. 'Tree Node Key' dtype=object missing=0 nunique=1
+   10. 'Repeat Key' dtype=float64 missing=600
+   11. 'Schedule ID' dtype=object missing=0 nunique=50
+   12. 'Participant Public ID' dtype=object missing=0 nunique=1
+   13. 'Participant Private ID' dtype=object missing=0 nunique=50
+   14. 'Participant Starting Group' dtype=float64 missing=600
+   15. 'Participant Status' dtype=object missing=0 nunique=1
+   16. 'Participant Completion Code' dtype=object missing=0 nunique=1
+   17. 'Participant External Session ID' dtype=float64 missing=600
+   18. 'Participant Device Type' dtype=object missing=0 nunique=1
+   19. 'Participant Device' dtype=object missing=0 nunique=1
+   20. 'Participant OS' dtype=object missing=0 nunique=1
+   21. 'Participant Browser' dtype=object missing=0 nunique=1
+   22. 'Participant Monitor Size' dtype=object missing=0 nunique=1
+   23. 'Participant Viewport Size' dtype=object missing=0 nunique=1
+   24. 'Checkpoint' dtype=float64 missing=600
+   25. 'Room ID' dtype=float64 missing=600
+   26. 'Room Order' dtype=float64 missing=600
+   27. 'Task Name' dtype=object missing=0 nunique=1
+   28. 'Task Version' dtype=object missing=0 nunique=1
+   29. 'randomiser-m119' dtype=object missing=0 nunique=2
+   30. 'Manipulation: Spreadsheet' dtype=object missing=0 nunique=1
+   31. 'Current Spreadsheet' dtype=object missing=0 nunique=1
+   32. 'Trial Number' dtype=int64 missing=0 min=1 max=12 n<=0=0
+   33. 'Display' dtype=object missing=0 nunique=1
+   34. 'Screen' dtype=object missing=0 nunique=1
+   35. 'Screen ID' dtype=float64 missing=600
+   36. 'Screen Counter' dtype=float64 missing=600
+   37. 'Response Type' dtype=object missing=0 nunique=1
+   38. 'Response' dtype=object missing=0 nunique=2
+   39. 'Context' dtype=float64 missing=600
+   40. 'Onset Time' dtype=float64 missing=600
+   41. 'Clock Time' dtype=float64 missing=600
+   42. 'Reaction Time' dtype=float64 missing=0 min=1251.9 max=11908.4 n<=0=0
+   43. 'Absolute Onset Time' dtype=float64 missing=600
+   44. 'Absolute Clock Time' dtype=float64 missing=600
+   45. 'Absolute Reaction Time' dtype=float64 missing=0 min=1251.9 max=11908.4 n<=0=0
+   46. 'Correct' dtype=float64 missing=600
+   47. 'Response Duration' dtype=float64 missing=0 min=1251.9 max=11908.4 n<=0=0
+   48. 'Proportion' dtype=float64 missing=600
+   49. 'Tag' dtype=float64 missing=600
+   50. 'Component Name' dtype=float64 missing=600
+   51. 'Object Name' dtype=float64 missing=600
+   52. 'Object Number' dtype=float64 missing=600
+   53. 'Object ID' dtype=float64 missing=600
+   54. 'Spreadsheet: display' dtype=object missing=0 nunique=1
+   55. 'Spreadsheet: trial_number' dtype=int64 missing=0 min=1 max=12 n<=0=0
+   56. 'Spreadsheet: image_left' dtype=object missing=0 nunique=24
+   57. 'Spreadsheet: image_right' dtype=object missing=0 nunique=24
+   58. 'Spreadsheet: correct_answer' dtype=object missing=0 nunique=1
+   59. 'Spreadsheet: left_option' dtype=object missing=0 nunique=2
+   60. 'Spreadsheet: right_option' dtype=object missing=0 nunique=2
+   61. 'Spreadsheet: confidence_rating' dtype=float64 missing=600
+  VALUE COUNTS Participant Public ID:
+    'BLINDED': 600
+  VALUE COUNTS Participant Private ID:
+    'S1_PRIV_001': 12
+    'S1_PRIV_002': 12
+    'S1_PRIV_003': 12
+    'S1_PRIV_004': 12
+    'S1_PRIV_005': 12
+    'S1_PRIV_006': 12
+    'S1_PRIV_007': 12
+    'S1_PRIV_008': 12
+    'S1_PRIV_009': 12
+    'S1_PRIV_010': 12
+    'S1_PRIV_011': 12
+    'S1_PRIV_012': 12
+    'S1_PRIV_013': 12
+    'S1_PRIV_014': 12
+    'S1_PRIV_015': 12
+    'S1_PRIV_016': 12
+    'S1_PRIV_017': 12
+    'S1_PRIV_018': 12
+    'S1_PRIV_019': 12
+    'S1_PRIV_020': 12
+    'S1_PRIV_021': 12
+    'S1_PRIV_022': 12
+    'S1_PRIV_023': 12
+    'S1_PRIV_024': 12
+    'S1_PRIV_025': 12
+    'S1_PRIV_026': 12
+    'S1_PRIV_027': 12
+    'S1_PRIV_028': 12
+    'S1_PRIV_029': 12
+    'S1_PRIV_030': 12
+  VALUE COUNTS Task Name:
+    'Pairwise Comparison Task2': 600
+  VALUE COUNTS Response Type:
+    'response': 600
+  VALUE COUNTS Object Name:
+    nan: 600
+  VALUE COUNTS Spreadsheet: trial_number:
+    1: 50
+    2: 50
+    3: 50
+    4: 50
+    5: 50
+    6: 50
+    7: 50
+    8: 50
+    9: 50
+    10: 50
+    11: 50
+    12: 50
+  VALUE COUNTS Spreadsheet: left_option:
+    'baseline.png': 322
+    'optimized.png': 278
+  VALUE COUNTS Spreadsheet: right_option:
+    'optimized.png': 322
+    'baseline.png': 278
+  VALUE COUNTS Response:
+    'baseline.png': 308
+    'optimized.png': 292
+  VALUE COUNTS Spreadsheet: image_left:
+    'compare_10_easy_optimized.png': 35
+    'compare_10_medium_optimized.png': 34
+    'compare_5_hard_optimized.png': 29
+    'compare_20_medium_optimized.png': 28
+    'compare_5_easy_optimized.png': 28
+    'compare_20_hard_optimized.png': 28
+    'compare_10_hard_optimized.png': 27
+    'compare_30_hard_baseline.png': 27
+    'compare_20_easy_optimized.png': 27
+    'compare_5_medium_baseline.png': 26
+    'compare_30_easy_baseline.png': 26
+    'compare_30_medium_optimized.png': 25
+    'compare_30_medium_baseline.png': 25
+    'compare_5_medium_optimized.png': 24
+    'compare_30_easy_optimized.png': 24
+    'compare_10_hard_baseline.png': 23
+    'compare_20_easy_baseline.png': 23
+    'compare_30_hard_optimized.png': 23
+    'compare_20_hard_baseline.png': 22
+    'compare_5_easy_baseline.png': 22
+    'compare_20_medium_baseline.png': 22
+    'compare_5_hard_baseline.png': 21
+    'compare_10_medium_baseline.png': 16
+    'compare_10_easy_baseline.png': 15
+  VALUE COUNTS Spreadsheet: image_right:
+    'compare_10_easy_baseline.png': 35
+    'compare_10_medium_baseline.png': 34
+    'compare_5_hard_baseline.png': 29
+    'compare_20_medium_baseline.png': 28
+    'compare_5_easy_baseline.png': 28
+    'compare_20_hard_baseline.png': 28
+    'compare_10_hard_baseline.png': 27
+    'compare_30_hard_optimized.png': 27
+    'compare_20_easy_baseline.png': 27
+    'compare_5_medium_optimized.png': 26
+    'compare_30_easy_optimized.png': 26
+    'compare_30_medium_baseline.png': 25
+    'compare_30_medium_optimized.png': 25
+    'compare_5_medium_baseline.png': 24
+    'compare_30_easy_baseline.png': 24
+    'compare_10_hard_optimized.png': 23
+    'compare_20_easy_optimized.png': 23
+    'compare_30_hard_baseline.png': 23
+    'compare_20_hard_optimized.png': 22
+    'compare_5_easy_optimized.png': 22
+    'compare_20_medium_optimized.png': 22
+    'compare_5_hard_optimized.png': 21
+    'compare_10_medium_optimized.png': 16
+    'compare_10_easy_optimized.png': 15
+  pw public unique=1 values=['BLINDED']
+  pw private unique=50
+  pw rows per private: {12: 50}
+  preferred_side reconstruction: {'left': 302, 'right': 298}
+  image_left contains optimized: 332
+  image_right contains optimized: 268
+  image_left contains baseline: 268
+  image_right contains baseline: 332
+  both optimized=0 both baseline=0 neither optimized-token=0
+  sample of left_option vs image_left (first 8 unique combos):
+    Limg=compare_20_medium_optimized.png Rimg=compare_20_medium_baseline.png Lopt=baseline.png Ropt=optimized.png Resp=optimized.png
+    Limg=compare_5_medium_optimized.png Rimg=compare_5_medium_baseline.png Lopt=optimized.png Ropt=baseline.png Resp=optimized.png
+    Limg=compare_30_hard_baseline.png Rimg=compare_30_hard_optimized.png Lopt=optimized.png Ropt=baseline.png Resp=baseline.png
+    Limg=compare_5_hard_optimized.png Rimg=compare_5_hard_baseline.png Lopt=optimized.png Ropt=baseline.png Resp=optimized.png
+    Limg=compare_10_hard_optimized.png Rimg=compare_10_hard_baseline.png Lopt=baseline.png Ropt=optimized.png Resp=optimized.png
+    Limg=compare_30_medium_optimized.png Rimg=compare_30_medium_baseline.png Lopt=optimized.png Ropt=baseline.png Resp=optimized.png
+    Limg=compare_10_medium_optimized.png Rimg=compare_10_medium_baseline.png Lopt=baseline.png Ropt=optimized.png Resp=baseline.png
+    Limg=compare_20_hard_baseline.png Rimg=compare_20_hard_optimized.png Lopt=optimized.png Ropt=baseline.png Resp=optimized.png
+    Limg=compare_10_easy_optimized.png Rimg=compare_10_easy_baseline.png Lopt=optimized.png Ropt=baseline.png Resp=optimized.png
+    Limg=compare_30_easy_optimized.png Rimg=compare_30_easy_baseline.png Lopt=optimized.png Ropt=baseline.png Resp=optimized.png
+    Limg=compare_5_easy_optimized.png Rimg=compare_5_easy_baseline.png Lopt=baseline.png Ropt=optimized.png Resp=optimized.png
+    Limg=compare_20_easy_baseline.png Rimg=compare_20_easy_optimized.png Lopt=optimized.png Ropt=baseline.png Resp=baseline.png
+  PW RT missing=0 min=1251.9 max=11908.4 n<=0=0
+================================================================================
+STUDY1 VISION
+path=study1_vision_SYNTHETIC.csv rows=200 cols=57 bytes=79217
+fully_blank_rows=0 duplicate_rows=0
+COLUMNS:
+    1. 'Event Index' dtype=int64 missing=0 min=1 max=200 n<=0=0
+    2. 'UTC Timestamp' dtype=int64 missing=0 min=1789992007000 max=1789993400000 n<=0=0
+    3. 'UTC Date and Time' dtype=object missing=0 nunique=200
+    4. 'Local Timestamp' dtype=int64 missing=0 min=1789992007000 max=1789993400000 n<=0=0
+    5. 'Local Timezone' dtype=int64 missing=0 min=1 max=1 n<=0=0
+    6. 'Local Date and Time' dtype=object missing=0 nunique=200
+    7. 'Experiment ID' dtype=int64 missing=0 min=229051 max=229051 n<=0=0
+    8. 'Experiment Version' dtype=int64 missing=0 min=38 max=38 n<=0=0
+    9. 'Tree Node Key' dtype=object missing=0 nunique=1
+   10. 'Repeat Key' dtype=float64 missing=200
+   11. 'Schedule ID' dtype=object missing=0 nunique=50
+   12. 'Participant Public ID' dtype=object missing=0 nunique=1
+   13. 'Participant Private ID' dtype=object missing=0 nunique=50
+   14. 'Participant Starting Group' dtype=float64 missing=200
+   15. 'Participant Status' dtype=object missing=0 nunique=1
+   16. 'Participant Completion Code' dtype=object missing=0 nunique=1
+   17. 'Participant External Session ID' dtype=float64 missing=200
+   18. 'Participant Device Type' dtype=object missing=0 nunique=1
+   19. 'Participant Device' dtype=object missing=0 nunique=1
+   20. 'Participant OS' dtype=object missing=0 nunique=1
+   21. 'Participant Browser' dtype=object missing=0 nunique=1
+   22. 'Participant Monitor Size' dtype=object missing=0 nunique=1
+   23. 'Participant Viewport Size' dtype=object missing=0 nunique=1
+   24. 'Checkpoint' dtype=float64 missing=200
+   25. 'Room ID' dtype=float64 missing=200
+   26. 'Room Order' dtype=float64 missing=200
+   27. 'Task Name' dtype=object missing=0 nunique=1
+   28. 'Task Version' dtype=object missing=0 nunique=1
+   29. 'randomiser-m119' dtype=object missing=0 nunique=2
+   30. 'Manipulation: Spreadsheet' dtype=object missing=0 nunique=1
+   31. 'Current Spreadsheet' dtype=object missing=0 nunique=1
+   32. 'Trial Number' dtype=int64 missing=0 min=1 max=1 n<=0=0
+   33. 'Display' dtype=object missing=0 nunique=4
+   34. 'Screen' dtype=object missing=0 nunique=1
+   35. 'Screen ID' dtype=float64 missing=200
+   36. 'Screen Counter' dtype=float64 missing=200
+   37. 'Response Type' dtype=object missing=0 nunique=1
+   38. 'Response' dtype=int64 missing=0 min=0 max=29 n<=0=2
+   39. 'Context' dtype=float64 missing=200
+   40. 'Onset Time' dtype=float64 missing=200
+   41. 'Clock Time' dtype=float64 missing=200
+   42. 'Reaction Time' dtype=float64 missing=0 min=1253.9 max=10089.5 n<=0=0
+   43. 'Absolute Onset Time' dtype=float64 missing=200
+   44. 'Absolute Clock Time' dtype=float64 missing=200
+   45. 'Absolute Reaction Time' dtype=float64 missing=0 min=1253.9 max=10089.5 n<=0=0
+   46. 'Correct' dtype=int64 missing=0 min=0 max=1 n<=0=2
+   47. 'Response Duration' dtype=float64 missing=0 min=1253.9 max=10089.5 n<=0=0
+   48. 'Proportion' dtype=float64 missing=200
+   49. 'Tag' dtype=float64 missing=200
+   50. 'Component Name' dtype=float64 missing=200
+   51. 'Object Name' dtype=float64 missing=200
+   52. 'Object Number' dtype=float64 missing=200
+   53. 'Object ID' dtype=float64 missing=200
+   54. 'Spreadsheet: display' dtype=object missing=0 nunique=4
+   55. 'Spreadsheet: correct_answer' dtype=int64 missing=0 min=12 max=29 n<=0=0
+   56. 'Spreadsheet: image' dtype=int64 missing=0 min=12 max=29 n<=0=0
+   57. 'Spreadsheet: tag' dtype=object missing=0 nunique=4
+  VALUE COUNTS Participant Public ID:
+    'BLINDED': 200
+  VALUE COUNTS Participant Private ID:
+    'S1_PRIV_001': 4
+    'S1_PRIV_002': 4
+    'S1_PRIV_003': 4
+    'S1_PRIV_004': 4
+    'S1_PRIV_005': 4
+    'S1_PRIV_006': 4
+    'S1_PRIV_007': 4
+    'S1_PRIV_008': 4
+    'S1_PRIV_009': 4
+    'S1_PRIV_010': 4
+    'S1_PRIV_011': 4
+    'S1_PRIV_012': 4
+    'S1_PRIV_013': 4
+    'S1_PRIV_014': 4
+    'S1_PRIV_015': 4
+    'S1_PRIV_016': 4
+    'S1_PRIV_017': 4
+    'S1_PRIV_018': 4
+    'S1_PRIV_019': 4
+    'S1_PRIV_020': 4
+    'S1_PRIV_021': 4
+    'S1_PRIV_022': 4
+    'S1_PRIV_023': 4
+    'S1_PRIV_024': 4
+    'S1_PRIV_025': 4
+    'S1_PRIV_026': 4
+    'S1_PRIV_027': 4
+    'S1_PRIV_028': 4
+    'S1_PRIV_029': 4
+    'S1_PRIV_030': 4
+  VALUE COUNTS Task Name:
+    'Vision Check': 200
+  VALUE COUNTS Response Type:
+    'response': 200
+  VALUE COUNTS Object Name:
+    nan: 200
+  VALUE COUNTS Spreadsheet: tag:
+    'Q1_answer': 50
+    'Q2_answer': 50
+    'Q3_answer': 50
+    'Q4_answer': 50
+  VALUE COUNTS Spreadsheet: correct_answer:
+    12: 50
+    16: 50
+    29: 50
+    26: 50
+  VALUE COUNTS Response:
+    12: 50
+    16: 50
+    29: 50
+    26: 48
+    0: 2
+  VALUE COUNTS Correct:
+    1: 198
+    0: 2
+  vis private unique=50
+  vis rows per private: {4: 50}
+  vision_score distribution: {3: 2, 4: 48}
+  n with score==4: 48 n<4: 2
+  ID overlap disc&pw=50 disc&vis=50 all3=50
+  only disc=0 only pw=0 only vis=0
+================================================================================
+STUDY2 COMBINED
+path=study2_tasks_SYNTHETIC.csv rows=2041 cols=71 bytes=1014942
+fully_blank_rows=1 duplicate_rows=0
+COLUMNS:
+    1. 'Event Index' dtype=float64 missing=1 min=1.0 max=2040.0 n<=0=0
+    2. 'UTC Timestamp' dtype=float64 missing=1 min=1789992007000.0 max=1790006280000.0 n<=0=0
+    3. 'UTC Date and Time' dtype=object missing=1 nunique=2040
+    4. 'Local Timestamp' dtype=float64 missing=1 min=1789992007000.0 max=1790006280000.0 n<=0=0
+    5. 'Local Timezone' dtype=float64 missing=1 min=1.0 max=1.0 n<=0=0
+    6. 'Local Date and Time' dtype=object missing=1 nunique=2040
+    7. 'Experiment ID' dtype=float64 missing=1 min=263105.0 max=263105.0 n<=0=0
+    8. 'Experiment Version' dtype=float64 missing=1 min=5.0 max=5.0 n<=0=0
+    9. 'Tree Node Key' dtype=object missing=1 nunique=3
+   10. 'Repeat Key' dtype=float64 missing=2041
+   11. 'Schedule ID' dtype=object missing=1 nunique=51
+   12. 'Participant Public ID' dtype=object missing=1 nunique=51
+   13. 'Participant Private ID' dtype=object missing=1 nunique=51
+   14. 'Participant Starting Group' dtype=float64 missing=2041
+   15. 'Participant Status' dtype=object missing=1 nunique=1
+   16. 'Participant Completion Code' dtype=object missing=1 nunique=1
+   17. 'Participant External Session ID' dtype=float64 missing=2041
+   18. 'Participant Device Type' dtype=object missing=1 nunique=1
+   19. 'Participant Device' dtype=object missing=1 nunique=1
+   20. 'Participant OS' dtype=object missing=1 nunique=1
+   21. 'Participant Browser' dtype=object missing=1 nunique=1
+   22. 'Participant Monitor Size' dtype=object missing=1 nunique=1
+   23. 'Participant Viewport Size' dtype=object missing=1 nunique=1
+   24. 'Checkpoint' dtype=float64 missing=2041
+   25. 'Room ID' dtype=float64 missing=2041
+   26. 'Room Order' dtype=float64 missing=2041
+   27. 'Task Name' dtype=object missing=1 nunique=4
+   28. 'Task Version' dtype=object missing=1 nunique=1
+   29. 'randomiser-6fcy' dtype=object missing=1 nunique=2
+   30. 'Manipulation: Spreadsheet' dtype=object missing=1 nunique=4
+   31. 'Current Spreadsheet' dtype=object missing=1 nunique=4
+   32. 'Trial Number' dtype=float64 missing=1 min=1.0 max=24.0 n<=0=0
+   33. 'Display' dtype=object missing=1 nunique=4
+   34. 'Screen' dtype=object missing=1 nunique=1
+   35. 'Screen ID' dtype=float64 missing=2041
+   36. 'Screen Counter' dtype=float64 missing=2041
+   37. 'Response Type' dtype=object missing=1 nunique=1
+   38. 'Response' dtype=object missing=1 nunique=32
+   39. 'Context' dtype=float64 missing=2041
+   40. 'Onset Time' dtype=float64 missing=2041
+   41. 'Clock Time' dtype=float64 missing=2041
+   42. 'Reaction Time' dtype=float64 missing=1 min=917.0 max=24370.1 n<=0=0
+   43. 'Absolute Onset Time' dtype=float64 missing=2041
+   44. 'Absolute Clock Time' dtype=float64 missing=2041
+   45. 'Absolute Reaction Time' dtype=float64 missing=1 min=917.0 max=24370.1 n<=0=0
+   46. 'Correct' dtype=float64 missing=613 min=0.0 max=1.0 n<=0=216
+   47. 'Response Duration' dtype=float64 missing=1 min=917.0 max=24370.1 n<=0=0
+   48. 'Proportion' dtype=float64 missing=2041
+   49. 'Tag' dtype=float64 missing=2041
+   50. 'Component Name' dtype=float64 missing=2041
+   51. 'Object Name' dtype=float64 missing=2041
+   52. 'Object Number' dtype=float64 missing=2041
+   53. 'Object ID' dtype=float64 missing=2041
+   54. 'Spreadsheet: display' dtype=object missing=1 nunique=4
+   55. 'Spreadsheet: trial_number' dtype=float64 missing=1429 min=1.0 max=12.0 n<=0=0
+   56. 'Spreadsheet: image_left' dtype=object missing=1429 nunique=24
+   57. 'Spreadsheet: image_right' dtype=object missing=1429 nunique=24
+   58. 'Spreadsheet: correct_answer' dtype=float64 missing=613 min=5.0 max=30.0 n<=0=0
+   59. 'Spreadsheet: left_option' dtype=object missing=1429 nunique=2
+   60. 'Spreadsheet: right_option' dtype=object missing=1429 nunique=2
+   61. 'Spreadsheet: confidence_rating' dtype=float64 missing=2041
+   62. 'Spreadsheet: optimized_side' dtype=object missing=1429 nunique=2
+   63. 'Spreadsheet: preferred_side' dtype=float64 missing=2041
+   64. 'Spreadsheet: image' dtype=object missing=613 nunique=28
+   65. 'Spreadsheet: tag' dtype=object missing=1837 nunique=4
+   66. 'Spreadsheet: num_classes' dtype=float64 missing=817 min=5.0 max=30.0 n<=0=0
+   67. 'Spreadsheet: colormap' dtype=object missing=817 nunique=2
+   68. 'Spreadsheet: variation' dtype=float64 missing=817 min=1.0 max=3.0 n<=0=0
+   69. 'Spreadsheet: condition' dtype=object missing=817 nunique=2
+   70. 'Spreadsheet: trial_type' dtype=object missing=817 nunique=1
+   71. 'Spreadsheet: question' dtype=object missing=817 nunique=1
+  VALUE COUNTS Task Name:
+    'Discrimination Task G2 (Clone)': 624
+    'Pairwise Comparison Task2 (Clone)': 612
+    'Discrimination Task G1 (Clone)': 600
+    'Vision Check': 204
+    nan: 1
+  VALUE COUNTS Response Type:
+    'response': 2040
+    nan: 1
+  VALUE COUNTS Object Name:
+    nan: 2041
+  VALUE COUNTS Participant Public ID:
+    'S2P001': 40
+    'S2P002': 40
+    'S2P003': 40
+    'S2P004': 40
+    'S2P005': 40
+    'S2P006': 40
+    'S2P007': 40
+    'S2P008': 40
+    'S2P009': 40
+    'S2P010': 40
+    'S2P011': 40
+    'S2P012': 40
+    'S2P013': 40
+    'S2P014': 40
+    'S2P015': 40
+    'S2P016': 40
+    'S2P017': 40
+    'S2P018': 40
+    'S2P019': 40
+    'S2P020': 40
+    'S2P021': 40
+    'S2P022': 40
+    'S2P023': 40
+    'S2P024': 40
+    'S2P025': 40
+    'S2P026': 40
+    'S2P027': 40
+    'S2P028': 40
+    'S2P029': 40
+    'S2P030': 40
+    'S2P031': 40
+    'S2P032': 40
+    'S2P033': 40
+    'S2P034': 40
+    'S2P035': 40
+    'S2P036': 40
+    'S2P037': 40
+    'S2P038': 40
+    'S2P039': 40
+    'S2P040': 40
+  S2 public unique=51
+  S2 private unique=51
+  private sample=['S2_PRIV_001', 'S2_PRIV_002', 'S2_PRIV_003', 'S2_PRIV_004', 'S2_PRIV_005', 'S2_PRIV_006', 'S2_PRIV_007', 'S2_PRIV_008', 'S2_PRIV_009', 'S2_PRIV_010', 'S2_PRIV_011', 'S2_PRIV_012', 'S2_PRIV_013', 'S2_PRIV_014', 'S2_PRIV_015']
+  researcher rows public=40
+  researcher in private=0
+  TASK 'Discrimination Task G1 (Clone)': rows=600 public_n=25
+    Response Type: {'response': 600}
+    Object Name: {nan: 600}
+  TASK 'Discrimination Task G2 (Clone)': rows=624 public_n=26
+    Response Type: {'response': 624}
+    Object Name: {nan: 624}
+  TASK 'Pairwise Comparison Task2 (Clone)': rows=612 public_n=51
+    Response Type: {'response': 612}
+    Object Name: {nan: 612}
+  TASK 'Vision Check': rows=204 public_n=51
+    Response Type: {'response': 204}
+    Object Name: {nan: 204}
+  TASK nan: rows=1 public_n=0
+    Response Type: {nan: 1}
+    Object Name: {nan: 1}
+  IDs containing RESEARCHER: public=['S2_RESEARCHER_EXCLUDE']
+  private containing RESEARCHER: ['S2_PRIV_RESEARCHER']
+  S2 disc rows=1224
+  VALUE COUNTS Spreadsheet: condition:
+    'sa': 612
+    'baseline': 612
+  VALUE COUNTS Spreadsheet: num_classes:
+    5.0: 306
+    30.0: 306
+    20.0: 306
+    10.0: 306
+  VALUE COUNTS Spreadsheet: variation:
+    2.0: 408
+    1.0: 408
+    3.0: 408
+  VALUE COUNTS Spreadsheet: colormap:
+    'distinctipysa': 612
+    'distinctipy': 612
+  S2 vision response rows=204
+  VALUE COUNTS Spreadsheet: tag:
+    'Q1_answer': 51
+    'Q2_answer': 51
+    'Q3_answer': 51
+    'Q4_answer': 51
+  S2 vision scores all sessions: {3: 7, 4: 44}
+  S2 vision scores primary (excl researcher id if present): n=50 score4=43 {3: 7, 4: 43}
+================================================================================
+STUDY3 COMBINED
+path=study3_tasks_SYNTHETIC.csv rows=2901 cols=127 bytes=2085078
+fully_blank_rows=1 duplicate_rows=0
+COLUMNS:
+    1. 'Event Index' dtype=float64 missing=1 min=1.0 max=2900.0 n<=0=0
+    2. 'UTC Timestamp' dtype=float64 missing=1 min=1789992007000.0 max=1790012300000.0 n<=0=0
+    3. 'UTC Date and Time' dtype=object missing=1 nunique=2900
+    4. 'Local Timestamp' dtype=float64 missing=1 min=1789992007000.0 max=1790012300000.0 n<=0=0
+    5. 'Local Timezone' dtype=float64 missing=1 min=1.0 max=1.0 n<=0=0
+    6. 'Local Date and Time' dtype=object missing=1 nunique=2900
+    7. 'Experiment ID' dtype=float64 missing=1 min=275904.0 max=275904.0 n<=0=0
+    8. 'Experiment Version' dtype=float64 missing=1 min=7.0 max=7.0 n<=0=0
+    9. 'Tree Node Key' dtype=object missing=1 nunique=3
+   10. 'Repeat Key' dtype=float64 missing=2901
+   11. 'Schedule ID' dtype=object missing=1 nunique=50
+   12. 'Participant Public ID' dtype=object missing=1 nunique=50
+   13. 'Participant Private ID' dtype=object missing=1 nunique=50
+   14. 'Participant Starting Group' dtype=float64 missing=2901
+   15. 'Participant Status' dtype=object missing=1 nunique=1
+   16. 'Participant Completion Code' dtype=object missing=1 nunique=1
+   17. 'Participant External Session ID' dtype=object missing=1 nunique=50
+   18. 'Participant Device Type' dtype=object missing=1 nunique=1
+   19. 'Participant Device' dtype=object missing=1 nunique=1
+   20. 'Participant OS' dtype=object missing=1 nunique=1
+   21. 'Participant Browser' dtype=object missing=1 nunique=1
+   22. 'Participant Monitor Size' dtype=object missing=1 nunique=1
+   23. 'Participant Viewport Size' dtype=object missing=1 nunique=1
+   24. 'Checkpoint' dtype=float64 missing=2901
+   25. 'Room ID' dtype=float64 missing=2901
+   26. 'Room Order' dtype=float64 missing=2901
+   27. 'Task Name' dtype=object missing=1 nunique=3
+   28. 'Task Version' dtype=object missing=1 nunique=1
+   29. 'randomiser-8f1r' dtype=object missing=1 nunique=4
+   30. 'Manipulation: Spreadsheet' dtype=object missing=1 nunique=9
+   31. 'Current Spreadsheet' dtype=object missing=1 nunique=9
+   32. 'Trial Number' dtype=float64 missing=1 min=1.0 max=36.0 n<=0=0
+   33. 'Display' dtype=object missing=1 nunique=4
+   34. 'Screen' dtype=object missing=1 nunique=1
+   35. 'Screen ID' dtype=float64 missing=2901
+   36. 'Screen Counter' dtype=float64 missing=2901
+   37. 'Response Type' dtype=object missing=1 nunique=1
+   38. 'Response' dtype=object missing=1 nunique=29
+   39. 'Context' dtype=float64 missing=2901
+   40. 'Onset Time' dtype=float64 missing=2901
+   41. 'Clock Time' dtype=float64 missing=2901
+   42. 'Reaction Time' dtype=float64 missing=1 min=1057.3 max=19913.3 n<=0=0
+   43. 'Absolute Onset Time' dtype=float64 missing=2901
+   44. 'Absolute Clock Time' dtype=float64 missing=2901
+   45. 'Absolute Reaction Time' dtype=float64 missing=1 min=1057.3 max=19913.3 n<=0=0
+   46. 'Correct' dtype=float64 missing=901 min=0.0 max=1.0 n<=0=393
+   47. 'Response Duration' dtype=float64 missing=1 min=1057.3 max=19913.3 n<=0=0
+   48. 'Proportion' dtype=float64 missing=2901
+   49. 'Tag' dtype=float64 missing=2901
+   50. 'Component Name' dtype=float64 missing=2901
+   51. 'Object Name' dtype=float64 missing=2901
+   52. 'Object Number' dtype=float64 missing=2901
+   53. 'Object ID' dtype=float64 missing=2901
+   54. 'Spreadsheet: display' dtype=object missing=901 nunique=4
+   55. 'Spreadsheet: correct_answer' dtype=float64 missing=901 min=10.0 max=30.0 n<=0=0
+   56. 'Spreadsheet: image' dtype=object missing=901 nunique=40
+   57. 'Spreadsheet: tag' dtype=object missing=2701 nunique=4
+   58. 'Spreadsheet: layout_id' dtype=object missing=1101 nunique=9
+   59. 'Spreadsheet: participant_group' dtype=object missing=1101 nunique=4
+   60. 'Spreadsheet: condition_order' dtype=object missing=1101 nunique=2
+   61. 'Spreadsheet: block_order' dtype=object missing=1101 nunique=2
+   62. 'Spreadsheet: source_branch' dtype=object missing=1101 nunique=1
+   63. 'Spreadsheet: source_commit' dtype=object missing=1101 nunique=1
+   64. 'Spreadsheet: reference_notebook_path' dtype=object missing=1101 nunique=1
+   65. 'Spreadsheet: palette_source_path' dtype=object missing=1101 nunique=1
+   66. 'Spreadsheet: palette_copy_path' dtype=object missing=1101 nunique=1
+   67. 'Spreadsheet: palette_type' dtype=object missing=1101 nunique=2
+   68. 'Spreadsheet: dataset_source_path' dtype=object missing=1101 nunique=1
+   69. 'Spreadsheet: dataset_sha256' dtype=object missing=1101 nunique=1
+   70. 'Spreadsheet: background' dtype=object missing=201 nunique=2
+   71. 'Spreadsheet: condition' dtype=object missing=1101 nunique=2
+   72. 'Spreadsheet: num_classes' dtype=float64 missing=201 min=10.0 max=30.0 n<=0=0
+   73. 'Spreadsheet: difficulty_num' dtype=float64 missing=201 min=1.0 max=3.0 n<=0=0
+   74. 'Spreadsheet: difficulty_label' dtype=object missing=201 nunique=3
+   75. 'Spreadsheet: scale_factor' dtype=float64 missing=1101 min=0.8 max=1.3 n<=0=0
+   76. 'Spreadsheet: colormap' dtype=object missing=1101 nunique=2
+   77. 'Spreadsheet: trial_type' dtype=object missing=1101 nunique=1
+   78. 'Spreadsheet: question' dtype=object missing=1101 nunique=1
+   79. 'Spreadsheet: baseline_palette_seed' dtype=float64 missing=2901
+   80. 'Spreadsheet: rendering_figsize' dtype=float64 missing=2901
+   81. 'Spreadsheet: rendering_dpi' dtype=float64 missing=2901
+   82. 'Spreadsheet: rendering_alpha' dtype=float64 missing=2901
+   83. 'Spreadsheet: rendering_point_size' dtype=float64 missing=2901
+   84. 'Spreadsheet: rendering_pad_ratio' dtype=float64 missing=2901
+   85. 'Spreadsheet: objective_score' dtype=float64 missing=2901
+   86. 'Spreadsheet: min_pairwise_dE' dtype=float64 missing=2901
+   87. 'Spreadsheet: mean_pairwise_dE' dtype=float64 missing=2901
+   88. 'Spreadsheet: min_background_dE' dtype=float64 missing=2901
+   89. 'Spreadsheet: mean_background_dE' dtype=float64 missing=2901
+   90. 'Spreadsheet: background_penalty' dtype=float64 missing=2901
+   91. 'Spreadsheet: table_stop_reason' dtype=float64 missing=2901
+   92. 'Spreadsheet: table_evals_used' dtype=float64 missing=2901
+   93. 'Spreadsheet: optimization_rerun' dtype=object missing=1101 nunique=1
+   94. 'Spreadsheet: constrained_method_used' dtype=object missing=1101 nunique=1
+   95. 'Spreadsheet: trial_number' dtype=float64 missing=2001 min=1.0 max=18.0 n<=0=0
+   96. 'Spreadsheet: trial_id' dtype=object missing=2001 nunique=18
+   97. 'Spreadsheet: side_schedule' dtype=object missing=2001 nunique=2
+   98. 'Spreadsheet: image_left' dtype=object missing=2001 nunique=36
+   99. 'Spreadsheet: image_right' dtype=object missing=2001 nunique=36
+  100. 'Spreadsheet: optimized_side' dtype=object missing=2001 nunique=2
+  101. 'Spreadsheet: baseline_image' dtype=object missing=2001 nunique=18
+  102. 'Spreadsheet: optimized_image' dtype=object missing=2001 nunique=18
+  103. 'Spreadsheet: response_option_left' dtype=object missing=2001 nunique=1
+  104. 'Spreadsheet: response_option_right' dtype=object missing=2001 nunique=1
+  105. 'Spreadsheet: preferred_side' dtype=float64 missing=2901
+  106. 'Spreadsheet: selected_condition' dtype=float64 missing=2901
+  107. 'Spreadsheet: optimized_selected' dtype=float64 missing=2901
+  108. 'Spreadsheet: task1_source_branch' dtype=object missing=2001 nunique=1
+  109. 'Spreadsheet: task1_source_commit' dtype=object missing=2001 nunique=1
+  110. 'Spreadsheet: task1_reference_notebook_path' dtype=object missing=2001 nunique=1
+  111. 'Spreadsheet: task2_reference_notebook_path' dtype=object missing=2001 nunique=1
+  112. 'Spreadsheet: baseline_palette_source_path' dtype=object missing=2001 nunique=1
+  113. 'Spreadsheet: optimized_palette_source_path' dtype=object missing=2001 nunique=1
+  114. 'Spreadsheet: baseline_min_pairwise_dE' dtype=float64 missing=2901
+  115. 'Spreadsheet: baseline_mean_pairwise_dE' dtype=float64 missing=2901
+  116. 'Spreadsheet: baseline_min_bg_dE' dtype=float64 missing=2901
+  117. 'Spreadsheet: baseline_mean_bg_dE' dtype=float64 missing=2901
+  118. 'Spreadsheet: baseline_background_penalty' dtype=float64 missing=2901
+  119. 'Spreadsheet: baseline_objective_score' dtype=float64 missing=2901
+  120. 'Spreadsheet: optimized_min_pairwise_dE' dtype=float64 missing=2901
+  121. 'Spreadsheet: optimized_mean_pairwise_dE' dtype=float64 missing=2901
+  122. 'Spreadsheet: optimized_min_bg_dE' dtype=float64 missing=2901
+  123. 'Spreadsheet: optimized_mean_bg_dE' dtype=float64 missing=2901
+  124. 'Spreadsheet: optimized_background_penalty' dtype=float64 missing=2901
+  125. 'Spreadsheet: optimized_objective_score' dtype=float64 missing=2901
+  126. 'Spreadsheet: palette_regenerated' dtype=object missing=2001 nunique=1
+  127. 'Spreadsheet: images_rerendered' dtype=object missing=2001 nunique=1
+  VALUE COUNTS Task Name:
+    'Discrimination Task': 1800
+    'Task 2 Pairwise Comparison': 900
+    'Vision Check (Clone)': 200
+    nan: 1
+  VALUE COUNTS Response Type:
+    'response': 2900
+    nan: 1
+  VALUE COUNTS Object Name:
+    nan: 2901
+  VALUE COUNTS Participant Public ID:
+    'S3P001': 58
+    'S3P002': 58
+    'S3P003': 58
+    'S3P004': 58
+    'S3P005': 58
+    'S3P006': 58
+    'S3P007': 58
+    'S3P008': 58
+    'S3P009': 58
+    'S3P010': 58
+    'S3P011': 58
+    'S3P012': 58
+    'S3P013': 58
+    'S3P014': 58
+    'S3P015': 58
+    'S3P016': 58
+    'S3P017': 58
+    'S3P018': 58
+    'S3P019': 58
+    'S3P020': 58
+    'S3P021': 58
+    'S3P022': 58
+    'S3P023': 58
+    'S3P024': 58
+    'S3P025': 58
+    'S3P026': 58
+    'S3P027': 58
+    'S3P028': 58
+    'S3P029': 58
+    'S3P030': 58
+    'S3P031': 58
+    'S3P032': 58
+    'S3P033': 58
+    'S3P034': 58
+    'S3P035': 58
+    'S3P036': 58
+    'S3P037': 58
+    'S3P038': 58
+    'S3P039': 58
+    'S3P040': 58
+  S3 public unique=50
+  S3 private unique=50
+  TASK 'Discrimination Task': rows=1800 public_n=50
+    Response Type: {'response': 1800}
+    Object Name: {nan: 1800}
+  TASK 'Task 2 Pairwise Comparison': rows=900 public_n=50
+    Response Type: {'response': 900}
+    Object Name: {nan: 900}
+  TASK 'Vision Check (Clone)': rows=200 public_n=50
+    Response Type: {'response': 200}
+    Object Name: {nan: 200}
+  TASK nan: rows=1 public_n=0
+    Response Type: {nan: 1}
+    Object Name: {nan: 1}
+  S3 disc rows=1800
+  VALUE COUNTS Spreadsheet: participant_group:
+    'G_WB_OrigFirst': 468
+    'G_WB_OptFirst': 468
+    'G_BW_OrigFirst': 432
+    'G_BW_OptFirst': 432
+  VALUE COUNTS Spreadsheet: condition_order:
+    'OriginalFirst': 900
+    'OptimizedFirst': 900
+  VALUE COUNTS Spreadsheet: block_order:
+    'WhiteBlack': 936
+    'BlackWhite': 864
+  VALUE COUNTS Spreadsheet: background:
+    'white': 900
+    'black': 900
+  VALUE COUNTS Spreadsheet: condition:
+    'C1_original_distinctipy': 900
+    'C2_background_aware_optimized': 900
+  VALUE COUNTS Spreadsheet: num_classes:
+    10.0: 600
+    20.0: 600
+    30.0: 600
+  VALUE COUNTS Spreadsheet: difficulty_num:
+    1.0: 600
+    2.0: 600
+    3.0: 600
+  VALUE COUNTS Spreadsheet: difficulty_label:
+    'easy': 600
+    'medium': 600
+    'hard': 600
+  VALUE COUNTS Spreadsheet: scale_factor:
+    0.8: 600
+    1.0: 600
+    1.3: 600
+  S3 pairwise rows=900
+  VALUE COUNTS Spreadsheet: background:
+    'black': 450
+    'white': 450
+  VALUE COUNTS Spreadsheet: num_classes:
+    10.0: 300
+    20.0: 300
+    30.0: 300
+  VALUE COUNTS Spreadsheet: difficulty_label:
+    'easy': 300
+    'medium': 300
+    'hard': 300
+  VALUE COUNTS Spreadsheet: optimized_side:
+    'Right': 454
+    'Left': 446
+  VALUE COUNTS Response:
+    'Right': 456
+    'Left': 444
+  VALUE COUNTS Object Name:
+    nan: 900
+  S3 vision response rows=200
+  S3 vision scores: n=50 score4=46 {3: 4, 4: 46}
+  S3 last row all-NA=True last public=nan
+
+================================================================================
+CANONICAL vs ACTUAL: synthetic files use RAW Gorilla headers, not dictionary section 8 names
+Study1 disc example headers (first 25):
+  Event Index
+  UTC Timestamp
+  UTC Date and Time
+  Local Timestamp
+  Local Timezone
+  Local Date and Time
+  Experiment ID
+  Experiment Version
+  Tree Node Key
+  Repeat Key
+  Schedule ID
+  Participant Public ID
+  Participant Private ID
+  Participant Starting Group
+  Participant Status
+  Participant Completion Code
+  Participant External Session ID
+  Participant Device Type
+  Participant Device
+  Participant OS
+  Participant Browser
+  Participant Monitor Size
+  Participant Viewport Size
+  Checkpoint
+  Room ID
+  ... total 63 columns

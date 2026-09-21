@@ -1,0 +1,7 @@
+﻿study,file,purpose,synthetic_participants,analysis_expected_rows,notes
+Study 1,Study1/study1_discrimination_G1_SYNTHETIC.csv,Discrimination Group G1,25,600,24 response trials per participant
+Study 1,Study1/study1_discrimination_G2_SYNTHETIC.csv,Discrimination Group G2,25,600,24 response trials per participant
+Study 1,Study1/study1_pairwise_SYNTHETIC.csv,Pairwise choice,50,600,12 response trials per participant; mapping mismatch deliberately represented
+Study 1,Study1/study1_vision_SYNTHETIC.csv,Vision screen,50,200,48/50 pass all 4 items
+Study 2,Study2/study2_tasks_SYNTHETIC.csv,Combined task export,51 raw / 50 primary,2000 after excluding synthetic researcher,Includes 1 synthetic researcher session; 43/50 primary pass vision
+Study 3,Study3/study3_tasks_SYNTHETIC.csv,Combined task export,50,2900,36 discrimination + 18 pairwise + 4 vision rows per participant; 46/50 pass vision
