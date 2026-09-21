@@ -26,5 +26,7 @@ Methodological choices that the SAP leaves open are **not** decided here; they a
 | 2026-09-22 | Official rules rewritten from master prompt into `.cursor/rules/r-analysis.mdc` and `docs/PROJECT_RULES.md` | Master prompt PART 1 | Bodies identical except YAML frontmatter on the `.mdc`. |
 | 2026-09-22 | `SEED <- 20260921L` (SAP freeze date as digits) | SAP does **not** specify a seed | **Non-methodological.** Only for any technical randomness. Primary tests are deterministic. |
 | 2026-09-22 | Q1–Q14 stored as `SAP$... <- NA`; `require_param()` stops if used | Rules §6; QUESTIONS Q1–Q14 | No guessed fill-in. |
+| 2026-09-22 | Chunk A verified on Kaggle R 4.4.0; testthat 3.2.2 | Real pasted output | Client target still 4.6.1. |
+| 2026-09-22 | Study 1 load keeps both public/private IDs; `participant_id` NA until Q6 | Q6; Dict §3 | QC groups vision score by private ID only as a count, labelled PENDING Q6. |
 
 No statistical model, contrast, exclusion rule, or effect-size formula has been chosen beyond what the SAP states explicitly. R code has **not** been executed (no R on the analyst machine).

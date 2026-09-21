@@ -1,20 +1,29 @@
-# Master entry. Chunk 1: setup + config + load only.
-# Later chunks will be appended below, in SAP §6 / Brief §3 order.
-# Requires PROJECT_ROOT to be set first (see docs/KAGGLE_RUN.md).
+# Master script. Chunk B: setup + Study 1 load/QC only.
+# Requires PROJECT_ROOT (or resolvable by config).
 
 if (!exists("PROJECT_ROOT")) {
-  stop(
-    "Set PROJECT_ROOT before source(\"run_all.R\"). ",
-    "Kaggle example: PROJECT_ROOT <- \"/kaggle/input/your-dataset-folder\"",
-    call. = FALSE
-  )
+  env <- Sys.getenv("PROJECT_ROOT", unset = "")
+  if (nzchar(env)) {
+    PROJECT_ROOT <- env
+  }
 }
 
-source(file.path(PROJECT_ROOT, "config", "config.R"))
+source(file.path(if (exists("PROJECT_ROOT")) PROJECT_ROOT else ".", "config", "config.R"))
 source(file.path(PROJECT_ROOT, "scripts", "00_setup.R"))
-source(file.path(PROJECT_ROOT, "scripts", "01_load.R"))
-
-# End of every run: session info (environment constraint).
 write_session_info()
 
-message("run_all.R chunk 1 finished. No statistical tests were run.")
+source(file.path(PROJECT_ROOT, "R", "study1_load.R"))
+study1 <- run_study1_load()
+
+# PENDING (client questions / Phase 2B) — do not uncomment until Q1–Q14 are answered:
+#   exclusions / participant_id (Q2, Q6)
+#   Object Name filter (Q5)
+#   pairwise failed-row disposition (Q3)
+#   participant-level summaries
+#   assumption checks / fallbacks (Q7, Q8, Q12)
+#   H1–H3 tests, Holm follow-ups, effect sizes (Q9–Q11)
+#   RT / AE / signed error
+#   vision-screen sensitivity (Q1)
+#   tables / figures / exports (Q13, Q14)
+
+message("run_all.R Chunk B finished. No statistical tests were run.")

@@ -39,9 +39,9 @@ Last updated: 22 September 2026. This file is for Tayyab (and any assistant) so 
 | Chunk | What | Status |
 |-------|------|--------|
 | Phase 1 | Read specs, questions, plan, synthetic audit | Done (docs only) |
-| Chunk A | `config/config.R`, `scripts/00_setup.R`, Kaggle docs | **Written. NOT run on Kaggle. NOT EXECUTED.** |
-| Pre-2A leftovers | `R/utils_io.R`, `R/utils_load.R`, `scripts/01_load.R`, `run_all.R`, `README.md` | Exist; **review in Chunk B before relying** |
-| Chunk B | Shared utils, `R/study1_load.R`, QC report, `run_all.R` | **Not started** (wait for Chunk A real output) |
+| Chunk A | `config/config.R`, `scripts/00_setup.R`, Kaggle docs | **Verified on Kaggle R 4.4.0** (22 Sep 2026). `testthat` 3.2.2; pending params stay NA. |
+| Pre-2A leftovers | `scripts/01_load.R`, old `R/utils_load.R` | **Superseded.** Do not source `01_load.R`. |
+| Chunk B | `R/utils_*.R`, `R/study1_load.R`, QC, `run_all.R` | **Written. NOT run on Kaggle yet.** |
 | Chunk C | `tests/testthat/`, README polish, doc updates | **Not started** (wait for Chunk B real output) |
 | Phase 2B | Summaries, exclusions, tests, ES/CIs, RT/errors, vision, tables/figures | **Blocked on Q1–Q14** |
 

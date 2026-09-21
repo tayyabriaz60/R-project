@@ -1,4 +1,4 @@
-# Shared raw-file loading. Dictionary §3 / §9 / §10.
+# SUPERSEDED by utils_io.R + study1_load.R. Do not source this file.
 # Chunk 1: read, drop blank housekeeping rows, check required columns exist.
 # Does NOT apply Object Name filters (Q5), exclusions (Q2 / Q18), or ID recode (Q6).
 

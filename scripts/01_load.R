@@ -1,4 +1,4 @@
-# Chunk 1 loader. Dictionary §2 / §8 / §9; Brief §13.
+# SUPERSEDED by R/study1_load.R (Chunk B). Kept for review only. Do not source this.
 # Reads raw Gorilla-style CSVs. Does not derive analysis variables.
 # Blocked (not done here): Object Name row filters (Q5), participant_id choice (Q6),
 # exclusions (Q2, Q18), pairwise mapping (Brief §4).

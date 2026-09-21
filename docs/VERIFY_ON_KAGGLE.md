@@ -1,32 +1,44 @@
 # To verify on Kaggle
 
-R has **not** been run on the analyst machine. Leave the Result column empty until real Kaggle output is pasted.
+Local R: **NOT EXECUTED**. Results below are only from pasted Kaggle output.
 
-| Item | Why unverified | What to check on Kaggle | Result once known |
-|------|----------------|-------------------------|-------------------|
-| V-A1 `R.version.string` | NOT EXECUTED | Printed at start of Cell 2 | |
-| V-A2 `dir.exists("/kaggle")` | NOT EXECUTED | `ENV_NAME` should be `kaggle` | |
-| V-A3 `PROJECT_ROOT` resolve | NOT EXECUTED | Config sources without “Could not resolve PROJECT_ROOT” | |
-| V-A4 `setwd(PROJECT_ROOT)` | NOT EXECUTED | No permission error on `/kaggle/input` | |
-| V-A5 `OUTPUT_DIR` | NOT EXECUTED | `/kaggle/working/output` exists; `logs/` created | |
-| V-A6 `session_info.txt` | NOT EXECUTED | File written under `/kaggle/working/output/logs/` | |
-| V-A7 `testthat` install | NOT EXECUTED; needs Internet | Installed only if missing; version printed | |
-| V-A8 `Ncpus` argument | Guarded; install may not need it | If install runs: no error about unused argument `Ncpus` | |
-| V-A9 `require_param("alpha")` | NOT EXECUTED | Prints `0.05` | |
-| V-A10 `require_param("vision_subset_rule")` | NOT EXECUTED | Error/message about PENDING a client answer | |
-| V-A11 `SEED` | NOT EXECUTED | `20260921` in console and session_info | |
-| V-A12 `DATA_SOURCE` | NOT EXECUTED | `synthetic` | |
-| V-A13 Pending SAP names | NOT EXECUTED | `vision_subset_rule` and other Q1–Q14 names listed as NA | |
+## Chunk A — verified 22 Sep 2026 (pasted console)
 
-## Packages used in Chunk A
+| Item | Result |
+|------|--------|
+| V-A1 R version | R 4.4.0 (2024-04-24), Ubuntu 22.04, x86_64 |
+| V-A2 ENV_NAME | kaggle; IS_KAGGLE TRUE |
+| V-A3 PROJECT_ROOT | resolved; `config/config.R` exists TRUE |
+| V-A5 OUTPUT_DIR | kaggle mode; `session_info.txt` written |
+| V-A7 testthat | already installed; 3.2.2; nothing reinstalled |
+| V-A9 require_param(alpha) | 0.05 |
+| V-A10 require_param(vision_subset_rule) | PENDING message (intended) |
+| V-A11 SEED | 20260921 |
+| V-A12 DATA_SOURCE | synthetic |
+| V-A13 pending Q1–Q14 names | listed as NA |
 
-| Package | Sure on CRAN? | Notes |
-|---------|---------------|--------|
-| base / utils | yes | `read.csv` not used until Chunk B |
-| `testthat` | yes (long-standing CRAN) | Installed/loaded in setup; tests themselves are Chunk C |
+Client target remains **R 4.6.1**. Kaggle is 4.4.0.
 
-No other packages. If a name is not in this table, it must not be used until listed here.
+## Chunk B — NOT EXECUTED yet
 
-## Later chunks
+| Item | What to check | Result |
+|------|----------------|--------|
+| V-B1 disc rows | 1200 after blank drop | |
+| V-B2 pairwise rows | 600 | |
+| V-B3 vision rows | 200 | |
+| V-B4 condition recode | Original=600, Optimized=600 | |
+| V-B5 Object Name | missing count = row count; filter **not** applied | |
+| V-B6 participant_id | all NA (Q6) | |
+| V-B7 vision_subset_flag | all NA (Q1) | |
+| V-B8 mapping_fail | counted; rows **not** dropped (Q3) | |
+| V-B9 correct_mismatch | count (synthetic was 0 in Phase 1 Python) | |
+| V-B10 no IDs in log | only counts | |
+| V-B11 `fileEncoding=UTF-8` | no read error | |
+| V-B12 no hypothesis tests | log says none run | |
 
-Add rows when Chunk B (load/QC) and Chunk C (tests) are written. Do not mark them verified without pasted output.
+## Packages
+
+| Package | Status |
+|---------|--------|
+| base / utils | Chunk A+B |
+| testthat 3.2.2 | Chunk A verified; tests = Chunk C |
