@@ -1,6 +1,6 @@
 # Implementation plan
 
-**Phase:** 2A in progress. Chunk A and Chunk B verified on Kaggle R 4.4.0 (22 Sep 2026). Chunk C written, **NOT EXECUTED**. Phase 2B still blocked on Q1–Q14. Local R is still **not installed**.
+**Phase:** 2A complete (A+B+C verified on Kaggle R 4.4.0, 22 Sep 2026). Phase 2B still blocked on Q1–Q14. Local R is still **not installed**.
 
 **Do not start Phase 2 until:** (1) you confirm this plan, and (2) Fatimah answers the BLOCKING Study 1 questions in `docs/QUESTIONS_FOR_CLIENT.md` (or you explicitly accept a documented interim default **after** she answers). I will not invent cutoffs, effect-size conventions, or figures.
 

@@ -10,7 +10,7 @@ Implementation of the **frozen SAP** (21 September 2026) for Fatimah Alqahtani�
 |------|--------|
 | Chunk A (config + setup) | Verified on Kaggle **R 4.4.0** (22 Sep 2026) |
 | Chunk B (Study 1 load + QC) | Verified on Kaggle **R 4.4.0** (22 Sep 2026). Synthetic row counts: disc 1200, pairwise 600, vision 200. No hypothesis tests. |
-| Chunk C (helper unit tests) | Written. **NOT EXECUTED** until Kaggle paste. |
+| Chunk C (helper unit tests) | Verified on Kaggle **R 4.4.0** (22 Sep 2026). 38 passed, 0 failed. Toy data only. |
 | Phase 2B (summaries, H1–H3, figures) | Blocked on client answers Q1–Q14 |
 | Client target R | **4.6.1** (2026-06-24). Kaggle kernel used for development is 4.4.0. |
 

@@ -31,5 +31,6 @@ Methodological choices that the SAP leaves open are **not** decided here; they a
 | 2026-09-22 | Chunk B verified on Kaggle R 4.4.0: 1200 / 600 / 200; blocked Q1–Q3, Q5, Q6 not applied; no tests | Pasted QC log | Public ID unique count = 1 (`BLINDED`). Vision QC: 48 score-4, 2 below 4, subset not applied. |
 | 2026-09-22 | `pairwise_mapping_fail_rows=0` is not a silent drop | Brief §4; Q3 | Fail = unmatched Response **or** not exactly one optimized filename. The synthetic “mapping mismatch” is option-label vs filename; reconstruction keeps those rows with `mapping_fail=0`. |
 | 2026-09-22 | Chunk C tests use tiny handmade toy data only | Rules §7 | Do not load the full synthetic file in tests. Structure on the full synthetic file is the Chunk B QC log. |
+| 2026-09-22 | Chunk C verified on Kaggle R 4.4.0: 38 passed, 0 failed, 0 error | Pasted test log | No synthetic load. No hypothesis tests. Phase 2A (A+B+C) complete. Phase 2B blocked on Q1–Q14. |
 
 No statistical model, contrast, exclusion rule, or effect-size formula has been chosen beyond what the SAP states explicitly. Hypothesis tests have **not** been run.

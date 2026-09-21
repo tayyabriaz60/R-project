@@ -39,18 +39,18 @@ Client target remains **R 4.6.1**. Kaggle is 4.4.0.
 | V-B12 no hypothesis tests | log says none run | “LOAD COMPLETE. No tests run.” |
 | V-B13 vision QC score | private-ID count only, labelled PENDING Q6 | n_score4=48, n_below4=2; subset **not** applied |
 
-## Chunk C — NOT EXECUTED yet
+## Chunk C — verified 22 Sep 2026 (pasted console + test log)
 
 | Item | What to check | Result |
 |------|----------------|--------|
-| V-C1 reporter | testthat summary prints | |
-| V-C2 n_failed / n_error | both 0 | |
-| V-C3 log line | “No statistical tests were run. No synthetic data were loaded.” | |
-| V-C4 stop on fail | if a helper fails, script stops with a clear message | |
+| V-C1 reporter | testthat summary prints | accuracy-recalc / io-helpers / mapping-study1 / vision-score all printed |
+| V-C2 n_failed / n_error | both 0 | n_passed=38 n_failed=0 n_error=0 |
+| V-C3 log line | “No statistical tests were run. No synthetic data were loaded.” | present |
+| V-C4 files | four toy-data files only | no synthetic load; no hypothesis tests |
 
 ## Packages
 
 | Package | Status |
 |---------|--------|
 | base / utils | Chunk A+B verified |
-| testthat 3.2.2 | Chunk A verified; Chunk C tests **not run yet** |
+| testthat 3.2.2 | Chunk A+C verified |

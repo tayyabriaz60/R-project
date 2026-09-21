@@ -1,7 +1,7 @@
 # SAP / Brief traceability
 
 **Phase:** 2A (load/QC + helper tests). Hypothesis tests remain `not implemented`.  
-**Kaggle:** Chunk A and Chunk B verified on R 4.4.0 (22 Sep 2026). Chunk C **NOT EXECUTED**.  
+**Kaggle:** Chunk A, B, and C verified on R 4.4.0 (22 Sep 2026). Hypothesis tests remain `not implemented`.  
 **Source order:** SAP > Brief > Dictionary.
 
 Planned paths assume the structure in `docs/IMPLEMENTATION_PLAN.md`. Output names are **planned**; exact file extensions remain NOT SPECIFIED (Brief: “reusable formats”) until Q14 is answered.
@@ -50,9 +50,9 @@ Planned paths assume the structure in `docs/IMPLEMENTATION_PLAN.md`. Output name
 | R1.36 | SAP §3.4; Brief §5.1 | Keep K=30; palette-capacity caveat | reporting notes | tables/log | not implemented |
 | R1.37 | Dict §4.2 | 12 pairwise task trials | `run_study1_load` QC | QC log | implemented (synthetic: 50 × 12) |
 | R1.38 | Brief §4; Dict §4.2 | Exactly one Optimized + one Original image | `map_study1_pairwise` (`mapping_fail`) | QC `pairwise_mapping_fail_rows` | implemented (flag; Kaggle count 0) |
-| R1.39 | Brief §2, §4 | Do not use semantic Response label as condition | `map_study1_pairwise` | toy test in Chunk C | implemented (code); test **NOT EXECUTED** |
-| R1.40 | Brief §4 | preferred_side from response vs left/right_option | `map_study1_pairwise` | toy test in Chunk C | implemented (code); test **NOT EXECUTED** |
-| R1.41 | Brief §4; Dict §4.2 | optimized_side from `*_optimized*` filenames | `map_study1_pairwise` | toy test in Chunk C | implemented (code); test **NOT EXECUTED** |
+| R1.39 | Brief §2, §4 | Do not use semantic Response label as condition | `map_study1_pairwise` | toy test in Chunk C | implemented (Kaggle: mapping-study1 passed) |
+| R1.40 | Brief §4 | preferred_side from response vs left/right_option | `map_study1_pairwise` | toy test in Chunk C | implemented (Kaggle: mapping-study1 passed) |
+| R1.41 | Brief §4; Dict §4.2 | optimized_side from `*_optimized*` filenames | `map_study1_pairwise` | toy test in Chunk C | implemented (Kaggle: mapping-study1 passed) |
 | R1.42 | Brief §4 | chose_optimized = sides equal | `map_study1_pairwise` | trial column only | implemented (trial flag; participant proportion blocked) |
 | R1.43 | Brief §4 | Failed rows: flag; disposition NOT SPECIFIED (Q3) | `map_study1_pairwise`; rows not dropped | QC log | implemented (flag only; Q3 still blocks drop/NA/stop) |
 | R1.44 | Brief §4 | Persist QA record of derivation | QC log fields for mapping_fail | `output/logs/study1_log_data_qc_SYNTHETIC.txt` | partial (counts in QC log; no separate pairwise_qa file) |

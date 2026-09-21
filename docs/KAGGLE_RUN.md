@@ -2,7 +2,7 @@
 
 The analyst’s PC does **not** have R. You run R on **Kaggle**. The client later runs the same scripts on **R 4.6.1**.
 
-**Current chunk to run: Chunk C** (helper tests). Chunk A and Chunk B are already verified from pasted output.
+**Chunks A, B, and C are verified** from pasted Kaggle output (22 Sep 2026). Do not start Phase 2B until Q1–Q14 are answered.
 
 Nothing new is “passed” until you paste the notebook output.
 
