@@ -19,26 +19,38 @@ Local R: **NOT EXECUTED**. Results below are only from pasted Kaggle output.
 
 Client target remains **R 4.6.1**. Kaggle is 4.4.0.
 
-## Chunk B — NOT EXECUTED yet
+## Chunk B — verified 22 Sep 2026 (pasted console + QC log)
 
 | Item | What to check | Result |
 |------|----------------|--------|
-| V-B1 disc rows | 1200 after blank drop | |
-| V-B2 pairwise rows | 600 | |
-| V-B3 vision rows | 200 | |
-| V-B4 condition recode | Original=600, Optimized=600 | |
-| V-B5 Object Name | missing count = row count; filter **not** applied | |
-| V-B6 participant_id | all NA (Q6) | |
-| V-B7 vision_subset_flag | all NA (Q1) | |
-| V-B8 mapping_fail | counted; rows **not** dropped (Q3) | |
-| V-B9 correct_mismatch | count (synthetic was 0 in Phase 1 Python) | |
-| V-B10 no IDs in log | only counts | |
-| V-B11 `fileEncoding=UTF-8` | no read error | |
-| V-B12 no hypothesis tests | log says none run | |
+| V-B1 disc rows | 1200 after blank drop | 1200 (G1 600→600, G2 600→600) |
+| V-B2 pairwise rows | 600 | 600 (blank drop 600→600) |
+| V-B3 vision rows | 200 | 200 (blank drop 200→200) |
+| V-B4 condition recode | Original=600, Optimized=600 | Original=600, Optimized=600 |
+| V-B4b K counts | 5/10/20/30 | 300 each |
+| V-B4c rows per private ID | 24 / 12 / 4 | 50 private IDs at each of those counts |
+| V-B5 Object Name | missing count = row count; filter **not** applied | disc 1200, pairwise 600, vision 200; Q5 not applied |
+| V-B6 participant_id | all NA (Q6) | TRUE |
+| V-B7 vision_subset_flag | all NA (Q1) | TRUE |
+| V-B8 mapping_fail | counted; rows **not** dropped (Q3) | count = 0; 600 rows kept. Zero is expected: the baked-in synthetic mismatch is option-label vs filename, which reconstruction handles. Unmatched-Response / not-one-and-one fails were 0 on this file. |
+| V-B9 correct_mismatch | count | 0 (matches Phase 1 Python audit) |
+| V-B10 no IDs in log | only counts | QC log is aggregates only |
+| V-B11 UTF-8 read | no read error | completed |
+| V-B12 no hypothesis tests | log says none run | “LOAD COMPLETE. No tests run.” |
+| V-B13 vision QC score | private-ID count only, labelled PENDING Q6 | n_score4=48, n_below4=2; subset **not** applied |
+
+## Chunk C — NOT EXECUTED yet
+
+| Item | What to check | Result |
+|------|----------------|--------|
+| V-C1 reporter | testthat summary prints | |
+| V-C2 n_failed / n_error | both 0 | |
+| V-C3 log line | “No statistical tests were run. No synthetic data were loaded.” | |
+| V-C4 stop on fail | if a helper fails, script stops with a clear message | |
 
 ## Packages
 
 | Package | Status |
 |---------|--------|
-| base / utils | Chunk A+B |
-| testthat 3.2.2 | Chunk A verified; tests = Chunk C |
+| base / utils | Chunk A+B verified |
+| testthat 3.2.2 | Chunk A verified; Chunk C tests **not run yet** |

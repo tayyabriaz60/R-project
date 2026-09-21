@@ -1,4 +1,5 @@
-# Master script. Chunk B: setup + Study 1 load/QC only.
+# Master script. Chunk B: setup + Study 1 load/QC only (verified on Kaggle).
+# Helper tests are separate: source tests/run_tests.R (Chunk C).
 # Requires PROJECT_ROOT (or resolvable by config).
 
 if (!exists("PROJECT_ROOT")) {

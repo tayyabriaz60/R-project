@@ -3,7 +3,7 @@
 Every implementation decision with its SAP / brief / dictionary / rules reference.  
 Methodological choices that the SAP leaves open are **not** decided here; they are `TODO(client-question #N)` until Fatimah answers.
 
-**R status:** not installed. No analysis code has been run.
+**R status:** not installed locally. Chunk A and Chunk B were verified from pasted Kaggle output (R 4.4.0). No hypothesis tests have been run.
 
 | Date | Decision | Reference | Notes |
 |------|----------|-----------|-------|
@@ -28,5 +28,8 @@ Methodological choices that the SAP leaves open are **not** decided here; they a
 | 2026-09-22 | Q1–Q14 stored as `SAP$... <- NA`; `require_param()` stops if used | Rules §6; QUESTIONS Q1–Q14 | No guessed fill-in. |
 | 2026-09-22 | Chunk A verified on Kaggle R 4.4.0; testthat 3.2.2 | Real pasted output | Client target still 4.6.1. |
 | 2026-09-22 | Study 1 load keeps both public/private IDs; `participant_id` NA until Q6 | Q6; Dict §3 | QC groups vision score by private ID only as a count, labelled PENDING Q6. |
+| 2026-09-22 | Chunk B verified on Kaggle R 4.4.0: 1200 / 600 / 200; blocked Q1–Q3, Q5, Q6 not applied; no tests | Pasted QC log | Public ID unique count = 1 (`BLINDED`). Vision QC: 48 score-4, 2 below 4, subset not applied. |
+| 2026-09-22 | `pairwise_mapping_fail_rows=0` is not a silent drop | Brief §4; Q3 | Fail = unmatched Response **or** not exactly one optimized filename. The synthetic “mapping mismatch” is option-label vs filename; reconstruction keeps those rows with `mapping_fail=0`. |
+| 2026-09-22 | Chunk C tests use tiny handmade toy data only | Rules §7 | Do not load the full synthetic file in tests. Structure on the full synthetic file is the Chunk B QC log. |
 
-No statistical model, contrast, exclusion rule, or effect-size formula has been chosen beyond what the SAP states explicitly. R code has **not** been executed (no R on the analyst machine).
+No statistical model, contrast, exclusion rule, or effect-size formula has been chosen beyond what the SAP states explicitly. Hypothesis tests have **not** been run.

@@ -41,8 +41,8 @@ Last updated: 22 September 2026. This file is for Tayyab (and any assistant) so 
 | Phase 1 | Read specs, questions, plan, synthetic audit | Done (docs only) |
 | Chunk A | `config/config.R`, `scripts/00_setup.R`, Kaggle docs | **Verified on Kaggle R 4.4.0** (22 Sep 2026). `testthat` 3.2.2; pending params stay NA. |
 | Pre-2A leftovers | `scripts/01_load.R`, old `R/utils_load.R` | **Superseded.** Do not source `01_load.R`. |
-| Chunk B | `R/utils_*.R`, `R/study1_load.R`, QC, `run_all.R` | **Written. NOT run on Kaggle yet.** |
-| Chunk C | `tests/testthat/`, README polish, doc updates | **Not started** (wait for Chunk B real output) |
+| Chunk B | `R/utils_*.R`, `R/study1_load.R`, QC, `run_all.R` | **Verified on Kaggle R 4.4.0** (22 Sep 2026). 1200/600/200; Q1–Q3/Q5/Q6 not applied; no tests. |
+| Chunk C | `tests/testthat/`, `tests/run_tests.R`, README | **Written. NOT run on Kaggle yet.** |
 | Phase 2B | Summaries, exclusions, tests, ES/CIs, RT/errors, vision, tables/figures | **Blocked on Q1–Q14** |
 
 ---
@@ -73,12 +73,10 @@ Also open (not 1–14): SAP vs Brief authority (Q21); Brief-only geometric-mean 
 ## Ordered next steps
 
 1. **Confirm leaked GitHub token is revoked.**
-2. **Run Chunk A on Kaggle.** Paste full console + `session_info.txt` back to the assistant. Nothing is “working” until that paste.
-3. **Chunk B** only after Chunk A output is OK: review leftover loaders, write `R/utils_*.R`, `R/study1_load.R`, QC log, `run_all.R`. Test on Kaggle.
-4. **Chunk C** after Chunk B output: `testthat`, README, traceability.
-5. When Fatimah answers Q1–Q14: record each answer in `docs/DECISIONS_LOG.md` and `docs/QUESTIONS_FOR_CLIENT.md`, then Phase 2B in small Kaggle-testable chunks (SAP only).
-6. **Before delivery:** `run_all.R` clean on a fresh Kaggle session; every SAP item in `docs/SAP_TRACEABILITY.md`; synthetic outputs labelled pipeline-test only; README with setup.
-7. **Delivery message (English, honest):** tested on synthetic data on Kaggle with R 4.4.0; her target is R 4.6.1; she should run `scripts/00_setup.R` first; send any difference on her machine for a fix. Then send the Study 1 milestone message.
+2. **Run Chunk C on Kaggle** (after `git pull`). Paste full console + `study1_log_chunk_c_tests_SYNTHETIC.txt`.
+3. When Fatimah answers Q1–Q14: record each answer in `docs/DECISIONS_LOG.md` and `docs/QUESTIONS_FOR_CLIENT.md`, then Phase 2B in small Kaggle-testable chunks (SAP only).
+4. **Before delivery:** `run_all.R` clean on a fresh Kaggle session; every SAP item in `docs/SAP_TRACEABILITY.md`; synthetic outputs labelled pipeline-test only; README with setup.
+5. **Delivery message (English, honest):** tested on synthetic data on Kaggle with R 4.4.0; her target is R 4.6.1; she should run `scripts/00_setup.R` first; send any difference on her machine for a fix. Then send the Study 1 milestone message.
 
 ---
 
@@ -86,7 +84,7 @@ Also open (not 1–14): SAP vs Brief authority (Q21); Brief-only geometric-mean 
 
 - Repo: https://github.com/tayyabriaz60/R-project.git (private)
 - Branch: `main`
-- Known commits: `421aff0` initial; `889d934` remove duplicate rules files
+- Known commits: `421aff0` initial; `889d934` remove duplicate rules files; `742806b` HANDOFF; `591a9a9` Chunk B load/QC
 
 ---
 

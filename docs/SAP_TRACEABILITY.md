@@ -1,7 +1,7 @@
 # SAP / Brief traceability
 
-**Phase:** 1 (plan only). **Status of every row:** `not implemented`.  
-**R:** not installed; nothing executed.  
+**Phase:** 2A (load/QC + helper tests). Hypothesis tests remain `not implemented`.  
+**Kaggle:** Chunk A and Chunk B verified on R 4.4.0 (22 Sep 2026). Chunk C **NOT EXECUTED**.  
 **Source order:** SAP > Brief > Dictionary.
 
 Planned paths assume the structure in `docs/IMPLEMENTATION_PLAN.md`. Output names are **planned**; exact file extensions remain NOT SPECIFIED (Brief: “reusable formats”) until Q14 is answered.
@@ -12,14 +12,14 @@ Planned paths assume the structure in `docs/IMPLEMENTATION_PLAN.md`. Output name
 
 | ID | SAP / brief section | Requirement | Planned function / script | Planned output file | Status |
 |----|---------------------|-------------|---------------------------|---------------------|--------|
-| R1.1 | SAP §1 | α = .05; 95% CIs | `config/analysis.yml`; `R/config.R` | recorded in analysis log / README | not implemented |
+| R1.1 | SAP §1 | α = .05; 95% CIs | `config/config.R` (`SAP$alpha`, `SAP$ci_level`) | config + session log | implemented (params only; no inferential tables yet) |
 | R1.2 | SAP §1; Brief §1 | No across-hypothesis multiplicity | `scripts/run_study1.R` (no extra p.adjust) | `output/logs/study1_analysis_log` | not implemented |
 | R1.3 | SAP §1; Brief §1 | Holm only on named follow-up families | `R/models_ttest.R` (`holm_adjust`) | `output/tables/study1_h2_followups` | not implemented |
 | R1.4 | SAP §1; Brief §1 | No outcome-based exclusions; report N | `R/exclusions.R`; `R/analysis_log.R` | `output/logs/study1_exclusions` | not implemented |
 | R1.5 | SAP §1 | Participant-level summaries for inference | `R/summarise_participants.R` | `output/intermediate/study1_participant_summaries` | not implemented |
 | R1.6 | SAP §1; Brief §1, §15 | Fallbacks only if assumptions violated; no mixed models | `R/assumptions.R`; `R/models_npar.R` | analysis log | not implemented |
 | R1.7 | SAP §6 | 13-step analysis/reporting order | `scripts/run_study1.R` | full output tree | not implemented |
-| R1.8 | Brief §3 | QA/mapping before deriving analysis variables | `R/validate_structure.R`; `R/derive_pairwise.R` | `output/logs/study1_pairwise_qa` | not implemented |
+| R1.8 | Brief §3 | QA/mapping before deriving analysis variables | `R/study1_load.R` | `output/logs/study1_log_data_qc_SYNTHETIC.txt` | implemented (load/QC; Kaggle synthetic) |
 | R1.9 | Brief §9 | Document fallback **before** looking at Condition significance | `R/assumptions.R`; analysis log gate | analysis log | not implemented |
 | R1.10 | Brief §9 | No invented numeric ANOVA/t fallback cutoff | `R/assumptions.R` (diagnostics only) | analysis log + QUESTIONS Q7 | not implemented |
 | R1.11 | Dict §1 | No questionnaire predictors | loaders omit those fields | — | not implemented |
@@ -32,30 +32,30 @@ Planned paths assume the structure in `docs/IMPLEMENTATION_PLAN.md`. Output name
 | R1.18 | Dict §9 | No outcome-based trial drops | exclusions + validate | exclusions log | not implemented |
 | R1.19 | Dict §3 | Map Public ID → participant_id after reconciliation | `R/dictionary_map.R` | — | not implemented |
 | R1.20 | Dict §3 | Retain external_session_id | `R/dictionary_map.R` | — | not implemented |
-| R1.21 | README; data | Study 1 Public ID BLINDED → Private ID (pending Q6) | `R/dictionary_map.R` | analysis log | not implemented |
-| R1.22 | Dict §10 | Disc row filter G1/G2 + response + Object Name Response | `R/utils_load.R` (load only; **filter blocked Q5**) | `output/logs/study_all_log_load_SYNTHETIC.txt` | blocked (question #5); files load without that filter |
+| R1.21 | README; data | Study 1 Public ID BLINDED → Private ID (pending Q6) | `R/study1_load.R` (`participant_id` all NA) | QC log | blocked (question #6); both IDs kept |
+| R1.22 | Dict §10 | Disc row filter G1/G2 + response + Object Name Response | `R/study1_load.R` (load only; **filter blocked Q5**) | `output/logs/study1_log_data_qc_SYNTHETIC.txt` | blocked (question #5); files load without that filter |
 | R1.23 | Dict §10 | Pairwise row filter + exclude confidence/comment | `R/select_trials.R` | QA log | not implemented |
 | R1.24 | Dict §10 | Vision row filter | `R/select_trials.R` | QA log | not implemented |
-| R1.25 | Dict §9 | 24 / 12 / 4 trials per included participant | `R/validate_structure.R` | `output/logs/study1_structure_checks` | not implemented |
+| R1.25 | Dict §9 | 24 / 12 / 4 trials per included participant | `R/study1_load.R` QC | `output/logs/study1_log_data_qc_SYNTHETIC.txt` | implemented (synthetic QC: 50 × 24/12/4) |
 | R1.26 | Dict §11 | No metadata predictors | mappers drop unused fields from analysis tables | — | not implemented |
-| R1.27 | Dict §4.1 | baseline→Original; sa→Optimized | `R/recode_factors.R` | — | not implemented |
-| R1.28 | Dict §4.1 | colormap_raw traceability only | keep in QA table only | — | not implemented |
-| R1.29 | Dict §4.1 | K ∈ {5,10,20,30} | `R/recode_factors.R` | — | not implemented |
-| R1.30 | SAP §3.1, §3.4; Brief §5.1 | variation = configuration instance, not Difficulty | `R/recode_factors.R` | — | not implemented |
-| R1.31 | Dict §4.1 | response_count, correct_answer numeric | `R/derive_discrimination.R` | — | not implemented |
-| R1.32 | Dict §4.1, §9 | accuracy = (response==answer); flag Correct mismatch | `R/derive_discrimination.R` | `output/logs/study1_correct_mismatch` | not implemented |
-| R1.33 | Dict §4.1 | signed_error, absolute_error | `R/derive_discrimination.R` | trial-level analysis table | not implemented |
-| R1.34 | Dict §4.1 | reaction_time_ms from Reaction Time | `R/rt_preprocess.R` | — | not implemented |
+| R1.27 | Dict §4.1 | baseline→Original; sa→Optimized | `R/study1_load.R` `recode_condition_study1` | QC condition counts | implemented (Kaggle: 600/600) |
+| R1.28 | Dict §4.1 | colormap_raw traceability only | `map_study1_discrimination` keeps `colormap_raw` | — | implemented (column kept; not used as a factor) |
+| R1.29 | Dict §4.1 | K ∈ {5,10,20,30} | `assert_allowed_values` in `run_study1_load` | QC K counts | implemented (Kaggle: 300 each) |
+| R1.30 | SAP §3.1, §3.4; Brief §5.1 | variation = configuration instance, not Difficulty | mapped as `configuration_instance` | — | implemented (mapping only) |
+| R1.31 | Dict §4.1 | response_count, correct_answer numeric | `map_study1_discrimination` | — | implemented |
+| R1.32 | Dict §4.1, §9 | accuracy = (response==answer); flag Correct mismatch | `map_study1_discrimination` | QC `disc_correct_mismatch_rows` | implemented (Kaggle count 0) |
+| R1.33 | Dict §4.1 | signed_error, absolute_error | `map_study1_discrimination` | trial columns only | implemented (derived; no AE tests yet) |
+| R1.34 | Dict §4.1 | reaction_time_ms from Reaction Time | `map_study1_discrimination` | QC RT missing/nonpositive | implemented (mapped; RT preprocess / tests not done) |
 | R1.35 | SAP §3.1; Brief §5.1 | Accuracy per participant × Condition × K, average 3 instances | `R/summarise_participants.R` | participant summaries | not implemented |
 | R1.36 | SAP §3.4; Brief §5.1 | Keep K=30; palette-capacity caveat | reporting notes | tables/log | not implemented |
-| R1.37 | Dict §4.2 | 12 pairwise task trials | `R/select_trials.R` | structure checks | not implemented |
-| R1.38 | Brief §4; Dict §4.2 | Exactly one Optimized + one Original image | `R/derive_pairwise.R` | pairwise QA | not implemented |
-| R1.39 | Brief §2, §4 | Do not use semantic Response label as condition | `R/derive_pairwise.R` | pairwise QA | not implemented |
-| R1.40 | Brief §4 | preferred_side from response vs left/right_option | `R/derive_pairwise.R` | pairwise QA | not implemented |
-| R1.41 | Brief §4; Dict §4.2 | optimized_side from `*_optimized*` filenames | `R/derive_pairwise.R` | pairwise QA | not implemented |
-| R1.42 | Brief §4 | chose_optimized = sides equal | `R/derive_pairwise.R` | trial + participant pairwise | not implemented |
-| R1.43 | Brief §4 | Failed rows: flag; disposition NOT SPECIFIED (Q3) | `R/derive_pairwise.R` | pairwise QA | not implemented |
-| R1.44 | Brief §4 | Persist QA record of derivation | `R/derive_pairwise.R` | `output/logs/study1_pairwise_qa` | not implemented |
+| R1.37 | Dict §4.2 | 12 pairwise task trials | `run_study1_load` QC | QC log | implemented (synthetic: 50 × 12) |
+| R1.38 | Brief §4; Dict §4.2 | Exactly one Optimized + one Original image | `map_study1_pairwise` (`mapping_fail`) | QC `pairwise_mapping_fail_rows` | implemented (flag; Kaggle count 0) |
+| R1.39 | Brief §2, §4 | Do not use semantic Response label as condition | `map_study1_pairwise` | toy test in Chunk C | implemented (code); test **NOT EXECUTED** |
+| R1.40 | Brief §4 | preferred_side from response vs left/right_option | `map_study1_pairwise` | toy test in Chunk C | implemented (code); test **NOT EXECUTED** |
+| R1.41 | Brief §4; Dict §4.2 | optimized_side from `*_optimized*` filenames | `map_study1_pairwise` | toy test in Chunk C | implemented (code); test **NOT EXECUTED** |
+| R1.42 | Brief §4 | chose_optimized = sides equal | `map_study1_pairwise` | trial column only | implemented (trial flag; participant proportion blocked) |
+| R1.43 | Brief §4 | Failed rows: flag; disposition NOT SPECIFIED (Q3) | `map_study1_pairwise`; rows not dropped | QC log | implemented (flag only; Q3 still blocks drop/NA/stop) |
+| R1.44 | Brief §4 | Persist QA record of derivation | QC log fields for mapping_fail | `output/logs/study1_log_data_qc_SYNTHETIC.txt` | partial (counts in QC log; no separate pairwise_qa file) |
 | R1.45 | SAP §3.4 | Fixed pairwise order = limitation only | analysis log / README | — | not implemented |
 | R1.46 | Dict §4.2 | Pairwise RT descriptive only | `R/summarise_participants.R` | descriptive RT table | not implemented |
 | R1.47 | SAP §3.1; Brief §5.1 | 2×4 RM ANOVA Condition × K | `R/models_anova.R` | `output/tables/study1_h1_h2_anova` | not implemented |
@@ -95,8 +95,8 @@ Planned paths assume the structure in `docs/IMPLEMENTATION_PLAN.md`. Output name
 | R1.81 | Brief §8.2 | Descriptive AE by Condition × K (CI if template) | `R/export_tables.R` | `output/tables/study1_ae_by_K_desc` | not implemented |
 | R1.82 | SAP §3.3.3; Brief §8.3 | Signed error mean/SD by condition; no test | `R/export_tables.R` | `output/tables/study1_signed_error` | not implemented |
 | R1.83 | SAP §3.4; Brief §11 | Repeat primary accuracy + pairwise on N=48 subset | `R/sensitivity_vision.R` | `output/tables/study1_vision_sensitivity` | not implemented |
-| R1.84 | Dict §7 | Vision items/keys/score 0–4 | `R/derive_vision.R` | vision summary | not implemented |
-| R1.85 | Dict §7 | vision_subset_flag via frozen rule (Q1) | `R/derive_vision.R` | vision summary | not implemented |
+| R1.84 | Dict §7 | Vision items/keys/score 0–4 | `map_study1_vision`; QC score by private ID | QC log | partial (item map + QC count; no analysis population) |
+| R1.85 | Dict §7 | vision_subset_flag via frozen rule (Q1) | `vision_subset_flag` all NA | QC log | blocked (question #1) |
 | R1.86 | Brief §9.1 | Wilcoxon zero convention (Q10) | `R/models_npar.R` | analysis log | not implemented |
 | R1.87 | Brief §9.1, §10 | Document ES package/function/convention (Q9) | `R/effect_sizes.R` | analysis log / README | not implemented |
 | R1.88 | SAP §3; Brief §14 | Publication-ready summary tables | `R/export_tables.R` | `output/tables/*` | not implemented |

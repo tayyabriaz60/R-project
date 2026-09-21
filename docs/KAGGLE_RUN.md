@@ -1,10 +1,38 @@
-# Kaggle run guide (beginner, Chunk A)
+# Kaggle run guide
 
 The analyst’s PC does **not** have R. You run R on **Kaggle**. The client later runs the same scripts on **R 4.6.1**.
 
-This page is **Chunk A only**: config + package setup. Do not run loaders or tests yet.
+**Current chunk to run: Chunk C** (helper tests). Chunk A and Chunk B are already verified from pasted output.
 
-Nothing here has been executed until you paste the notebook output.
+Nothing new is “passed” until you paste the notebook output.
+
+If the notebook already has a clone at `/kaggle/working/R-project`, pull first, then run the Chunk C cell below. Older Chunk A/B cells on this page are kept for a fresh setup.
+
+---
+
+## Chunk C (now) — helper tests
+
+**Cell 1** (do not paste tokens into chat)
+
+```r
+setwd("/kaggle/working/R-project")
+system("git pull origin main")
+print(file.exists("tests/run_tests.R"))
+print(file.exists("kaggle/run_tests.R"))
+```
+
+Both should print `TRUE`.
+
+**Cell 2**
+
+```r
+PROJECT_ROOT <- "/kaggle/working/R-project"
+source(file.path(PROJECT_ROOT, "kaggle", "run_tests.R"))
+```
+
+Paste the full console (including the testthat summary and the Chunk C test log).
+
+Expected when it is actually OK: `n_failed=0`, `n_error=0`, and the line `No statistical tests were run. No synthetic data were loaded.`
 
 ---
 
