@@ -3,7 +3,7 @@
 Every implementation decision with its SAP / brief / dictionary / rules reference.  
 Methodological choices that the SAP leaves open are **not** decided here; they are `TODO(client-question #N)` until Fatimah answers.
 
-**R status:** not installed locally. Chunk A/B/C and v3 load/QC were verified from pasted Kaggle output (R 4.4.0). Prepare chunk (summaries / Q8 diagnostics) is **NOT EXECUTED**. No hypothesis tests have been run.
+**R status:** not installed locally. Chunk A/B/C, v3 load/QC, and the prepare chunk were verified from pasted Kaggle output (R 4.4.0). No hypothesis tests have been run.
 
 | Date | Decision | Reference | Notes |
 |------|----------|-----------|-------|
@@ -58,5 +58,7 @@ Methodological choices that the SAP leaves open are **not** decided here; they a
 | 2026-09-22 | Q12 skewness on trial-level valid RT before averaging; log if > 1 | Q12; SAP §3.3.1 | `e1071::skewness(..., type=2)`. Valid = non-missing and > 0. Untransformed ms always kept. `log()` is natural log. |
 | 2026-09-22 | Q8 histograms are diagnostic greyscale PNGs only | Q8; Q7; Q30 | 8 Condition×K cells, H1 overall diff, four K diffs. 150 dpi. Q30 stays NA; no Q13 colours. Not report figures. |
 | 2026-09-22 | Q7: write diagnostics and message; do not auto-switch; do not run H1–H3 | Q7 | `save_study1_q8_histograms` logs “fallback NOT applied”. Prepare does not `stop()` the whole run after a clean Q3/Q4 pass (that would look like a pipeline failure). Fallback tests remain unimplemented. |
+
+| 2026-09-22 | Prepare chunk verified on Kaggle R 4.4.0 | Pasted Cell 2+3 | Q2 N=50; Q3/Q4 passed (0); Q31 applied=FALSE n_dup_keys=0; 50 anon summary rows; 3 diag PNGs; Q12 skewness=1.1808 → log (synthetic pipeline only, not a finding); tests 57/0/0. No H1–H3. |
 
 Hypothesis tests, applied dedup, effect sizes, and Q13 report figures have **not** been run.

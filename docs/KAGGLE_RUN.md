@@ -2,7 +2,7 @@
 
 The analyst’s PC does **not** have R. You run R on **Kaggle**. The client later runs the same scripts on **R 4.6.1**.
 
-**Now: Study 1 prepare chunk** (Q2 population, Q31 audit-only, Q3/Q4 gates, participant summaries, Q8 diagnostic histograms). H1–H3 are **not** in this run.
+**Prepare chunk verified 22 Sep 2026** from pasted Kaggle output (R 4.4.0). H1–H3 are **not** implemented yet. Cells below are kept as the record of what was run.
 
 Internet must be **ON** (`e1071` may need to install).
 

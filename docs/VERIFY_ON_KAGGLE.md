@@ -67,8 +67,9 @@ Helper tests (including `select`): **verified 22 Sep 2026** (46 passed, 0 failed
 
 | Package | Status |
 |---------|--------|
-| base / utils | Chunk A+B verified (v1); v3 reload pending |
-| testthat 3.2.2 | Chunk A+C verified; extra tests pending |
+| base / utils | Chunk A+B + prepare verified (R 4.4.0) |
+| testthat 3.2.2 | 57 passed (prepare toys included) |
+| e1071 1.7.16 | Q12 skewness on Kaggle; already installed |
 | renv | optional version-record writer only; **not** restore |
 
 ## renv.lock version record — verified 22 Sep 2026 (pasted console)
@@ -77,17 +78,17 @@ Wrote `/kaggle/working/R-project/renv.lock` (318 lines). `testthat` 3.2.2 plus i
 
 This file is **not yet in the local git repo**. Download it from the Kaggle working folder and add it here before the next commit.
 
-## Prepare chunk — NOT EXECUTED
+## Prepare chunk — verified 22 Sep 2026 (pasted console)
 
 | Item | What to check | Result |
 |------|----------------|--------|
-| V-P1 Q2 N | n_unique_participant_id = 50; no outcome drop | **NOT EXECUTED** |
-| V-P2 Q31 audit | n_dup_keys=0; n_rows_would_drop=0; applied=FALSE | **NOT EXECUTED** |
-| V-P3 Q3 gate | mapping_fail_rows=0; pipeline continues | **NOT EXECUTED** |
-| V-P4 Q4 gate | all incomplete counts 0; pipeline continues | **NOT EXECUTED** |
-| V-P5 summaries | 50 rows; header has participant_anon_id only | **NOT EXECUTED** |
-| V-P6 no Gorilla IDs | header_has_gorilla_id_column=FALSE | **NOT EXECUTED** |
-| V-P7 Q8 PNGs | three `study1_diag_*_SYNTHETIC.png` | **NOT EXECUTED** |
-| V-P8 Q7 | “fallback NOT applied”; no H1–H3 | **NOT EXECUTED** |
-| V-P9 Q12 | trial_rt_skewness printed; e1071 loaded | **NOT EXECUTED** |
-| V-P10 helper tests | all previous + prepare toys pass | **NOT EXECUTED** |
+| V-P1 Q2 N | n_unique_participant_id = 50; no outcome drop | 50; “no outcome-based exclusion”; vision subset not applied |
+| V-P2 Q31 audit | n_dup_keys=0; n_rows_would_drop=0; applied=FALSE | n_keys=1200; n_dup_keys=0; n_rows_would_drop=0; event_index_available=TRUE; applied=FALSE |
+| V-P3 Q3 gate | mapping_fail_rows=0; pipeline continues | 0; rule=flag_and_stop; no stop |
+| V-P4 Q4 gate | all incomplete counts 0; pipeline continues | n_short_disc=0; n_short_pw=0; n_cells_ne_3=0; n_missing_cells=0 |
+| V-P5 summaries | 50 rows; header has participant_anon_id only | n_data_rows=50; first column `participant_anon_id` |
+| V-P6 no Gorilla IDs | header_has_gorilla_id_column=FALSE | FALSE |
+| V-P7 Q8 PNGs | three `study1_diag_*_SYNTHETIC.png` | all three written |
+| V-P8 Q7 | “fallback NOT applied”; no H1–H3 | present; “H1-H3 were not run” |
+| V-P9 Q12 | trial_rt_skewness printed; e1071 loaded | e1071 1.7.16; skewness=1.1808; threshold=1; analysis_scale=log; n_valid_rt=1200; n_rt_dropped=0 |
+| V-P10 helper tests | all previous + prepare toys pass | n_passed=57 n_failed=0 n_error=0; no synthetic load in tests |
