@@ -264,7 +264,7 @@ run_study1_load <- function() {
           " n_unique_participant_id=", n_unique_nonempty(pw$participant_id))
   log_msg(qc_txt, "pairwise_rows_per_participant_id: ", rows_per_id_counts(pw$participant_id))
   log_msg(qc_txt, "pairwise_mapping_fail_rows=", sum(pw$mapping_fail == 1L, na.rm = TRUE),
-          " (Q3: flagged only at load; analysis-time stop not run)")
+          " (Q3: counted at load; flag-and-stop runs in prepare)")
   log_msg(qc_txt, "pairwise_object_name_missing=", n_missing(pw$object_name),
           " pairwise_object_name_expected=", require_param("object_name_pairwise"))
   log_msg(qc_txt, "pairwise_duplicate_rows=", count_duplicate_rows(pw))

@@ -12,6 +12,9 @@ source(file.path(if (exists("PROJECT_ROOT")) PROJECT_ROOT else ".", "config", "c
 source(file.path(PROJECT_ROOT, "scripts", "00_setup.R"))
 source(file.path(PROJECT_ROOT, "R", "study1_load.R"))
 source(file.path(PROJECT_ROOT, "R", "utils_format.R"))
+source(file.path(PROJECT_ROOT, "R", "study1_clean.R"))
+source(file.path(PROJECT_ROOT, "R", "study1_gates.R"))
+source(file.path(PROJECT_ROOT, "R", "summarise_participants.R"))
 
 test_dir_path <- file.path(PROJECT_ROOT, "tests", "testthat")
 if (!dir.exists(test_dir_path)) {

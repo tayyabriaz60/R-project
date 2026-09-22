@@ -39,6 +39,15 @@ if (!exists("map_study1_discrimination")) {
 if (!exists("filter_object_name")) {
   source(file.path(PROJECT_ROOT, "R", "utils_select.R"), local = FALSE)
 }
+if (!exists("audit_disc_duplicates_guess")) {
+  source(file.path(PROJECT_ROOT, "R", "study1_clean.R"), local = FALSE)
+}
+if (!exists("gate_pairwise_mapping_q3")) {
+  source(file.path(PROJECT_ROOT, "R", "study1_gates.R"), local = FALSE)
+}
+if (!exists("accuracy_cells_long")) {
+  source(file.path(PROJECT_ROOT, "R", "summarise_participants.R"), local = FALSE)
+}
 if (!exists("fmt_p")) {
   source(file.path(PROJECT_ROOT, "R", "utils_format.R"), local = FALSE)
 }

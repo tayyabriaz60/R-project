@@ -76,3 +76,18 @@ Helper tests (including `select`): **verified 22 Sep 2026** (46 passed, 0 failed
 Wrote `/kaggle/working/R-project/renv.lock` (318 lines). `testthat` 3.2.2 plus its dependencies. R recorded as **4.4.0** (Kaggle), not the client target 4.6.1. Some dependency `Repository` fields are `RSPM` (Kaggle). Script printed: do not run `renv::restore()`.
 
 This file is **not yet in the local git repo**. Download it from the Kaggle working folder and add it here before the next commit.
+
+## Prepare chunk — NOT EXECUTED
+
+| Item | What to check | Result |
+|------|----------------|--------|
+| V-P1 Q2 N | n_unique_participant_id = 50; no outcome drop | **NOT EXECUTED** |
+| V-P2 Q31 audit | n_dup_keys=0; n_rows_would_drop=0; applied=FALSE | **NOT EXECUTED** |
+| V-P3 Q3 gate | mapping_fail_rows=0; pipeline continues | **NOT EXECUTED** |
+| V-P4 Q4 gate | all incomplete counts 0; pipeline continues | **NOT EXECUTED** |
+| V-P5 summaries | 50 rows; header has participant_anon_id only | **NOT EXECUTED** |
+| V-P6 no Gorilla IDs | header_has_gorilla_id_column=FALSE | **NOT EXECUTED** |
+| V-P7 Q8 PNGs | three `study1_diag_*_SYNTHETIC.png` | **NOT EXECUTED** |
+| V-P8 Q7 | “fallback NOT applied”; no H1–H3 | **NOT EXECUTED** |
+| V-P9 Q12 | trial_rt_skewness printed; e1071 loaded | **NOT EXECUTED** |
+| V-P10 helper tests | all previous + prepare toys pass | **NOT EXECUTED** |

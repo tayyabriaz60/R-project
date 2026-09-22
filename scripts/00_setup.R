@@ -6,7 +6,8 @@
 
 # Package names only. Reasons in comments. Only packages we are sure exist on CRAN.
 required_packages <- c(
-  "testthat"  # hand-checkable unit tests for helpers (Phase 2A Chunk C)
+  "testthat", # helper unit tests on toy data
+  "e1071"     # Q12: skewness(x, type = 2, na.rm = TRUE) for trial-level RT
 )
 # Data reading uses utils::read.csv (base). No readr.
 

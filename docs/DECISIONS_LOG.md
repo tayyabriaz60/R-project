@@ -3,7 +3,7 @@
 Every implementation decision with its SAP / brief / dictionary / rules reference.  
 Methodological choices that the SAP leaves open are **not** decided here; they are `TODO(client-question #N)` until Fatimah answers.
 
-**R status:** not installed locally. Chunk A and Chunk B were verified from pasted Kaggle output (R 4.4.0). No hypothesis tests have been run.
+**R status:** not installed locally. Chunk A/B/C and v3 load/QC were verified from pasted Kaggle output (R 4.4.0). Prepare chunk (summaries / Q8 diagnostics) is **NOT EXECUTED**. No hypothesis tests have been run.
 
 | Date | Decision | Reference | Notes |
 |------|----------|-----------|-------|
@@ -51,5 +51,12 @@ Methodological choices that the SAP leaves open are **not** decided here; they a
 | 2026-09-22 | v3 load/QC verified on Kaggle R 4.4.0 | Pasted QC log | Object Name filter kept all rows; 50 public IDs; 48 vision score-4; no Gorilla IDs in log; no hypothesis tests. |
 | 2026-09-22 | v3 helper tests verified: 46 passed, 0 failed (includes `select`) | Pasted test log | Toy data only. No synthetic load. No hypothesis tests. |
 | 2026-09-22 | `renv.lock` written on Kaggle as a version record | Pasted console | testthat 3.2.2 + deps; R 4.4.0; some RSPM sources. Not used for restore. File still only on Kaggle until downloaded. |
+| 2026-09-22 | Q2 primary population = all loaded IDs; no outcome-based drop; vision subset not applied | Q2; SAP §3.4 | `apply_study1_primary_population`. Synthetic must have N=50 or stop. Self-test session is not in these files. |
+| 2026-09-22 | Q31 duplicate rule is audit-only until she names the key | Q2; Q31 | Guess key = `participant_id\|condition\|K\|configuration_instance`; keep-guess = min Event Index. Logs n_dup_keys / n_rows_would_drop. `duplicate_dedup_apply` stays FALSE and stops if flipped while `duplicate_trial_key` is NA. Swap `study1_duplicate_key_guess()` when she answers. |
+| 2026-09-22 | Q3/Q4 are hard gates: mapping_fail>0 or incomplete 24/12 / not-3-instances **stop()** | Q3; Q4 | `gate_pairwise_mapping_q3`, `gate_incomplete_cells_q4`. Counts only in the message. No auto-drop, impute, or recode. |
+| 2026-09-22 | Participant summaries use Public ID internally; written table is anon only | Q6; SAP §3.1–§3.3 | `write_study1_summaries` refuses Gorilla ID columns. Cells = mean of 3 instances. H1/H2 diffs = Optimized − Original (Q11). Pairwise = mean of `chose_optimized` over 12. |
+| 2026-09-22 | Q12 skewness on trial-level valid RT before averaging; log if > 1 | Q12; SAP §3.3.1 | `e1071::skewness(..., type=2)`. Valid = non-missing and > 0. Untransformed ms always kept. `log()` is natural log. |
+| 2026-09-22 | Q8 histograms are diagnostic greyscale PNGs only | Q8; Q7; Q30 | 8 Condition×K cells, H1 overall diff, four K diffs. 150 dpi. Q30 stays NA; no Q13 colours. Not report figures. |
+| 2026-09-22 | Q7: write diagnostics and message; do not auto-switch; do not run H1–H3 | Q7 | `save_study1_q8_histograms` logs “fallback NOT applied”. Prepare does not `stop()` the whole run after a clean Q3/Q4 pass (that would look like a pipeline failure). Fallback tests remain unimplemented. |
 
-Hypothesis tests, exclusions/dedup, summaries, and fallbacks have **not** been run.
+Hypothesis tests, applied dedup, effect sizes, and Q13 report figures have **not** been run.

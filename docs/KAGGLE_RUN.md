@@ -2,11 +2,73 @@
 
 The analyst’s PC does **not** have R. You run R on **Kaggle**. The client later runs the same scripts on **R 4.6.1**.
 
-**Now: re-verify load/QC + helper tests on v3 synthetic** after Q1–Q14 were filled. Chunks A–C on the old synthetic package are already verified; this is a new data + filter pass.
+**Now: Study 1 prepare chunk** (Q2 population, Q31 audit-only, Q3/Q4 gates, participant summaries, Q8 diagnostic histograms). H1–H3 are **not** in this run.
+
+Internet must be **ON** (`e1071` may need to install).
 
 ---
 
-## v3 reload (now)
+## Prepare chunk (now)
+
+**Cell 1 — pull the new files** (do not paste tokens into chat)
+
+If `/kaggle/working/R-project` already exists:
+
+```r
+setwd("/kaggle/working/R-project")
+system("git pull origin main")
+print(file.exists("R/study1_prepare.R"))
+print(file.exists("R/study1_diagnostics.R"))
+print(file.exists("kaggle/run_notebook.R"))
+```
+
+All three must print `TRUE`. If the folder is missing, clone first (type a **fresh read-only token** only in the notebook, then delete that cell):
+
+```r
+setwd("/kaggle/working")
+system("git clone https://<TOKEN>@github.com/tayyabriaz60/R-project.git R-project")
+print(file.exists("/kaggle/working/R-project/R/study1_prepare.R"))
+```
+
+**Cell 2 — load + prepare** (this is the cell to paste back in full)
+
+```r
+PROJECT_ROOT <- "/kaggle/working/R-project"
+source(file.path(PROJECT_ROOT, "kaggle", "run_notebook.R"))
+```
+
+**Cell 3 — helper tests** (paste this console back too)
+
+```r
+PROJECT_ROOT <- "/kaggle/working/R-project"
+source(file.path(PROJECT_ROOT, "kaggle", "run_tests.R"))
+```
+
+### What to paste back
+
+1. The **full Cell 2 console**, including the PREPARE log, summary header, `n_data_rows=`, `header_has_gorilla_id_column=`, and the diagnostic PNG list.
+2. The **full Cell 3 console**, including the testthat summary and `n_passed` / `n_failed` / `n_error`.
+
+### What Cell 2 should look like if it actually ran (do not treat as pass until pasted)
+
+- Q3 `mapping_fail_rows=0` (gate passed; no stop)
+- Q4 all incomplete counts `=0` (gate passed; no stop)
+- Q31 `applied=FALSE`; `n_dup_keys=0`; `n_rows_would_drop=0` on this synthetic
+- Q2 `n_unique_participant_id=50`
+- summaries `n_participants=50`
+- summary `n_data_rows=50`
+- `header_has_gorilla_id_column=FALSE`
+- three PNGs: `study1_diag_accuracy_cells_SYNTHETIC.png`, `study1_diag_h1_diff_SYNTHETIC.png`, `study1_diag_h2_k_diffs_SYNTHETIC.png`
+- Q7 line: fallback NOT applied; H1–H3 were not run
+- Q12 `trial_rt_skewness=` a number (or NA) and `analysis_scale=` `raw` or `log`
+
+If Q3 or Q4 fires a `stop()`, paste the full error. That is a real gate, not a crash to “fix” by dropping rows.
+
+Nothing new is “passed” until you paste the notebook output.
+
+---
+
+## v3 reload (previous)
 
 **Cell 1 — find or clone (do not `setwd` until the folder exists)**
 

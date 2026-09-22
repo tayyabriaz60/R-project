@@ -151,9 +151,9 @@ SAP <- list(
   # --- answered Q1-Q14 (22 Sep 2026); recorded in DECISIONS_LOG ------------
   vision_subset_rule = "score_equals_4", # Q1; sensitivity only, not a primary exclusion
   vision_subset_is_primary_exclusion = FALSE, # Q1
-  study1_exclusion_order = "primary_all_50_no_outcome_exclusion; self_test_outside_sample; duplicate_keep_earliest_tiebreak_event_index", # Q2; NOT applied at load
-  pairwise_failed_row_rule = "flag_and_stop", # Q3; stop is at pairwise analysis, not load
-  incomplete_cell_rule = "flag_and_stop", # Q4; stop is at summaries/tests, not load
+  study1_exclusion_order = "primary_all_50_no_outcome_exclusion; self_test_outside_sample; duplicate_keep_earliest_tiebreak_event_index", # Q2; primary applied in prepare; dedup audit-only until Q31
+  pairwise_failed_row_rule = "flag_and_stop", # Q3; gate in prepare
+  incomplete_cell_rule = "flag_and_stop", # Q4; gate in prepare
   object_name_filter_when_blank = "keep_filter", # Q5
   object_name_disc = "Response",         # Dict §10; Q5
   object_name_pairwise = "Image Response",
@@ -192,8 +192,13 @@ SAP <- list(
   export_figure_formats = c("png_300dpi", "pdf"),
   export_reusable_formats = c("csv", "rds"),
   ae_by_k_include_ci = TRUE,             # Q14; descriptive only, no inferential test
+  # Q31 audit-only guess (NOT applied; swap this string when she answers)
+  duplicate_audit_key_guess = "participant_id|condition|K|configuration_instance",
+  duplicate_audit_keep_guess = "min_event_index",
+  duplicate_dedup_apply = FALSE,
   # --- still pending (must stay NA; do not guess) --------------------------
   figure_colours = NA,                   # PENDING Q30 (Q13 did not name colours)
+  duplicate_trial_key = NA,              # PENDING Q31
   geometric_mean_rt_ratio = NA,          # PENDING client answer Q15
   side_label_case = NA,                  # PENDING client answer Q16
   rt_column_if_disagree = NA             # PENDING client answer Q17

@@ -39,16 +39,15 @@ Last updated: 22 September 2026. **Internal (Tayyab / assistant). Do not send th
 | v3 load/QC + Q5/Q6 | Verified (1200/600/200; 50 IDs; Object Name kept) |
 | Helper tests after v3 | Verified 46 passed |
 | renv.lock on Kaggle | Written; **not in local git** until downloaded |
-| Phase 2B (summaries, H1–H3, …) | **Not started.** Q31 blocks dedup; Q30 blocks figure colours. |
+| Prepare (summaries + Q8 diags) | **Code written; Kaggle NOT EXECUTED.** Q31 still audit-only. Q30 still NA. |
+| H1–H3 / ES / Q13 figures | **Not started.** |
 
 ---
 
-## Next coding (when Tayyab says go)
+## Next coding (after Kaggle confirms prepare)
 
-1. Participant-level summaries (no Q31 needed if we skip dedup and only flag duplicate counts — already 0 on synthetic).
-2. Then diagnostics + stop (Q7), not auto-fallback.
-3. Then H1–H3 only after she has seen diagnostics **or** she confirms stay parametric on synthetic-pipeline first? Q7 says stop and send diagnostics on real data. On synthetic we can generate diagnostics and still not treat them as findings.
-4. Do not invent Q30 colours.
+1. H1–H3 + Holm + effect sizes (Q9–Q11). Do not auto-fallback (Q7).
+2. Do not invent Q30 colours.
 
 ---
 

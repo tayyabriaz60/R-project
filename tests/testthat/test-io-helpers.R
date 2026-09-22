@@ -38,6 +38,7 @@ test_that("assert_expected_n fails only for synthetic mismatches", {
 test_that("require_param returns filled SAP values and stops on pending NA", {
   expect_equal(require_param("alpha"), 0.05)
   expect_error(require_param("figure_colours"), "PENDING a client answer")
+  expect_error(require_param("duplicate_trial_key"), "PENDING a client answer")
 })
 
 test_that("fmt_p uses < .001 under 0.001", {

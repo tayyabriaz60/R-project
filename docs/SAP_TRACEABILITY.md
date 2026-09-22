@@ -1,10 +1,10 @@
 # SAP / Brief traceability
 
-**Phase:** 2A (load/QC + helper tests). Hypothesis tests remain `not implemented`.  
-**Kaggle:** Chunk A, B, and C verified on R 4.4.0 (old synthetic). v3 reload + Q5/Q6 load updates **NOT EXECUTED**. Hypothesis tests remain `not implemented`.  
+**Phase:** 2B prepare (population, Q3/Q4 gates, participant summaries, Q8 diagnostics). Hypothesis tests remain `not implemented`.  
+**Kaggle:** Load/QC + helper tests verified on R 4.4.0 (v3). Prepare chunk **NOT EXECUTED**. H1–H3 remain `not implemented`.  
 **Source order:** SAP > Brief > Dictionary.
 
-Planned paths assume the structure in `docs/IMPLEMENTATION_PLAN.md`. Output names are **planned**; exact file extensions remain NOT SPECIFIED (Brief: “reusable formats”) until Q14 is answered.
+Planned paths assume the structure in `docs/IMPLEMENTATION_PLAN.md`. Q14 table/figure formats are recorded in config; Q30 colours remain NA.
 
 ---
 
@@ -15,25 +15,25 @@ Planned paths assume the structure in `docs/IMPLEMENTATION_PLAN.md`. Output name
 | R1.1 | SAP §1 | α = .05; 95% CIs | `config/config.R` (`SAP$alpha`, `SAP$ci_level`) | config + session log | implemented (params only; no inferential tables yet) |
 | R1.2 | SAP §1; Brief §1 | No across-hypothesis multiplicity | `scripts/run_study1.R` (no extra p.adjust) | `output/logs/study1_analysis_log` | not implemented |
 | R1.3 | SAP §1; Brief §1 | Holm only on named follow-up families | `R/models_ttest.R` (`holm_adjust`) | `output/tables/study1_h2_followups` | not implemented |
-| R1.4 | SAP §1; Brief §1 | No outcome-based exclusions; report N | `R/exclusions.R`; `R/analysis_log.R` | `output/logs/study1_exclusions` | not implemented |
-| R1.5 | SAP §1 | Participant-level summaries for inference | `R/summarise_participants.R` | `output/intermediate/study1_participant_summaries` | not implemented |
+| R1.4 | SAP §1; Brief §1 | No outcome-based exclusions; report N | `R/study1_clean.R` | prepare log | implemented (code; Kaggle prepare **NOT EXECUTED**) |
+| R1.5 | SAP §1 | Participant-level summaries for inference | `R/study1_summarise.R` | `output/tables/study1_participant_summaries_SYNTHETIC.csv` | implemented (code; **NOT EXECUTED**) |
 | R1.6 | SAP §1; Brief §1, §15 | Fallbacks only if assumptions violated; no mixed models | `R/assumptions.R`; `R/models_npar.R` | analysis log | not implemented |
 | R1.7 | SAP §6 | 13-step analysis/reporting order | `scripts/run_study1.R` | full output tree | not implemented |
 | R1.8 | Brief §3 | QA/mapping before deriving analysis variables | `R/study1_load.R` | `output/logs/study1_log_data_qc_SYNTHETIC.txt` | implemented (load/QC; Kaggle synthetic) |
-| R1.9 | Brief §9 | Document fallback **before** looking at Condition significance | `R/assumptions.R`; analysis log gate | analysis log | not implemented |
-| R1.10 | Brief §9 | No invented numeric ANOVA/t fallback cutoff | `R/assumptions.R` (diagnostics only) | analysis log + QUESTIONS Q7 | not implemented |
+| R1.9 | Brief §9; Q7 | Document fallback **before** looking at Condition significance | `save_study1_q8_histograms` (no auto-switch) | prepare log | implemented (diagnostics + stop message; fallback tests not run; **NOT EXECUTED**) |
+| R1.10 | Brief §9 | No invented numeric ANOVA/t fallback cutoff | `R/study1_diagnostics.R` (Q7 no auto-switch) | prepare log | implemented (diagnostics only; **NOT EXECUTED**) |
 | R1.11 | Dict §1 | No questionnaire predictors | loaders omit those fields | — | not implemented |
-| R1.12 | Dict §1 | Exclusions before final analysis datasets | `R/exclusions.R` then summaries | `output/intermediate/study1_*_analysis` | not implemented |
-| R1.13 | Dict §12; Brief authority | Stop/flag on ambiguity | validation errors; no silent recode | analysis log | not implemented |
-| R1.14 | SAP §3.4 | Primary N = 50 | `R/exclusions.R` | exclusions log | not implemented |
+| R1.12 | Dict §1; Q2 | Exclusions before summaries | `apply_study1_primary_population`; Q31 audit | prepare log | implemented (primary = all 50; dedup not applied; **NOT EXECUTED**) |
+| R1.13 | Dict §12; Q3/Q4 | Stop/flag on ambiguity | `gate_pairwise_mapping_q3`; `gate_incomplete_cells_q4` | prepare log | implemented (code; **NOT EXECUTED**) |
+| R1.14 | SAP §3.4 | Primary N = 50 | `apply_study1_primary_population` | prepare log | implemented (code; **NOT EXECUTED**) |
 | R1.15 | SAP §3.4 | Document condition order; do not model it | `R/recode_factors.R` (G1/G2 as design note) | analysis log | not implemented |
-| R1.16 | SAP §1 | Study 1 named exclusion SOP — NOT SPECIFIED | placeholder + Q2 | QUESTIONS | not implemented |
-| R1.17 | SAP §3.3.1; Brief §8.1 | RT drop missing / non-positive / documented technical error only | `R/rt_preprocess.R` | RT QC table | not implemented |
-| R1.18 | Dict §9 | No outcome-based trial drops | exclusions + validate | exclusions log | not implemented |
+| R1.16 | SAP §1; Q2 | Primary = all 50; dedup placeholder until Q31 | `audit_disc_duplicates_guess` | prepare log | implemented (audit only; **NOT EXECUTED**) |
+| R1.17 | SAP §3.3.1; Brief §8.1 | RT drop missing / non-positive / documented technical error only | `valid_rt_rows` | prepare log `n_rt_dropped` | implemented (summaries only; **NOT EXECUTED**) |
+| R1.18 | Dict §9; Q2 | No outcome-based trial drops | `apply_study1_primary_population` | prepare log | implemented (code; **NOT EXECUTED**) |
 | R1.19 | Dict §3 | Map Public ID → participant_id after reconciliation | `R/dictionary_map.R` | — | not implemented |
 | R1.20 | Dict §3 | Retain external_session_id | `R/dictionary_map.R` | — | not implemented |
-| R1.21 | README; data | Study 1 Public ID BLINDED → Private ID (pending Q6) | `R/study1_load.R` (`participant_id` all NA) | QC log | blocked (question #6); both IDs kept |
-| R1.22 | Dict §10 | Disc row filter G1/G2 + response + Object Name Response | `R/study1_load.R` (load only; **filter blocked Q5**) | `output/logs/study1_log_data_qc_SYNTHETIC.txt` | blocked (question #5); files load without that filter |
+| R1.21 | Dict v2 §3; Q6 | Public ID → participant_id; anon on outputs | `apply_study1_analysis_id` | QC log | implemented (Kaggle v3: 50 IDs) |
+| R1.22 | Dict §10; Q5 | Disc Object Name = Response | `filter_object_name` | QC log | implemented (Kaggle v3: dropped 0) |
 | R1.23 | Dict §10 | Pairwise row filter + exclude confidence/comment | `R/select_trials.R` | QA log | not implemented |
 | R1.24 | Dict §10 | Vision row filter | `R/select_trials.R` | QA log | not implemented |
 | R1.25 | Dict §9 | 24 / 12 / 4 trials per included participant | `R/study1_load.R` QC | `output/logs/study1_log_data_qc_SYNTHETIC.txt` | implemented (synthetic QC: 50 × 24/12/4) |
@@ -46,15 +46,15 @@ Planned paths assume the structure in `docs/IMPLEMENTATION_PLAN.md`. Output name
 | R1.32 | Dict §4.1, §9 | accuracy = (response==answer); flag Correct mismatch | `map_study1_discrimination` | QC `disc_correct_mismatch_rows` | implemented (Kaggle count 0) |
 | R1.33 | Dict §4.1 | signed_error, absolute_error | `map_study1_discrimination` | trial columns only | implemented (derived; no AE tests yet) |
 | R1.34 | Dict §4.1 | reaction_time_ms from Reaction Time | `map_study1_discrimination` | QC RT missing/nonpositive | implemented (mapped; RT preprocess / tests not done) |
-| R1.35 | SAP §3.1; Brief §5.1 | Accuracy per participant × Condition × K, average 3 instances | `R/summarise_participants.R` | participant summaries | not implemented |
+| R1.35 | SAP §3.1; Brief §5.1 | Accuracy per participant × Condition × K, average 3 instances | `summarise_study1_participants` | summary CSV | implemented (code; **NOT EXECUTED**) |
 | R1.36 | SAP §3.4; Brief §5.1 | Keep K=30; palette-capacity caveat | reporting notes | tables/log | not implemented |
 | R1.37 | Dict §4.2 | 12 pairwise task trials | `run_study1_load` QC | QC log | implemented (synthetic: 50 × 12) |
 | R1.38 | Brief §4; Dict §4.2 | Exactly one Optimized + one Original image | `map_study1_pairwise` (`mapping_fail`) | QC `pairwise_mapping_fail_rows` | implemented (flag; Kaggle count 0) |
 | R1.39 | Brief §2, §4 | Do not use semantic Response label as condition | `map_study1_pairwise` | toy test in Chunk C | implemented (Kaggle: mapping-study1 passed) |
 | R1.40 | Brief §4 | preferred_side from response vs left/right_option | `map_study1_pairwise` | toy test in Chunk C | implemented (Kaggle: mapping-study1 passed) |
 | R1.41 | Brief §4; Dict §4.2 | optimized_side from `*_optimized*` filenames | `map_study1_pairwise` | toy test in Chunk C | implemented (Kaggle: mapping-study1 passed) |
-| R1.42 | Brief §4 | chose_optimized = sides equal | `map_study1_pairwise` | trial column only | implemented (trial flag; participant proportion blocked) |
-| R1.43 | Brief §4 | Failed rows: flag; disposition NOT SPECIFIED (Q3) | `map_study1_pairwise`; rows not dropped | QC log | implemented (flag only; Q3 still blocks drop/NA/stop) |
+| R1.42 | Brief §4 | chose_optimized = sides equal | `map_study1_pairwise` | trial column + summary proportion | implemented (trial flag; proportion in prepare; **NOT EXECUTED**) |
+| R1.43 | Brief §4; Q3 | Failed rows: flag and stop | `gate_pairwise_mapping_q3` | prepare log | implemented (code; **NOT EXECUTED**) |
 | R1.44 | Brief §4 | Persist QA record of derivation | QC log fields for mapping_fail | `output/logs/study1_log_data_qc_SYNTHETIC.txt` | partial (counts in QC log; no separate pairwise_qa file) |
 | R1.45 | SAP §3.4 | Fixed pairwise order = limitation only | analysis log / README | — | not implemented |
 | R1.46 | Dict §4.2 | Pairwise RT descriptive only | `R/summarise_participants.R` | descriptive RT table | not implemented |
@@ -63,9 +63,9 @@ Planned paths assume the structure in `docs/IMPLEMENTATION_PLAN.md`. Output name
 | R1.49 | SAP §3.1 | H2 = Condition × K | `R/models_anova.R` | same | not implemented |
 | R1.50 | SAP §3.1 | If interaction sig: paired t at 4 K, Holm | `R/models_ttest.R` | `output/tables/study1_h2_followups` | not implemented |
 | R1.51 | SAP §3.1; Brief §5.1 | Zero-variance K: no inferential follow-up/d; Holm on rest | `R/models_ttest.R` | follow-up table + log | not implemented |
-| R1.52 | SAP §3.1 | Histograms for severe skew / extreme outliers | `R/assumptions.R` | `output/figures/study1_accuracy_histograms` | not implemented |
+| R1.52 | SAP §3.1; Q8 | Diagnostic accuracy histograms (8 cells + H1 + H2 diffs) | `save_study1_q8_histograms` | `output/figures/study1_diag_*_SYNTHETIC.png` | implemented (code; **NOT EXECUTED**) |
 | R1.53 | SAP §3.1 | Mauchly; Greenhouse–Geisser if violated | `R/models_anova.R` | ANOVA table + log | not implemented |
-| R1.54 | SAP §3.1 | Fallback if severe non-normality (gate: Q7) | `R/models_npar.R` | fallback tables | not implemented |
+| R1.54 | SAP §3.1; Q7 | Fallback if severe non-normality | `save_study1_q8_histograms` then stop; `R/models_npar.R` later | prepare log | partial (gate + message written; Wilcoxon/Friedman **not** implemented) |
 | R1.55 | SAP §3.1 | Fallback H1: paired Wilcoxon overall Orig vs Opt | `R/models_npar.R` | `output/tables/study1_h1_wilcoxon` | not implemented |
 | R1.56 | SAP §3.1; Brief §9 | Fallback H2: Friedman on Opt−Orig diffs; pairwise Wilcoxon on diffs, Holm ×6 | `R/models_npar.R` | `output/tables/study1_h2_friedman` | not implemented |
 | R1.57 | SAP §3.1 | Report H1 F, df, p, partial η², 95% CI | `R/effect_sizes.R` + export | H1/H2 ANOVA table | not implemented |
@@ -73,30 +73,30 @@ Planned paths assume the structure in `docs/IMPLEMENTATION_PLAN.md`. Output name
 | R1.59 | SAP §3.1 | Mean and SD accuracy Original vs Optimized | `R/export_tables.R` | `output/tables/study1_accuracy_descriptives` | not implemented |
 | R1.60 | SAP §3.1 | Fallback H1: V, p, rank-biserial, 95% CI | `R/effect_sizes.R` | Wilcoxon table | not implemented |
 | R1.61 | SAP §3.1 | Fallback H2: Friedman, df, p, Kendall’s W (+ pairwise if sig) | `R/effect_sizes.R` | Friedman table | not implemented |
-| R1.62 | SAP §3.2; Brief §5.2 | Participant Optimized-choice proportion / 12 | `R/summarise_participants.R` | participant summaries | not implemented |
+| R1.62 | SAP §3.2; Brief §5.2 | Participant Optimized-choice proportion / 12 | `pairwise_proportion` | summary CSV | implemented (code; **NOT EXECUTED**) |
 | R1.63 | SAP §3.2 | Two-sided one-sample t vs 0.50 | `R/models_ttest.R` | `output/tables/study1_h3` | not implemented |
 | R1.64 | SAP §3.2 | Histogram of proportions | `R/assumptions.R` | `output/figures/study1_h3_histogram` | not implemented |
 | R1.65 | SAP §3.2 | Fallback one-sample Wilcoxon vs 0.50 if very skewed | `R/models_npar.R` | `output/tables/study1_h3_wilcoxon` | not implemented |
 | R1.66 | SAP §3.2 | Report mean, SD, 95% CI, t, df, p, d | `R/export_tables.R` | H3 table | not implemented |
 | R1.67 | SAP §3.2 | Fallback V, p, rank-biserial, 95% CI | `R/export_tables.R` | H3 Wilcoxon table | not implemented |
-| R1.68 | SAP §3.3.1 | All valid trials regardless of accuracy | `R/rt_preprocess.R` | — | not implemented |
+| R1.68 | SAP §3.3.1 | All valid trials regardless of accuracy | `valid_rt_rows` (no accuracy filter) | prepare log | implemented (summaries only; **NOT EXECUTED**) |
 | R1.69 | SAP §3.3.1 | Only specified RT exclusions | `R/rt_preprocess.R` | RT QC | not implemented |
-| R1.70 | SAP §3.3.1 | Trial-level skewness; log if > 1 | `R/rt_preprocess.R` | analysis log (estimator: Q12) | not implemented |
-| R1.71 | Brief §8.1 | `log()` natural log (pending C14) | `R/rt_preprocess.R` | — | not implemented |
-| R1.72 | SAP §3.3.1 | Mean RT Orig vs Opt averaging K; paired t | `R/summarise_participants.R`; `R/models_ttest.R` | `output/tables/study1_rt` | not implemented |
+| R1.70 | SAP §3.3.1; Q12 | Trial-level e1071 type-2 skewness; log if > 1 | `trial_rt_skewness` | prepare log + summary scale column | implemented (code; **NOT EXECUTED**) |
+| R1.71 | Brief §8.1; Q12 | `log()` natural log if trial skew > 1 | `rt_analysis_scale` | summary `rt_analysis_scale` | implemented (code; **NOT EXECUTED**) |
+| R1.72 | SAP §3.3.1 | Mean RT Orig vs Opt averaging K; paired t | `summarise_study1_participants` | summary CSV means | partial (means only; paired t **not** implemented) |
 | R1.73 | SAP §3.3.1 | Pairwise RT descriptive | `R/export_tables.R` | `output/tables/study1_pairwise_rt_desc` | not implemented |
 | R1.74 | SAP §3.3.1 | Histogram of RT differences; Wilcoxon if severely non-normal | `R/assumptions.R`; `R/models_npar.R` | figures + optional fallback table | not implemented |
 | R1.75 | SAP §3.3.1 | Report ms descriptives; inferential on analysis scale | `R/export_tables.R` | RT table | not implemented |
 | R1.76 | Brief §8.1 | Geometric-mean ratio — pending Q15 | `R/rt_preprocess.R` (optional) | RT table | not implemented |
 | R1.77 | SAP §3.3.1 | RT Wilcoxon reporting | `R/export_tables.R` | RT fallback table | not implemented |
-| R1.78 | SAP §3.3.2; Brief §8.2 | Mean AE Orig vs Opt averaging K; paired t | `R/models_ttest.R` | `output/tables/study1_absolute_error` | not implemented |
+| R1.78 | SAP §3.3.2; Brief §8.2 | Mean AE Orig vs Opt averaging K; paired t | `summarise_study1_participants` | summary CSV means | partial (means only; paired t **not** implemented) |
 | R1.79 | SAP §3.3.2 | AE difference histogram; Wilcoxon if extremely skewed | `R/assumptions.R` | figures | not implemented |
 | R1.80 | SAP §3.3.2 | AE reporting + fallback | `R/export_tables.R` | AE table | not implemented |
 | R1.81 | Brief §8.2 | Descriptive AE by Condition × K (CI if template) | `R/export_tables.R` | `output/tables/study1_ae_by_K_desc` | not implemented |
-| R1.82 | SAP §3.3.3; Brief §8.3 | Signed error mean/SD by condition; no test | `R/export_tables.R` | `output/tables/study1_signed_error` | not implemented |
+| R1.82 | SAP §3.3.3; Brief §8.3 | Signed error mean/SD by condition; no test | `summarise_study1_participants` | summary CSV means | partial (participant means only; publication table **not** implemented) |
 | R1.83 | SAP §3.4; Brief §11 | Repeat primary accuracy + pairwise on N=48 subset | `R/sensitivity_vision.R` | `output/tables/study1_vision_sensitivity` | not implemented |
 | R1.84 | Dict §7 | Vision items/keys/score 0–4 | `map_study1_vision`; QC score by private ID | QC log | partial (item map + QC count; no analysis population) |
-| R1.85 | Dict §7 | vision_subset_flag via frozen rule (Q1) | `vision_subset_flag` all NA | QC log | blocked (question #1) |
+| R1.85 | Dict §7; Q1 | vision_subset_flag score==4; not a primary exclusion | `map_study1_vision` + QC | QC log | implemented (Kaggle v3: 48/2; subset not applied) |
 | R1.86 | Brief §9.1 | Wilcoxon zero convention (Q10) | `R/models_npar.R` | analysis log | not implemented |
 | R1.87 | Brief §9.1, §10 | Document ES package/function/convention (Q9) | `R/effect_sizes.R` | analysis log / README | not implemented |
 | R1.88 | SAP §3; Brief §14 | Publication-ready summary tables | `R/export_tables.R` | `output/tables/*` | not implemented |
@@ -202,4 +202,4 @@ Study 2 “uses the same … as Study 1 unless otherwise stated” (SAP §4). Ro
 ---
 
 **Counts:** Study 1 = 94 (R1.1–R1.94); Study 2 = 28 (R2.1–R2.28); Study 3 = 36 (R3.1–R3.36); plus 5 project rows (P1–P5).  
-All analysis rows remain **not implemented**.
+H1–H3, effect sizes, and Q13 report tables/figures remain **not implemented**. Prepare-chunk rows are **code written, Kaggle NOT EXECUTED**.
