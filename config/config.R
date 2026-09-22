@@ -198,6 +198,14 @@ SAP <- list(
   duplicate_dedup_apply = FALSE,
   # --- still pending (must stay NA; do not guess) --------------------------
   figure_colours = NA,                   # PENDING Q30 (Q13 did not name colours)
+  # Placeholder only. One-line swap when Q30 is answered: fill figure_colours and use it.
+  figure_palette_placeholder = list(
+    name = "okabe_ito",
+    status = "placeholder_pending_Q30",
+    Original = "#E69F00",
+    Optimized = "#0072B2",
+    reference = "#000000"
+  ),
   duplicate_trial_key = NA,              # PENDING Q31
   geometric_mean_rt_ratio = NA,          # PENDING client answer Q15
   side_label_case = NA,                  # PENDING client answer Q16

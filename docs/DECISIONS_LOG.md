@@ -3,7 +3,7 @@
 Every implementation decision with its SAP / brief / dictionary / rules reference.  
 Methodological choices that the SAP leaves open are **not** decided here; they are `TODO(client-question #N)` until Fatimah answers.
 
-**R status:** not installed locally. Chunk A/B/C, v3 load/QC, and the prepare chunk were verified from pasted Kaggle output (R 4.4.0). No hypothesis tests have been run.
+**R status:** not installed locally. Prepare chunk verified on Kaggle R 4.4.0. H1–H3 / tables / figures are written and **NOT EXECUTED**.
 
 | Date | Decision | Reference | Notes |
 |------|----------|-----------|-------|
@@ -61,4 +61,13 @@ Methodological choices that the SAP leaves open are **not** decided here; they a
 
 | 2026-09-22 | Prepare chunk verified on Kaggle R 4.4.0 | Pasted Cell 2+3 | Q2 N=50; Q3/Q4 passed (0); Q31 applied=FALSE n_dup_keys=0; 50 anon summary rows; 3 diag PNGs; Q12 skewness=1.1808 → log (synthetic pipeline only, not a finding); tests 57/0/0. No H1–H3. |
 
-Hypothesis tests, applied dedup, effect sizes, and Q13 report figures have **not** been run.
+| 2026-09-22 | H1–H3 use the SAP recommended parametric path; Q7 report is written first | SAP §3.1–§3.3; Q7; Brief §9 | `write_q7_client_report` before any Condition p-value. Wilcoxon/Friedman are not called. No invented normality cutoff. |
+| 2026-09-22 | RM-ANOVA via `afex::aov_ez` type=3, `contr.sum` | Q11; SAP §3.1 | Mauchly from `summary(fit$Anova)$sphericity.tests`. GG only if Mauchly p < alpha for effects with >2 levels. Condition (2 levels) uncorrected. |
+| 2026-09-22 | Q9 ES via effectsize with two-sided 95% CI | Q9 | `eta_squared(..., partial=TRUE, alternative="two.sided")` — not the package default `"greater"`. Paired `cohens_d(..., paired=TRUE)` as dz. H3 `cohens_d(x, mu=0.50)`. Rank-biserial / Kendall W wrappers unused until a fallback is approved. |
+| 2026-09-22 | H2 follow-ups only if interaction p < alpha; Holm on estimable K only | SAP §3.1 | Zero-variance K: descriptives only. Differences are Optimized − Original. |
+| 2026-09-22 | RT paired t on the Q12 analysis scale (log on this synthetic run) | SAP §3.3.1; Q12 | Millisecond descriptives always reported. Pairwise RT descriptive only. |
+| 2026-09-22 | AE paired t across K; AE × K descriptive only; signed error descriptive only | SAP §3.3.2–§3.3.3; Q14 | No AE-by-K inferential test. |
+| 2026-09-22 | Vision sensitivity = repeat H1–H3 on score==4; not merged | SAP §3.4; Q1 | Synthetic expected N=48. Separate table. |
+| 2026-09-22 | Q13 figures use Okabe–Ito placeholder pending Q30 | Q13; Q14; Q30 | Original `#E69F00`, Optimized `#0072B2`. Caption and DECISIONS mark it as placeholder. `SAP$figure_colours` stays NA. PNG 300 dpi + PDF. Tables csv + docx. |
+
+Hypothesis tests, effect sizes, and Q13 figures are **written but NOT EXECUTED** until Kaggle output is pasted. Dedup remains unapplied (Q31).

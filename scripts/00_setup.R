@@ -6,8 +6,13 @@
 
 # Package names only. Reasons in comments. Only packages we are sure exist on CRAN.
 required_packages <- c(
-  "testthat", # helper unit tests on toy data
-  "e1071"     # Q12: skewness(x, type = 2, na.rm = TRUE) for trial-level RT
+  "testthat",  # helper unit tests on toy data
+  "e1071",     # Q12: skewness(x, type = 2, na.rm = TRUE) for trial-level RT
+  "afex",      # SAP §3.1: RM ANOVA Type III, Mauchly, Greenhouse–Geisser
+  "effectsize",# Q9: partial eta-squared, Cohen's d/dz, rank-biserial, Kendall's W
+  "ggplot2",   # Q13 report figures
+  "officer",   # Q14 .docx tables
+  "flextable"  # Q14 .docx tables
 )
 # Data reading uses utils::read.csv (base). No readr.
 

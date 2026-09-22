@@ -92,3 +92,18 @@ This file is **not yet in the local git repo**. Download it from the Kaggle work
 | V-P8 Q7 | “fallback NOT applied”; no H1–H3 | present; “H1-H3 were not run” |
 | V-P9 Q12 | trial_rt_skewness printed; e1071 loaded | e1071 1.7.16; skewness=1.1808; threshold=1; analysis_scale=log; n_valid_rt=1200; n_rt_dropped=0 |
 | V-P10 helper tests | all previous + prepare toys pass | n_passed=57 n_failed=0 n_error=0; no synthetic load in tests |
+
+## H1–H3 chunk — NOT EXECUTED
+
+| Item | What to check | Result |
+|------|----------------|--------|
+| V-H1 Q7 report | fallback_applied=FALSE; client text printed | **NOT EXECUTED** |
+| V-H2 H1/H2 ANOVA | F, df, p, pes, two-sided 95% CI; Mauchly/GG logged | **NOT EXECUTED** |
+| V-H3 H2 follow-ups | only if interaction p < alpha; Holm; zero-var skip | **NOT EXECUTED** |
+| V-H4 H3 | one-sample t vs 0.50; d vs 0.50 | **NOT EXECUTED** |
+| V-H5 RT | analysis_scale=log; paired t; ms descriptives | **NOT EXECUTED** |
+| V-H6 AE / SE | AE paired t; SE table has no test | **NOT EXECUTED** |
+| V-H7 vision | n_ids=48; separate table | **NOT EXECUTED** |
+| V-H8 tables | csv+docx; no Gorilla ID columns | **NOT EXECUTED** |
+| V-H9 figures | 4 report fig png+pdf; Okabe–Ito caption | **NOT EXECUTED** |
+| V-H10 no fallback | no Wilcoxon/Friedman in the log | **NOT EXECUTED** |

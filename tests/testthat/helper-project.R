@@ -48,6 +48,9 @@ if (!exists("gate_pairwise_mapping_q3")) {
 if (!exists("accuracy_cells_long")) {
   source(file.path(PROJECT_ROOT, "R", "summarise_participants.R"), local = FALSE)
 }
+if (!exists("holm_adjust")) {
+  source(file.path(PROJECT_ROOT, "R", "study1_models.R"), local = FALSE)
+}
 if (!exists("fmt_p")) {
   source(file.path(PROJECT_ROOT, "R", "utils_format.R"), local = FALSE)
 }

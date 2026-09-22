@@ -15,6 +15,7 @@ source(file.path(PROJECT_ROOT, "R", "utils_format.R"))
 source(file.path(PROJECT_ROOT, "R", "study1_clean.R"))
 source(file.path(PROJECT_ROOT, "R", "study1_gates.R"))
 source(file.path(PROJECT_ROOT, "R", "summarise_participants.R"))
+source(file.path(PROJECT_ROOT, "R", "study1_models.R"))
 
 test_dir_path <- file.path(PROJECT_ROOT, "tests", "testthat")
 if (!dir.exists(test_dir_path)) {

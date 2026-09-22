@@ -40,14 +40,14 @@ Last updated: 22 September 2026. **Internal (Tayyab / assistant). Do not send th
 | Helper tests after v3 | Verified 46, then 57 after prepare toys |
 | renv.lock on Kaggle | Written; **not in local git** until downloaded |
 | Prepare (summaries + Q8 diags) | **Verified** Kaggle R 4.4.0. Q31 still audit-only. Q30 still NA. |
-| H1–H3 / ES / Q13 figures | **Not started.** |
+| H1–H3 / ES / Q13 figures | **Code written; Kaggle NOT EXECUTED.** Q7 no auto-fallback. Q30 Okabe–Ito placeholder. |
 
 ---
 
-## Next coding (after Kaggle confirms prepare)
+## Next coding (after Kaggle confirms H1–H3)
 
-1. H1–H3 + Holm + effect sizes (Q9–Q11). Do not auto-fallback (Q7).
-2. Do not invent Q30 colours.
+1. Fix only from pasted Kaggle errors (afex/effectsize extractors if names differ).
+2. Do not invent Q30 colours; do not apply Q31 dedup.
 
 ---
 

@@ -2,7 +2,73 @@
 
 The analyst’s PC does **not** have R. You run R on **Kaggle**. The client later runs the same scripts on **R 4.6.1**.
 
-**Prepare chunk verified 22 Sep 2026** from pasted Kaggle output (R 4.4.0). H1–H3 are **not** implemented yet. Cells below are kept as the record of what was run.
+**Now: Study 1 H1–H3 / tables / figures.** Prepare chunk is already verified. Internet must be **ON** (`afex`, `effectsize`, `ggplot2`, `officer`, `flextable` may install).
+
+---
+
+## H1–H3 chunk (now)
+
+**Cell 1 — pull**
+
+```r
+setwd("/kaggle/working/R-project")
+system("git pull origin main")
+print(file.exists("R/study1_analyse.R"))
+print(file.exists("R/study1_models.R"))
+print(file.exists("R/study1_export.R"))
+```
+
+All three must print `TRUE`.
+
+**Cell 2 — full pipeline (paste this whole console back)**
+
+```r
+PROJECT_ROOT <- "/kaggle/working/R-project"
+source(file.path(PROJECT_ROOT, "kaggle", "run_notebook.R"))
+```
+
+**Cell 3 — helper tests (paste this whole console back)**
+
+```r
+PROJECT_ROOT <- "/kaggle/working/R-project"
+source(file.path(PROJECT_ROOT, "kaggle", "run_tests.R"))
+```
+
+### What to paste back
+
+1. Full Cell 2 console, including the **Q7 fallback review** block, the ANALYSIS log, table list, figure list, and `header_has_gorilla_id_column` lines.
+2. Full Cell 3 console (`n_passed` / `n_failed` / `n_error`).
+3. You do **not** need to paste participant summary rows.
+
+### Send to Fatimah if she is deciding Q7
+
+After Cell 2 succeeds, download and send:
+
+- `/kaggle/working/output/logs/study1_q7_fallback_review_SYNTHETIC.txt`
+- these diagnostic PNGs: `study1_diag_accuracy_cells_SYNTHETIC.png`, `study1_diag_h1_diff_SYNTHETIC.png`, `study1_diag_h2_k_diffs_SYNTHETIC.png`, `study1_diag_h3_prop_SYNTHETIC.png`, `study1_diag_rt_diff_SYNTHETIC.png`, `study1_diag_ae_diff_SYNTHETIC.png`
+
+The report says fallback was **not** applied. Do not treat Wilcoxon/Friedman as the Study 1 tests unless she replies that she wants that switch.
+
+### What Cell 2 should show if it actually ran
+
+- Q7: `fallback_applied=FALSE` and the client-review text
+- H1 and H2 lines with F, df, p, pes, and a sphericity correction (`none` or `GG`)
+- H3 t / p / d
+- RT scale `log` (from the last chunk’s Q12 result) and a paired t
+- AE paired t
+- vision_sensitivity `n_ids=48`
+- tables named `study1_table_*_SYNTHETIC.csv` and `.docx`
+- figures `study1_fig_*_SYNTHETIC.png` and `.pdf`
+- every inferential CSV `header_has_gorilla_id_column=FALSE`
+- no Wilcoxon / Friedman lines
+
+If Mauchly extraction or `eta_squared` column names fail, paste the full error. Do not invent a workaround.
+
+Nothing is “passed” until you paste the notebook output.
+
+---
+
+## Prepare chunk (verified 22 Sep 2026)
 
 Internet must be **ON** (`e1071` may need to install).
 

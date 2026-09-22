@@ -1,5 +1,5 @@
-# Master script. Study 1 load/QC + prepare (population, gates, summaries, Q8 diagnostics).
-# Does not run H1-H3, effect sizes, or Q13 report figures.
+# Master script. Study 1 load/QC + prepare + H1-H3 / RT / AE / tables / figures.
+# Q7: writes a fallback-review report and does NOT apply Wilcoxon/Friedman.
 
 if (!exists("PROJECT_ROOT")) {
   env <- Sys.getenv("PROJECT_ROOT", unset = "")
@@ -18,10 +18,7 @@ study1 <- run_study1_load()
 source(file.path(PROJECT_ROOT, "R", "study1_prepare.R"))
 study1_prep <- run_study1_prepare(study1)
 
-# PENDING next chunk:
-#   H1-H3 tests, Holm follow-ups, effect sizes (Q9-Q11)
-#   RT / AE inferential tests
-#   vision-screen sensitivity
-#   Q13 tables / figures / exports
+source(file.path(PROJECT_ROOT, "R", "study1_analyse.R"))
+study1_ana <- run_study1_analyse(study1, study1_prep)
 
-message("run_all.R finished load + prepare. No hypothesis tests were run.")
+message("run_all.R finished load + prepare + analysis. Q7 fallback was not applied.")
