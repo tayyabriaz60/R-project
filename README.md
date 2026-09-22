@@ -12,7 +12,7 @@ Implementation of the **frozen SAP** (21 September 2026). The scripts follow the
 | Q1–Q14 answers in `config/config.R` | Recorded |
 | Exclusions / flags (Q2 population, Q3/Q4 gates, Q31 clean) | Ready |
 | Participant summaries + Q8 diagnostic histograms | Ready |
-| H1–H3, RT, AE, signed error, vision sensitivity | Ready (parametric path; Q7 does not auto-switch) |
+| H1–H3, RT, AE, signed error, vision sensitivity | Ready (Q7 locked: H1/H2/H3 npar; RT/AE paired t) |
 | Q13/Q14 tables (`.csv` + `.docx`) and figures (`.png` 300 dpi + `.pdf`) | Ready |
 | Helper unit tests (toy data) | 79 passed on Kaggle (fresh session) |
 | Studies 2 and 3 | **Not written yet** |
@@ -42,7 +42,7 @@ source(file.path(PROJECT_ROOT, "run_all.R"))
 2. `scripts/00_setup.R` (install missing packages only, then load them)
 3. Study 1 load + QC
 4. Population / Q31 duplicate clean / Q3–Q4 gates / participant summaries / Q8 diagnostics
-5. Q7 fallback-review note (no auto-switch)
+5. Q7 report, then the locked H1/H2/H3 / RT / AE tests
 6. H1–H3, RT, AE, signed-error descriptives, vision sensitivity
 7. Tables and figures
 
@@ -97,7 +97,7 @@ Look first at:
 
 Q30 colours (`#E69F00` Original, `#0072B2` Optimized) and Q31 (Participant × Condition × K × configuration_instance; earliest UTC Timestamp, Event Index tie-break) are recorded and applied.
 
-Q7: the pipeline does **not** auto-switch to Wilcoxon/Friedman. Review `study1_q7_fallback_review_SYNTHETIC.txt` and the `study1_diag_*` plots first.
+Q7 is locked (22 Sep 2026, real-data plots): H1 paired Wilcoxon, H2 Friedman (pairwise Wilcoxon + Holm only if Friedman is significant), H3 one-sample Wilcoxon vs 0.50, RT and AE paired t. Vision subset uses the same tests. Primary N stays 50.
 
 ## Folder structure
 

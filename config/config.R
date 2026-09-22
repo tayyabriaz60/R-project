@@ -180,6 +180,13 @@ SAP <- list(
   study1_id_column = "participant_public_id",     # Q6 canonical after map
   anonymous_id_prefix_study1 = "S1_P",   # Q6 reporting IDs: S1_P001, ...
   fallback_normality_cutoff = "no_cutoff_diagnostics_then_stop", # Q7
+  # Locked 22 Sep 2026 after her review of the real-data Q7 plots (and Tayyab agree).
+  study1_h1_test = "paired_wilcoxon",
+  study1_h2_test = "friedman_on_opt_minus_orig_by_k",
+  study1_h3_test = "onesample_wilcoxon",
+  study1_rt_test = "paired_t",
+  study1_ae_test = "paired_t",
+  q7_path_locked = TRUE,
   accuracy_histogram_which = c(
     "condition_k_cells_8",
     "h1_opt_minus_orig",

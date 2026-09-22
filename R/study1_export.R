@@ -87,9 +87,9 @@ write_study1_tables <- function(primary, vision_tab, ae_k, pw_rt, log_path) {
   notes_acc <- c(
     paste0("N = ", n, " (primary population; SAP §3.4)."),
     "SAP §3.1: accuracy is the mean of 3 configuration instances within each Condition × K cell.",
-    "H1 = Condition main effect. H2 = Condition × K interaction. Q11: Type III SS, sum-to-zero contrasts.",
-    "Sphericity: Mauchly; Greenhouse–Geisser if p < alpha. Holm only on H2 follow-ups (if run).",
-    "Q7: fallback tests were not applied.",
+    "Q7 locked path (real-data diagnostics, 22 Sep 2026): H1 paired Wilcoxon; H2 Friedman on Opt-Orig diffs by K.",
+    "H3 one-sample Wilcoxon vs 0.50. RT and AE stay paired t-tests. Vision subset uses the same tests.",
+    "Q10: exact-zero paired differences omitted; n_nonzero reported. Holm only on H2 Friedman follow-ups (if run).",
     "SAP §3.4: K = 30 is retained; palette-capacity limits are a reporting caveat, not an exclusion."
   )
   desc <- data.frame(
@@ -107,31 +107,51 @@ write_study1_tables <- function(primary, vision_tab, ae_k, pw_rt, log_path) {
     notes_acc, log_path
   )
 
-  anova_df <- data.frame(
-    hypothesis = c("H1_Condition", "H2_Condition_x_K"),
-    effect = c(primary$h1$effect, primary$h2$effect),
-    F = c(primary$h1$F, primary$h2$F),
-    df_num = c(primary$h1$df_num, primary$h2$df_num),
-    df_den = c(primary$h1$df_den, primary$h2$df_den),
-    p = c(primary$h1$p, primary$h2$p),
-    partial_eta_sq = c(primary$h1$pes, primary$h2$pes),
-    pes_ci_low = c(primary$h1$pes_ci_low, primary$h2$pes_ci_low),
-    pes_ci_high = c(primary$h1$pes_ci_high, primary$h2$pes_ci_high),
-    mauchly_p = c(primary$h1$mauchly_p, primary$h2$mauchly_p),
-    sphericity_correction = c(primary$h1$sphericity_correction, primary$h2$sphericity_correction),
+  h1 <- primary$h1
+  h1_df <- data.frame(
+    hypothesis = "H1_Condition",
+    test = "paired_wilcoxon",
+    n_pairs = h1$n_pairs,
+    n_zero = h1$n_zero,
+    n_nonzero = h1$n_nonzero,
+    V = h1$V,
+    p = h1$p,
+    rank_biserial = h1$r_rb,
+    r_ci_low = h1$r_ci_low,
+    r_ci_high = h1$r_ci_high,
     stringsAsFactors = FALSE
   )
   write_table_csv_docx(
-    anova_df, "study1_table_h1_h2_anova",
-    "Study 1: H1 and H2 from the 2 × 4 repeated-measures ANOVA",
+    h1_df, "study1_table_h1_wilcoxon",
+    "Study 1: H1 paired Wilcoxon signed-rank test (Optimized vs Original accuracy)",
+    notes_acc, log_path
+  )
+
+  h2 <- primary$h2
+  h2_df <- data.frame(
+    hypothesis = "H2_Condition_x_K",
+    test = "friedman_opt_minus_orig_by_K",
+    n = h2$n,
+    n_k = h2$n_k,
+    chi_squared = h2$statistic,
+    df = h2$df,
+    p = h2$p,
+    kendalls_w = h2$kendalls_w,
+    w_ci_low = h2$w_ci_low,
+    w_ci_high = h2$w_ci_high,
+    stringsAsFactors = FALSE
+  )
+  write_table_csv_docx(
+    h2_df, "study1_table_h2_friedman",
+    "Study 1: H2 Friedman test of Optimized-Original accuracy differences across K",
     notes_acc, log_path
   )
 
   if (isTRUE(primary$follow$ran) && nrow(primary$follow$rows) > 0L) {
     write_table_csv_docx(
       primary$follow$rows, "study1_table_h2_followups",
-      "Study 1: H2 follow-up paired comparisons at each K (Optimized − Original)",
-      c(notes_acc, "Holm adjustment is within this family only. Zero-variance K: descriptives only."),
+      "Study 1: H2 Friedman follow-up pairwise Wilcoxon tests on K-difference scores",
+      c(notes_acc, "Six pairwise Wilcoxon tests on Opt-Orig diffs between K levels. Holm within this family."),
       log_path
     )
   } else {
@@ -142,7 +162,7 @@ write_study1_tables <- function(primary, vision_tab, ae_k, pw_rt, log_path) {
     )
     write_table_csv_docx(
       note_df, "study1_table_h2_followups",
-      "Study 1: H2 follow-ups not run",
+      "Study 1: H2 Friedman follow-ups not run",
       c(notes_acc, paste("Reason:", primary$follow$reason)),
       log_path
     )
@@ -153,24 +173,25 @@ write_study1_tables <- function(primary, vision_tab, ae_k, pw_rt, log_path) {
     n = h3$n,
     mean_prop = h3$mean,
     sd = h3$sd,
-    ci_low = h3$ci_low,
-    ci_high = h3$ci_high,
-    t = h3$t,
-    df = h3$df,
+    mean_ci_low = h3$ci_low,
+    mean_ci_high = h3$ci_high,
+    n_zero = h3$n_zero,
+    n_nonzero = h3$n_nonzero,
+    V = h3$V,
     p = h3$p,
-    cohens_d_vs_0.50 = h3$d,
-    d_ci_low = h3$d_ci_low,
-    d_ci_high = h3$d_ci_high,
+    rank_biserial = h3$r_rb,
+    r_ci_low = h3$r_ci_low,
+    r_ci_high = h3$r_ci_high,
     null = h3$mu,
     stringsAsFactors = FALSE
   )
   write_table_csv_docx(
     h3_df, "study1_table_h3",
-    "Study 1: H3 one-sample t-test of Optimized-choice proportion vs 0.50",
+    "Study 1: H3 one-sample Wilcoxon test of Optimized-choice proportion vs 0.50",
     c(
-      paste0("N = ", n, ". SAP §3.2; two-sided test; 12 pairwise trials per participant."),
-      "SAP §3.4: pairwise trial order was fixed; reported as a limitation only.",
-      "Q7: Wilcoxon fallback not applied."
+      paste0("N = ", n, ". SAP §3.2 fallback; two-sided; 12 pairwise trials per participant."),
+      "Interpretation: whether proportions tend to sit above or below 0.50 (not a test of the mean).",
+      "Mean and t-style CI are descriptive only. Q10: exact ties at 0.50 omitted."
     ),
     log_path
   )
@@ -213,7 +234,7 @@ write_study1_tables <- function(primary, vision_tab, ae_k, pw_rt, log_path) {
     "Study 1: Paired t-test of mean RT (Optimized − Original) on the analysis scale",
     c(
       paste0("N = ", n, ". SAP §3.3.1. Analysis scale = ", primary$rt_scale, " (Q12)."),
-      "Q7: Wilcoxon fallback not applied."
+      "Q7: RT stays the paired t-test on the analysis scale."
     ),
     log_path
   )
@@ -247,7 +268,7 @@ write_study1_tables <- function(primary, vision_tab, ae_k, pw_rt, log_path) {
   write_table_csv_docx(
     ae_inf, "study1_table_ae",
     "Study 1: Paired t-test of mean absolute error (Optimized − Original)",
-    c(paste0("N = ", n, ". SAP §3.3.2. Q7: Wilcoxon fallback not applied.")),
+    c(paste0("N = ", n, ". SAP §3.3.2. Q7: AE stays the paired t-test.")),
     log_path
   )
 
@@ -287,7 +308,7 @@ write_study1_tables <- function(primary, vision_tab, ae_k, pw_rt, log_path) {
     "Study 1: Vision-screen sensitivity (N = 48; not the primary analysis)",
     c(
       "SAP §3.4; Q1. Primary N remains 50. This table repeats H1–H3 on score = 4 only.",
-      "Not merged with primary results. Q7: fallback not applied."
+      "Not merged with primary results. Same locked tests as primary (Wilcoxon / Friedman / Wilcoxon)."
     ),
     log_path
   )

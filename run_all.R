@@ -21,4 +21,4 @@ study1_prep <- run_study1_prepare(study1)
 source(file.path(PROJECT_ROOT, "R", "study1_analyse.R"))
 study1_ana <- run_study1_analyse(study1, study1_prep)
 
-message("run_all.R finished load + prepare + analysis. Q7 fallback was not applied.")
+message("run_all.R finished load + prepare + analysis. Q7 locked path applied.")

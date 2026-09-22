@@ -55,6 +55,56 @@ test_that("coerce_mauchly_df keeps effect names from a 2x2 matrix or flattened t
   expect_equal(as.numeric(d2["condition:K", grep("p", names(d2), ignore.case = TRUE)[1]]), 0.04)
 })
 
+test_that("Q10 omit-zeros matches a hand-checkable Wilcoxon", {
+  opt <- c(2, 2, 0, 1)
+  orig <- c(0, 0, 0, 3)
+  z <- nonzero_paired_diffs(opt, orig)
+  expect_equal(z$n_pairs, 4L)
+  expect_equal(z$n_zero, 1L)
+  expect_equal(z$n_nonzero, 3L)
+  expect_equal(sort(z$d_nonzero), sort(c(2, 2, -2)))
+  ww <- paired_wilcoxon_opt_minus_orig(opt, orig)
+  ref <- stats::wilcox.test(c(2, 2, -2), mu = 0, exact = FALSE, correct = TRUE)
+  expect_equal(ww$V, unname(ref$statistic))
+  expect_equal(ww$p, unname(ref$p.value))
+})
+
+test_that("H2 Friedman follow-ups stay off when p is not below alpha", {
+  sm <- data.frame(
+    acc_Original_K5 = c(1, 1, 1),
+    acc_Optimized_K5 = c(1, 0, 1),
+    acc_Original_K10 = c(1, 1, 0),
+    acc_Optimized_K10 = c(0, 1, 1),
+    acc_Original_K20 = c(0, 1, 0),
+    acc_Optimized_K20 = c(1, 0, 1),
+    acc_Original_K30 = c(0, 0, 1),
+    acc_Optimized_K30 = c(1, 1, 0),
+    stringsAsFactors = FALSE
+  )
+  fol <- h2_friedman_followups(sm, friedman_p = 0.20)
+  expect_false(fol$ran)
+  expect_identical(fol$reason, "friedman_not_significant")
+})
+
+test_that("H2 Friedman follow-ups make six K pairs when triggered", {
+  sm <- data.frame(
+    acc_Original_K5 = c(1, 1, 1, 1),
+    acc_Optimized_K5 = c(0, 0, 1, 0),
+    acc_Original_K10 = c(0, 0, 0, 1),
+    acc_Optimized_K10 = c(1, 1, 1, 1),
+    acc_Original_K20 = c(1, 0, 1, 0),
+    acc_Optimized_K20 = c(0, 1, 0, 1),
+    acc_Original_K30 = c(0, 1, 0, 1),
+    acc_Optimized_K30 = c(1, 0, 1, 0),
+    stringsAsFactors = FALSE
+  )
+  fol <- h2_friedman_followups(sm, friedman_p = 0.001)
+  expect_true(fol$ran)
+  expect_equal(nrow(fol$rows), 6L)
+  expect_equal(sum(fol$rows$estimable), 6L)
+  expect_false(any(is.na(fol$rows$p_holm[fol$rows$estimable])))
+})
+
 test_that("Q30 figure_colours is the confirmed Okabe-Ito pair", {
   pal <- require_param("figure_colours")
   expect_identical(pal$status, "confirmed_Q30")

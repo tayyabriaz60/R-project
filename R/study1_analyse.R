@@ -1,6 +1,6 @@
 # Study 1 primary tests, sensitivity, tables, figures.
 # Q7 report is written BEFORE any Condition p-value is examined.
-# Fallback tests are never run.
+# Locked path (22 Sep 2026): H1 Wilcoxon, H2 Friedman, H3 Wilcoxon; RT/AE paired t.
 
 source(file.path(PROJECT_ROOT, "R", "study1_models.R"))
 source(file.path(PROJECT_ROOT, "R", "study1_q7.R"))
@@ -16,47 +16,33 @@ vision_subset_ids <- function(vis) {
 run_h1_h2_h3 <- function(summary_df, log_path, label) {
   n <- nrow(summary_df)
   log_msg(log_path, label, " n_participants=", n)
-  long_acc <- accuracy_long_from_summary(summary_df)
-  fit <- fit_study1_rm_anova(long_acc)
-  model_path <- file.path(OUTPUT_MODELS, paste0("study1_h1_h2_anova_", label, OUTPUT_SUFFIX, ".txt"))
-  writeLines(utils::capture.output(print(summary(fit))), model_path)
-  log_msg(log_path, "wrote ", basename(model_path))
+  log_msg(log_path, label, " Q7 locked H1=paired_wilcoxon H2=friedman H3=onesample_wilcoxon")
 
-  sph <- mauchly_table(fit)
-  log_msg(log_path, label, " Mauchly table rows=", paste(rownames(sph), collapse = "; "),
-          " columns=", paste(names(sph), collapse = "; "))
-  tab0 <- as.data.frame(anova(fit, correction = "none", es = "none"))
-  log_msg(log_path, label, " ANOVA rows=", paste(rownames(tab0), collapse = "; "))
-  h1_name <- resolve_effect_name(rownames(tab0), c("condition", "Condition"))
-  h2_name <- resolve_effect_name(rownames(tab0), c("condition:K", "K:condition", "conditionK"))
-  es_tbl <- partial_eta_table(fit)
-  h1 <- anova_effect_report(fit, h1_name, 2L, sph, es_tbl)
-  h2 <- anova_effect_report(fit, h2_name, 4L, sph, es_tbl)
-  log_msg(log_path, label, " H1 F=", sprintf("%.4f", h1$F),
-          " df=", h1$df_num, ",", h1$df_den,
+  h1 <- paired_wilcoxon_opt_minus_orig(summary_df$acc_Optimized, summary_df$acc_Original)
+  log_msg(log_path, label, " H1 V=", sprintf("%.4f", h1$V),
           " p=", sprintf("%.4f", h1$p),
-          " pes=", sprintf("%.4f", h1$pes),
-          " sphericity=", h1$sphericity_correction)
-  log_msg(log_path, label, " H2 F=", sprintf("%.4f", h2$F),
-          " df=", h2$df_num, ",", h2$df_den,
-          " p=", sprintf("%.4f", h2$p),
-          " pes=", sprintf("%.4f", h2$pes),
-          " mauchly_p=", if (is.na(h2$mauchly_p)) "NA" else sprintf("%.4f", h2$mauchly_p),
-          " sphericity=", h2$sphericity_correction, " reason=", h2$sphericity_reason)
+          " n_nonzero=", h1$n_nonzero, " n_zero=", h1$n_zero,
+          " r_rb=", sprintf("%.4f", h1$r_rb))
 
-  follow <- h2_followups(summary_df, h2$p)
+  h2 <- friedman_h2_on_k_diffs(summary_df)
+  log_msg(log_path, label, " H2 Friedman chi2=", sprintf("%.4f", h2$statistic),
+          " df=", h2$df, " p=", sprintf("%.4f", h2$p),
+          " W=", sprintf("%.4f", h2$kendalls_w))
+
+  follow <- h2_friedman_followups(summary_df, h2$p)
   log_msg(log_path, label, " H2_followups_ran=", follow$ran, " reason=", follow$reason)
   if (isTRUE(follow$ran)) {
     log_msg(log_path, label, " H2_followups_n_estimable=", sum(follow$rows$estimable),
-            " n_zero_var=", sum(!follow$rows$estimable))
+            " n_not_estimable=", sum(!follow$rows$estimable))
   }
 
-  h3 <- onesample_t_vs(summary_df$pairwise_prop_optimized, as.numeric(SAP$h3_null))
-  log_msg(log_path, label, " H3 t=", sprintf("%.4f", h3$t),
-          " df=", h3$df, " p=", sprintf("%.4f", h3$p),
-          " mean=", sprintf("%.4f", h3$mean), " d=", sprintf("%.4f", h3$d))
+  h3 <- onesample_wilcoxon_vs(summary_df$pairwise_prop_optimized, as.numeric(SAP$h3_null))
+  log_msg(log_path, label, " H3 V=", sprintf("%.4f", h3$V),
+          " p=", sprintf("%.4f", h3$p),
+          " mean=", sprintf("%.4f", h3$mean),
+          " n_nonzero=", h3$n_nonzero, " r_rb=", sprintf("%.4f", h3$r_rb))
 
-  list(n = n, fit = fit, h1 = h1, h2 = h2, follow = follow, h3 = h3)
+  list(n = n, h1 = h1, h2 = h2, follow = follow, h3 = h3)
 }
 
 run_study1_primary_bundle <- function(summary_df, log_path, label) {
@@ -122,9 +108,14 @@ pairwise_rt_desc <- function(pw) {
 run_study1_analyse <- function(study1, study1_prep) {
   ensure_output_dirs()
   log_path <- output_log_path("study1_log_analysis")
-  start_log(log_path, "STUDY 1 ANALYSIS (aggregates only; SYNTHETIC DATA: pipeline test only)")
-  log_msg(log_path, "SAP §3.1 H1/H2; §3.2 H3; §3.3 RT/AE/SE; §3.4 vision sensitivity.")
-  log_msg(log_path, "Q7: fallback will NOT be applied. Q30/Q31 recorded in config.")
+  an_title <- if (identical(DATA_SOURCE, "synthetic")) {
+    "STUDY 1 ANALYSIS (aggregates only; SYNTHETIC DATA: pipeline test only)"
+  } else {
+    "STUDY 1 ANALYSIS (aggregates only; real export; no participant IDs in this log)"
+  }
+  start_log(log_path, an_title)
+  log_msg(log_path, "SAP §3.1 H1/H2 fallback; §3.2 H3 fallback; §3.3 RT/AE t-tests; §3.4 vision sensitivity.")
+  log_msg(log_path, "Q7 path locked: H1 Wilcoxon, H2 Friedman, H3 Wilcoxon; RT paired t; AE paired t.")
 
   summaries <- study1_prep$summaries
   extra_diag <- save_study1_assumption_hists(summaries, log_path)
@@ -157,14 +148,13 @@ run_study1_analyse <- function(study1, study1_prep) {
   sum_s <- summarise_study1_participants(disc_s, pw_s, log_path)
   sens <- run_h1_h2_h3(sum_s, log_path, "vision_sens")
   vision_tab <- data.frame(
-    analysis = c("H1_Condition", "H2_Condition_x_K", "H3_onesample"),
+    analysis = c("H1_paired_wilcoxon", "H2_friedman", "H3_onesample_wilcoxon"),
     n = sens$n,
-    statistic = c(sens$h1$F, sens$h2$F, sens$h3$t),
-    df_num = c(sens$h1$df_num, sens$h2$df_num, NA_real_),
-    df_den = c(sens$h1$df_den, sens$h2$df_den, sens$h3$df),
+    statistic = c(sens$h1$V, sens$h2$statistic, sens$h3$V),
+    df = c(NA_real_, sens$h2$df, NA_real_),
     p = c(sens$h1$p, sens$h2$p, sens$h3$p),
-    effect_size = c(sens$h1$pes, sens$h2$pes, sens$h3$d),
-    es_name = c("partial_eta_sq", "partial_eta_sq", "cohens_d_vs_0.50"),
+    effect_size = c(sens$h1$r_rb, sens$h2$kendalls_w, sens$h3$r_rb),
+    es_name = c("rank_biserial", "kendalls_w", "rank_biserial"),
     primary_p = c(primary$h1$p, primary$h2$p, primary$h3$p),
     sig_agrees_with_primary = c(
       (sens$h1$p < SAP$alpha) == (primary$h1$p < SAP$alpha),
@@ -187,9 +177,9 @@ run_study1_analyse <- function(study1, study1_prep) {
     log_path
   )
 
-  log_msg(log_path, "ANALYSIS COMPLETE. Fallback not applied. Numbers are ",
+  log_msg(log_path, "ANALYSIS COMPLETE. Q7 locked npar H1/H2/H3; RT/AE paired t. Numbers are ",
           if (identical(DATA_SOURCE, "synthetic")) "synthetic pipeline output." else "from the loaded data.")
-  message("run_study1_analyse finished. Q7 fallback was not applied.")
+  message("run_study1_analyse finished. Q7 locked path applied.")
   list(
     primary = primary,
     vision = sens,

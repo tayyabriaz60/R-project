@@ -1,6 +1,5 @@
-# Q7: diagnostics then STOP before any fallback. Do not auto-switch.
-# Primary parametric tests may run after this report is written (SAP recommended path).
-# Wilcoxon / Friedman / fallback ES are never called from here.
+# Q7: write diagnostics, then run the locked path (no auto-cutoff).
+# Locked 22 Sep 2026: H1 Wilcoxon, H2 Friedman, H3 Wilcoxon; RT/AE paired t.
 
 source(file.path(PROJECT_ROOT, "R", "utils_logging.R"))
 source(file.path(PROJECT_ROOT, "R", "utils_paths.R"))
@@ -15,7 +14,6 @@ save_vector_hist <- function(x, name, main, xlab, log_path) {
   path
 }
 
-# Extra SAP diagnostics (not Q13 report figures).
 save_study1_assumption_hists <- function(summary_df, log_path) {
   p_h3 <- save_vector_hist(
     summary_df$pairwise_prop_optimized,
@@ -52,41 +50,32 @@ write_q7_client_report <- function(diag_files, log_path) {
     "Real-data run."
   }
   lines <- c(
-    "STUDY 1 — Q7 fallback review (send this file + the diagnostic plots to Fatimah)",
+    "STUDY 1 — Q7 path (locked 22 Sep 2026)",
     paste("time:", as.character(Sys.time())),
     paste("R.version.string:", R.version.string),
     label,
     "",
-    "Q7 (your instruction): no new numerical cutoff. Generate the SAP-specified",
-    "diagnostics, then STOP before switching to a fallback test. Do not auto-switch.",
+    "No new numerical cutoff was invented. The path below was locked after",
+    "Fatimah reviewed the real-data diagnostic plots and Tayyab agreed.",
     "",
-    "What this run did NOT do:",
-    "- Did not apply Wilcoxon signed-rank or Friedman tests.",
-    "- Did not invent a skewness / Shapiro cutoff for ANOVA or t-tests.",
-    "- Did not treat any histogram as a programmed switch.",
+    "Locked tests:",
+    "- H1: paired Wilcoxon signed-rank, overall Original vs Optimized accuracy.",
+    "- H2: Friedman test on Optimized-Original accuracy differences at K = 5, 10, 20, 30.",
+    "  Pairwise Wilcoxon on those difference scores, Holm x 6, only if Friedman is significant.",
+    "- H3: one-sample Wilcoxon of Optimized-choice proportion vs 0.50.",
+    "- RT: paired t-test on the Q12 analysis scale (log if trial-level skewness > 1).",
+    "- AE: paired t-test.",
+    "- Vision-screen subset (N = 48): the same tests. Primary N stays 50.",
     "",
-    "What this run will do after this report is written:",
-    "- SAP §3.1 recommended path: 2 × 4 RM-ANOVA (H1 = Condition; H2 = Condition × K).",
-    "- If H2 is significant: paired t at K = 5, 10, 20, 30, Holm on the estimable tests.",
-    "- SAP §3.2: one-sample t of Optimized-choice proportion vs 0.50 (H3).",
-    "- SAP §3.3.1–§3.3.2: paired t for RT (log scale; Q12) and AE; signed error stays descriptive.",
+    "Q10: exact-zero paired differences are omitted; n_nonzero is reported.",
     "",
-    "Please review these diagnostic plots before any fallback decision:",
+    "Diagnostic plots from this run:",
     paste0("- ", basename(diag_files)),
     "",
-    "Primary N = 50. Vision-screen sensitivity (N = 48) is a separate analysis,",
-    "not a change of the primary population (SAP §3.4; Q1).",
-    "",
-    "If you want Wilcoxon / Friedman instead of the parametric tests, say so.",
-    "Until you do, the reported Study 1 tests stay parametric.",
-    "",
-    "Q30 colours and Q31 duplicate key are recorded in config (confirmed)."
+    "Q30 colours and Q31 duplicate key remain as confirmed earlier."
   )
   writeLines(lines, path)
-  log_msg(log_path, "Q7 report written: ", basename(path), " fallback_applied=FALSE")
-  message(
-    "Q7: fallback NOT applied. Primary parametric path will be used. ",
-    "Send ", basename(path), " and the diagnostic PNGs to Fatimah before any Wilcoxon/Friedman decision."
-  )
+  log_msg(log_path, "Q7 report written: ", basename(path), " path_locked=TRUE")
+  message("Q7: locked path will be used (H1/H2/H3 npar; RT/AE t).")
   path
 }

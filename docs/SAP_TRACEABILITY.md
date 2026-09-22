@@ -65,7 +65,7 @@ Planned paths assume the structure in `docs/IMPLEMENTATION_PLAN.md`. Q30 colours
 | R1.51 | SAP §3.1; Brief §5.1 | Zero-variance K: no inferential follow-up/d; Holm on rest | `h2_followups` | follow-up table + log | implemented (Kaggle R 4.4.0 H1-H3) |
 | R1.52 | SAP §3.1; Q8 | Diagnostic accuracy histograms (8 cells + H1 + H2 diffs) | `save_study1_q8_histograms` | `output/figures/study1_diag_*_SYNTHETIC.png` | implemented (Kaggle R 4.4.0 prepare) |
 | R1.53 | SAP §3.1 | Mauchly; Greenhouse–Geisser if violated | `sphericity_choice` | ANOVA table + log | implemented (Kaggle R 4.4.0 H1-H3) |
-| R1.54 | SAP §3.1; Q7 | Fallback if severe non-normality | `write_q7_client_report`; no npar call | `study1_q7_fallback_review_SYNTHETIC.txt` | implemented (Kaggle: Q7 report written; fallback not applied) |
+| R1.54 | SAP §3.1; Q7 | Fallback if severe non-normality | locked H1 Wilcoxon / H2 Friedman / H3 Wilcoxon | H1/H2/H3 npar tables | implemented (code, 22 Sep). Kaggle of this lock: NOT EXECUTED. |
 | R1.55 | SAP §3.1 | Fallback H1: paired Wilcoxon overall Orig vs Opt | `R/models_npar.R` | `output/tables/study1_h1_wilcoxon` | not implemented |
 | R1.56 | SAP §3.1; Brief §9 | Fallback H2: Friedman on Opt−Orig diffs; pairwise Wilcoxon on diffs, Holm ×6 | `R/models_npar.R` | `output/tables/study1_h2_friedman` | not implemented |
 | R1.57 | SAP §3.1 | Report H1 F, df, p, partial η², 95% CI | `partial_eta_table` + export | `study1_table_h1_h2_anova` | implemented (Kaggle R 4.4.0 H1-H3) |

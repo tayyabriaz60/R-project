@@ -145,6 +145,10 @@ Fresh Kaggle clone of `e8d51b8`, then `run_notebook.R`. Synthetic only.
 | Q3/Q4 | 0; continued |
 | Q7 | fallback not applied |
 | Tables / figures | 12 pairs; 4 fig png+pdf; no Gorilla IDs |
-| Helper tests | n_passed=89 n_failed=1 (old `figure_colours` pending test in `test-select.R`; fixed after this paste) |
+| Helper tests | first paste: 89/1 leftover Q30-pending assert; after `d8014f8`: **n_passed=91 n_failed=0 n_error=0** |
 
 **SYNTHETIC DATA: pipeline test only.** Not findings.
+
+## Q7 locked npar path — NOT EXECUTED
+
+H1 Wilcoxon, H2 Friedman, H3 Wilcoxon, RT/AE t. Re-run `kaggle/run_notebook.R` + `kaggle/run_tests.R` on synthetic. Expect H1 `V=` / H2 `Friedman` / H3 `V=` in the analysis log, not ANOVA F. Those numbers are not findings.

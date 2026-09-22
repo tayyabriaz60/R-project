@@ -33,6 +33,13 @@ Do not email raw participant files. If something fails, send the full console te
 
 Shareable logs and tables use anonymous IDs (`S1_P001`, …), never Gorilla Public/Private IDs.
 
-## Still needed
+## Q7 path (locked 22 Sep 2026)
 
-- **Q7:** Review the diagnostic histograms before any switch to Wilcoxon/Friedman. The scripts do not auto-switch.
+After your review of the real-data diagnostic plots:
+
+- H1: paired Wilcoxon (overall Original vs Optimized accuracy)
+- H2: Friedman on Optimized−Original differences at K = 5, 10, 20, 30. Pairwise Wilcoxon + Holm only if Friedman is significant
+- H3: one-sample Wilcoxon vs 0.50
+- RT: paired t on the analysis scale (log if trial-level skewness > 1)
+- AE: paired t
+- Vision subset (N = 48): the same tests. Primary N stays 50

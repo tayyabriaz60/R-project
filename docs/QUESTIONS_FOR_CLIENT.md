@@ -79,15 +79,12 @@ A short polite cover note is at the bottom. You can paste the BLOCKING Study 1 q
 - **Until answered:** Synthetic Study 1 will key on `Participant Private ID` and document it. We need the real-data rule before you run locally.
 - **Suggested message:** “Study 1 Public IDs are all `BLINDED` in the synthetic files. Which identifier should the scripts use on your real Study 1 export (Private ID, unblinded Public ID, or another key)?”
 
-### Q7 — Answered 22 Sep 2026
-- **Status:** Answered.
-- **Fatimah:** “no new numerical cutoff. Generate the SAP-specified diagnostics, then STOP and send them to the client before switching to a fallback test. Do not auto-switch.”
-- **Where:** SAP §3.1 fallback “severe deviations from normality”; Brief §9: do not invent a cutoff; flag before switching.
-- **Issue:** We cannot both follow the SAP fallback **and** refuse to invent a cutoff without a decision rule from you.
-- **Options:** (A) we always produce histograms (and optional numeric skewness **for your eyes only**), you decide fallback **before** we look at Condition p-values, and we code both paths. (B) you later supply a numeric rule to freeze. (C) with N = 50 you want us to stay parametric unless you say otherwise.
-- **Impact:** Switches the reported H1/H2/H3 (and RT/AE) tests.
-- **Until answered:** We will implement **both** parametric and fallback code, write diagnostics to the analysis log, and **will not** auto-switch on an invented threshold.
-- **Suggested message:** “The SAP switches to Wilcoxon/Friedman when accuracy or proportions show ‘severe’ non-normality, but it gives no number. The Brief says we must not invent a cutoff and must ask you. How would you like Study 1 fallbacks decided (you review the histograms before we lock the test, or a rule you want us to program)?”
+### Q7 — Answered 22 Sep 2026; path locked same day
+- **Status:** Answered, then locked 22 Sep 2026 after her real-data plot review.
+- **Fatimah (rule):** no new numerical cutoff; she reviews diagnostics before any switch.
+- **Fatimah (locked path):** H1/H2 SAP non-parametric fallbacks; H3 one-sample Wilcoxon; RT and AE stay paired t; same tests on the N=48 vision subset; primary N stays 50.
+- **Where:** SAP §3.1–§3.3; Brief §9.
+- **Recorded:** `SAP$study1_h1_test` / `h2` / `h3` / `rt` / `ae` and `q7_path_locked = TRUE`.
 
 ### Q8 — Answered 22 Sep 2026
 - **Status:** Answered.

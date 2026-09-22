@@ -1,4 +1,4 @@
-# Paste after PROJECT_ROOT is set. Load + prepare + H1-H3 (Q7: no fallback).
+# Paste after PROJECT_ROOT is set. Load + prepare + locked Q7 path.
 
 cat("R version: ", R.version.string, "\n", sep = "")
 

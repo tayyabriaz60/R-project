@@ -1,5 +1,5 @@
-# Study 1 inferential helpers. SAP §3.1–§3.3. Q9, Q11.
-# Primary path only: RM-ANOVA and t-tests. Do not call Wilcoxon/Friedman here (Q7).
+# Study 1 inferential helpers. SAP §3.1–§3.3. Q9, Q10, Q11.
+# Locked Q7 path (22 Sep 2026): H1 Wilcoxon, H2 Friedman, H3 Wilcoxon; RT/AE paired t.
 
 source(file.path(PROJECT_ROOT, "R", "utils_logging.R"))
 source(file.path(PROJECT_ROOT, "R", "utils_format.R"))
@@ -414,13 +414,226 @@ h2_followups <- function(summary_df, interaction_p) {
 
 log_effectsize_versions <- function(log_path) {
   log_msg(log_path, "Q9 effectsize_version=", as.character(utils::packageVersion("effectsize")))
-  log_msg(log_path, "Q9 eta_squared: effectsize::eta_squared(fit, partial=TRUE, generalized=FALSE, ci=",
-          SAP$ci_level, ", alternative=\"two.sided\")")
   log_msg(log_path, "Q9 paired_d: effectsize::cohens_d(opt, orig, paired=TRUE, ci=",
-          SAP$ci_level, ", alternative=\"two.sided\")  # Cohen's dz = mean_diff / sd_diff")
-  log_msg(log_path, "Q9 onesample_d: effectsize::cohens_d(x, mu=0.50, ci=",
+          SAP$ci_level, ", alternative=\"two.sided\")  # Cohen's dz; used for RT/AE")
+  log_msg(log_path, "Q9 rank_biserial: effectsize::rank_biserial(..., ci=",
+          SAP$ci_level, ", alternative=\"two.sided\") on Q10 non-zero diffs")
+  log_msg(log_path, "Q9 kendalls_w: effectsize::kendalls_w(mat, ci=",
           SAP$ci_level, ", alternative=\"two.sided\")")
-  log_msg(log_path, "Q9 rank_biserial / kendalls_w: wrappers exist; NOT computed because Q7 fallback was not applied")
-  log_msg(log_path, "afex_version=", as.character(utils::packageVersion("afex")),
-          " type=3 contrasts=contr.sum")
+  log_msg(log_path, "Q7 locked path: H1=", require_param("study1_h1_test"),
+          " H2=", require_param("study1_h2_test"),
+          " H3=", require_param("study1_h3_test"),
+          " RT=", require_param("study1_rt_test"),
+          " AE=", require_param("study1_ae_test"))
+}
+
+# Q10: drop exact-zero paired diffs before ranking; same vector for the ES.
+nonzero_paired_diffs <- function(x, y = NULL, mu = 0) {
+  x <- as.numeric(x)
+  if (is.null(y)) {
+    d <- x - as.numeric(mu)
+  } else {
+    y <- as.numeric(y)
+    if (length(x) != length(y)) {
+      stop("nonzero_paired_diffs: lengths differ.", call. = FALSE)
+    }
+    d <- x - y
+  }
+  ok <- !is.na(d)
+  list(
+    n_pairs = as.integer(sum(ok)),
+    n_zero = as.integer(sum(ok & d == 0)),
+    n_nonzero = as.integer(sum(ok & d != 0)),
+    d_nonzero = d[ok & d != 0]
+  )
+}
+
+extract_rank_biserial <- function(rb) {
+  rb <- as.data.frame(rb)
+  col <- intersect(names(rb), "r_rank_biserial")
+  if (length(col) < 1L) {
+    stop("rank_biserial() table missing r_rank_biserial. Names: ",
+         paste(names(rb), collapse = ", "), call. = FALSE)
+  }
+  list(
+    r_rb = as.numeric(rb[[col[1]]])[1],
+    r_ci_low = as.numeric(rb$CI_low)[1],
+    r_ci_high = as.numeric(rb$CI_high)[1]
+  )
+}
+
+# SAP §3.1 H1 / §3.2 H3 / Q10. Two-sided Wilcoxon on non-zero diffs.
+paired_wilcoxon_opt_minus_orig <- function(opt, orig) {
+  z <- nonzero_paired_diffs(opt, orig)
+  if (z$n_nonzero < 1L) {
+    stop("Paired Wilcoxon: no non-zero differences after Q10 omit-zeros.", call. = FALSE)
+  }
+  wt <- stats::wilcox.test(
+    z$d_nonzero,
+    mu = 0,
+    alternative = "two.sided",
+    exact = FALSE,
+    correct = TRUE
+  )
+  rb <- extract_rank_biserial(effectsize::rank_biserial(
+    z$d_nonzero,
+    mu = 0,
+    ci = as.numeric(SAP$ci_level),
+    alternative = "two.sided",
+    verbose = FALSE
+  ))
+  list(
+    n_pairs = z$n_pairs,
+    n_zero = z$n_zero,
+    n_nonzero = z$n_nonzero,
+    V = unname(wt$statistic),
+    p = unname(wt$p.value),
+    r_rb = rb$r_rb,
+    r_ci_low = rb$r_ci_low,
+    r_ci_high = rb$r_ci_high
+  )
+}
+
+onesample_wilcoxon_vs <- function(x, mu) {
+  x <- as.numeric(x)
+  x <- x[!is.na(x)]
+  desc <- mean_sd_ci(x)
+  z <- nonzero_paired_diffs(x, mu = mu)
+  if (z$n_nonzero < 1L) {
+    stop("One-sample Wilcoxon: no non-zero (x - mu) after Q10 omit-zeros.", call. = FALSE)
+  }
+  wt <- stats::wilcox.test(
+    z$d_nonzero,
+    mu = 0,
+    alternative = require_param("h3_alternative"),
+    exact = FALSE,
+    correct = TRUE
+  )
+  rb <- extract_rank_biserial(effectsize::rank_biserial(
+    z$d_nonzero,
+    mu = 0,
+    ci = as.numeric(SAP$ci_level),
+    alternative = "two.sided",
+    verbose = FALSE
+  ))
+  list(
+    n = desc$n,
+    mean = desc$mean,
+    sd = desc$sd,
+    ci_low = desc$ci_low,
+    ci_high = desc$ci_high,
+    n_zero = z$n_zero,
+    n_nonzero = z$n_nonzero,
+    V = unname(wt$statistic),
+    p = unname(wt$p.value),
+    r_rb = rb$r_rb,
+    r_ci_low = rb$r_ci_low,
+    r_ci_high = rb$r_ci_high,
+    mu = mu
+  )
+}
+
+k_diff_matrix <- function(summary_df) {
+  k_order <- as.integer(SAP$k_levels_study1)
+  cols <- lapply(k_order, function(k) {
+    summary_df[[paste0("acc_Optimized_K", k)]] - summary_df[[paste0("acc_Original_K", k)]]
+  })
+  mat <- do.call(cbind, cols)
+  colnames(mat) <- paste0("K", k_order)
+  if (any(is.na(mat))) {
+    stop("H2 Friedman: NA in Optimized-Original K differences. Q4 should have stopped.", call. = FALSE)
+  }
+  mat
+}
+
+# SAP §3.1 H2 fallback: Friedman on Opt-Orig diffs across K. Q9 Kendall's W.
+friedman_h2_on_k_diffs <- function(summary_df) {
+  mat <- k_diff_matrix(summary_df)
+  ft <- stats::friedman.test(mat)
+  w <- as.data.frame(effectsize::kendalls_w(
+    mat,
+    ci = as.numeric(SAP$ci_level),
+    alternative = "two.sided",
+    verbose = FALSE
+  ))
+  wcol <- intersect(names(w), c("Kendalls_W", "Kendall_W", "W"))
+  if (length(wcol) < 1L) {
+    stop("kendalls_w() table missing W column. Names: ",
+         paste(names(w), collapse = ", "), call. = FALSE)
+  }
+  list(
+    n = nrow(mat),
+    n_k = ncol(mat),
+    statistic = unname(ft$statistic),
+    df = unname(ft$parameter),
+    p = unname(ft$p.value),
+    kendalls_w = as.numeric(w[[wcol[1]]])[1],
+    w_ci_low = as.numeric(w$CI_low)[1],
+    w_ci_high = as.numeric(w$CI_high)[1]
+  )
+}
+
+# SAP §3.1: if Friedman sig, pairwise Wilcoxon on the K-difference scores, Holm x 6.
+h2_friedman_followups <- function(summary_df, friedman_p) {
+  k_order <- as.integer(SAP$k_levels_study1)
+  alpha <- as.numeric(SAP$alpha)
+  if (is.na(friedman_p) || friedman_p >= alpha) {
+    return(list(
+      ran = FALSE,
+      reason = "friedman_not_significant",
+      rows = data.frame()
+    ))
+  }
+  mat <- k_diff_matrix(summary_df)
+  pairs <- utils::combn(k_order, 2)
+  rows <- list()
+  for (j in seq_len(ncol(pairs))) {
+    ka <- pairs[1, j]
+    kb <- pairs[2, j]
+    da <- mat[, paste0("K", ka)]
+    db <- mat[, paste0("K", kb)]
+    z <- nonzero_paired_diffs(da, db)
+    if (z$n_nonzero < 1L) {
+      rows[[length(rows) + 1L]] <- data.frame(
+        K_a = ka,
+        K_b = kb,
+        estimable = FALSE,
+        n_pairs = z$n_pairs,
+        n_zero = z$n_zero,
+        n_nonzero = z$n_nonzero,
+        V = NA_real_,
+        p_raw = NA_real_,
+        p_holm = NA_real_,
+        r_rb = NA_real_,
+        r_ci_low = NA_real_,
+        r_ci_high = NA_real_,
+        note = "all_zero_diffs_descriptive_only",
+        stringsAsFactors = FALSE
+      )
+    } else {
+      ww <- paired_wilcoxon_opt_minus_orig(da, db)
+      rows[[length(rows) + 1L]] <- data.frame(
+        K_a = ka,
+        K_b = kb,
+        estimable = TRUE,
+        n_pairs = ww$n_pairs,
+        n_zero = ww$n_zero,
+        n_nonzero = ww$n_nonzero,
+        V = ww$V,
+        p_raw = ww$p,
+        p_holm = NA_real_,
+        r_rb = ww$r_rb,
+        r_ci_low = ww$r_ci_low,
+        r_ci_high = ww$r_ci_high,
+        note = "",
+        stringsAsFactors = FALSE
+      )
+    }
+  }
+  out <- do.call(rbind, rows)
+  estim <- which(out$estimable)
+  if (length(estim) > 0L) {
+    out$p_holm[estim] <- holm_adjust(out$p_raw[estim])
+  }
+  list(ran = TRUE, reason = "friedman_significant", rows = out)
 }
