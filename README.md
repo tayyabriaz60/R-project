@@ -1,66 +1,81 @@
 # Categorical Colormap Optimization — R analysis (Studies 1–3)
 
-Implementation of the **frozen SAP** (21 September 2026) for Fatimah Alqahtani’s PhD studies. This repo implements the SAP; it does not change methodology.
+Implementation of the **frozen SAP** (21 September 2026). The scripts follow the SAP; they do not change the methodology.
 
-**Development uses synthetic data only** (`Synthetic_Data_Tayyab_FINAL_v3`). The client runs the final scripts on real data on her machine. Synthetic outputs are pipeline tests, not findings.
+**This repository contains synthetic data only.** Run the same scripts on the real Gorilla export on your own machine. Numbers from synthetic files are pipeline tests, not findings.
 
-## Status (honest)
+## What is ready (22 September 2026)
 
 | Item | Status |
 |------|--------|
-| Chunk A (config + setup) | Verified on Kaggle **R 4.4.0** (22 Sep 2026) |
-| Chunk B (Study 1 load + QC, v1 synthetic) | Verified on Kaggle **R 4.4.0**. Replaced by v3 reload — **re-verify**. |
-| Chunk C (helper unit tests) | Verified on Kaggle **R 4.4.0** (38 passed). Extra select/ID tests added — **re-verify**. |
-| Q1–Q14 | Answered 22 Sep 2026 (see `docs/DECISIONS_LOG.md`) |
-| Exclusions / summaries / H1–H3 | **Not implemented yet** |
-| Client target R | **4.6.1** (2026-06-24). Kaggle kernel used for development is 4.4.0. |
+| Study 1 load, Object Name filter, ID mapping, QC log | Ready (tested on synthetic v3) |
+| Your Q1–Q14 answers | Recorded in `config/config.R` and `docs/DECISIONS_LOG.md` |
+| Helper unit tests (toy data) | 46 passed on Kaggle |
+| Study 1 summaries, H1–H3, RT/AE, figures, tables | **Not written yet** |
+| Studies 2 and 3 analysis | **Not written yet** |
+
+Development was tested on **Kaggle R 4.4.0**. Your specified version is **R 4.6.1**. Please run `scripts/00_setup.R` first on your machine and send any error text if something differs.
+
+## How you run it
+
+1. Install **R 4.6.1** if it is not already installed.
+2. Open R. Set `PROJECT_ROOT` to this folder (the folder that contains `config/`).
+
+```r
+PROJECT_ROOT <- "C:/path/to/this/folder"
+source(file.path(PROJECT_ROOT, "run_all.R"))
+```
+
+That loads Study 1 synthetic files, applies the Object Name filter, maps Public ID → `participant_id`, writes anonymous reporting IDs (`S1_P001`, …), and writes a QC log. It does **not** run hypothesis tests.
+
+Optional helper tests:
+
+```r
+source(file.path(PROJECT_ROOT, "tests", "run_tests.R"))
+```
+
+Switch synthetic vs real in **one place**: `DATA_SOURCE` in `config/config.R`. Keep `"synthetic"` until the real export file names are set in that same file.
 
 ## Packages
 
-Listed in `scripts/00_setup.R`. **Install and load with that script only.**
+Install with `scripts/00_setup.R` only (missing packages only). Do **not** run `renv::restore()` or `renv::init()`.
 
 | Package | Why |
 |---------|-----|
-| base / utils | CSV read/write, session info |
-| testthat | Helper unit tests on tiny toy data |
+| base / utils | CSV read/write |
+| testthat | Helper tests on tiny toy data |
 
-Later chunks will add `effectsize` and `e1071` (Q9, Q12) when those analyses are written — not before.
+An `renv.lock` may be added later as a **version record** from the test environment. It is not how packages are installed in this project.
 
-### renv.lock is a version record, not the restore path
+## Folder structure
 
-Fatimah’s export list includes an `renv.lock`. This project **does not use renv to install or restore packages** (no local R on the analyst machine; Kaggle and the client machine use `scripts/00_setup.R`).
-
-- **Do not run `renv::restore()` or `renv::init()` in this project.**
-- After a successful Kaggle run, `scripts/write_renv_lock.R` (or `kaggle/run_renv_lock.R`) writes `renv.lock` from the **already-installed** versions of `required_packages`. That file is a record of versions used, so her machine can be compared. It is not how packages are installed here.
-
-## How to run
-
-Set `PROJECT_ROOT` to the folder that **directly** contains `config/`.
-
-```r
-PROJECT_ROOT <- "path/to/this/folder"   # Kaggle clone: /kaggle/working/R-project
-source(file.path(PROJECT_ROOT, "run_all.R"))           # load + QC
-source(file.path(PROJECT_ROOT, "tests", "run_tests.R")) # toy helper tests
-# optional version record:
-# source(file.path(PROJECT_ROOT, "kaggle", "run_renv_lock.R"))
+```
+config/config.R          # paths, seed, SAP parameters (Q1–Q14 filled)
+run_all.R                # Study 1 load + QC
+R/                       # shared helpers + Study 1 loaders
+scripts/00_setup.R       # install/load packages
+tests/                   # toy-data helper tests
+data/synthetic/          # v3 synthetic Gorilla-style files
+data/real/               # empty; put real exports here on your machine (not in git)
+kaggle/                  # cells used for pipeline testing
+output/                  # created at run time (logs/tables/figures)
+docs/FOR_CLIENT.md       # short run + privacy notes for you
+docs/QUESTIONS_FOR_CLIENT.md
+docs/DECISIONS_LOG.md
+docs/SAP_TRACEABILITY.md
 ```
 
-Switch synthetic vs real in **one place**: `DATA_SOURCE` in `config/config.R`. Keep `"synthetic"` until real export file names are specified.
+## Outputs and privacy
 
-Study 1 identifier column is configurable: `SAP$study1_id_column` (default `participant_public_id` from `Participant Public ID`). Reporting outputs must use `participant_anon_id` (`S1_P001`, …), never Gorilla IDs.
+- Synthetic runs use the `_SYNTHETIC` suffix and the label `SYNTHETIC DATA: pipeline test only`.
+- Logs are **counts only**. Gorilla IDs are not written to shareable logs.
+- Reporting IDs are anonymous (`S1_P001`, …).
+- Do not put real participant files in git or send them back to the analyst.
 
-## Outputs
+## Open items (do not block the load scripts)
 
-- Logs: `output/logs/` (Kaggle: `/kaggle/working/output/logs/`)
-- Synthetic runs use the `_SYNTHETIC` suffix and the label `SYNTHETIC DATA: pipeline test only`
-- Logs are aggregates only (counts). No participant IDs or raw rows.
-
-## Documents
-
-- `docs/QUESTIONS_FOR_CLIENT.md` — Q1–Q14 answered; Q15–Q17, Q30, Q31 still open
-- `docs/SAP_TRACEABILITY.md` — SAP item → code → output → status
-- `docs/DECISIONS_LOG.md` — implementation decisions + quoted answers
-- `docs/VERIFY_ON_KAGGLE.md` — what Kaggle output actually showed
-- `docs/HANDOFF.md` — how to continue the work
-- `docs/KAGGLE_RUN.md` — Kaggle cells
-- `docs/Data_Dictionary_Column_Structure_Studies_1_3_FINAL_v2.md` — dictionary v2 working copy
+- Q15 geometric-mean RT ratio (Brief only)
+- Q16 left/right letter case
+- Q17 which RT column if they disagree
+- Q30 figure colours (needed when figures are drawn)
+- Q31 duplicate-trial key / “earliest” clock (needed before duplicate cleaning)

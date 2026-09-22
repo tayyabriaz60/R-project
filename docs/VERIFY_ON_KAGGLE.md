@@ -48,20 +48,20 @@ Client target remains **R 4.6.1**. Kaggle is 4.4.0.
 | V-C3 log line | “No statistical tests were run. No synthetic data were loaded.” | present |
 | V-C4 files | four toy-data files only | no synthetic load; no hypothesis tests |
 
-## v3 reload + Q1–Q14 config — NOT EXECUTED yet
+## v3 reload + Q1–Q14 config — load/QC verified 22 Sep 2026 (pasted console)
 
-Re-run load/QC and helper tests after replacing the synthetic package. What to check:
+Helper tests (including `select`): **verified 22 Sep 2026** (46 passed, 0 failed).
 
 | Item | What to check | Result |
 |------|----------------|--------|
-| V-v3-1 Object Name filter | N_FLOW object_name lines; disc/pw/vis still 1200/600/200 | |
-| V-v3-2 Public ID | n_unique_participant_id = 50 (not 1 / BLINDED) | |
-| V-v3-3 rows per ID | 24 / 12 / 4 | |
-| V-v3-4 expected tokens | Response / Image Response / Number Entry; missing Object Name = 0 | |
-| V-v3-5 anon IDs | n_unique_anon = 50; log must not print S1PUB… or private IDs | |
-| V-v3-6 Q1 flag | n_score4 = 48; vision_subset_applied_as_exclusion = 0 | |
-| V-v3-7 no tests | “No tests run” | |
-| V-v3-8 helper tests | all passed, including `select` | |
+| V-v3-1 Object Name filter | N_FLOW; 1200/600/200 | disc/pw/vis filter dropped 0; 1200/600/200 |
+| V-v3-2 Public ID | n_unique_participant_id = 50 | 50 (not BLINDED) |
+| V-v3-3 rows per ID | 24 / 12 / 4 | 50 at each |
+| V-v3-4 expected tokens | Response / Image Response / Number Entry; missing = 0 | all 0 missing |
+| V-v3-5 anon IDs | n_unique_anon = 50; no S1PUB in log | 50; scheme `S1_P001..` only |
+| V-v3-6 Q1 flag | n_score4 = 48; not an exclusion | 48 / 2; flag rows 192 / 8; exclusion not applied |
+| V-v3-7 no tests | “No tests run” | present |
+| V-v3-8 helper tests | all passed, including `select` | 46 passed, 0 failed, 0 error; no synthetic load |
 
 ## Packages
 
@@ -70,3 +70,9 @@ Re-run load/QC and helper tests after replacing the synthetic package. What to c
 | base / utils | Chunk A+B verified (v1); v3 reload pending |
 | testthat 3.2.2 | Chunk A+C verified; extra tests pending |
 | renv | optional version-record writer only; **not** restore |
+
+## renv.lock version record — verified 22 Sep 2026 (pasted console)
+
+Wrote `/kaggle/working/R-project/renv.lock` (318 lines). `testthat` 3.2.2 plus its dependencies. R recorded as **4.4.0** (Kaggle), not the client target 4.6.1. Some dependency `Repository` fields are `RSPM` (Kaggle). Script printed: do not run `renv::restore()`.
+
+This file is **not yet in the local git repo**. Download it from the Kaggle working folder and add it here before the next commit.

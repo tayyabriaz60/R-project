@@ -48,5 +48,8 @@ Methodological choices that the SAP leaves open are **not** decided here; they a
 | 2026-09-22 | **Q14 answered.** Fatimah: “tables -> .docx + .csv; figures -> .png at 300dpi + vector .pdf; reusable outputs -> .csv/.rds; R scripts, README, an analysis log, and an renv lockfile. AE x K: descriptive mean/SD/95% CI only, no inferential test.” | Brief §14 | Formats stored. renv.lock is a **version record** only; restore remains `00_setup.R`. |
 | 2026-09-22 | Discard old synthetic package; use `Synthetic_Data_Tayyab_FINAL_v3` + Dictionary v2 | Client files 22 Sep 2026 | Public IDs `S1PUB001`–`S1PUB050`; Object Name populated. |
 | 2026-09-22 | Do not use `renv::init()` in the project root | Q14 vs no-renv restore rule | `scripts/write_renv_lock.R` writes a lockfile without activating renv. |
+| 2026-09-22 | v3 load/QC verified on Kaggle R 4.4.0 | Pasted QC log | Object Name filter kept all rows; 50 public IDs; 48 vision score-4; no Gorilla IDs in log; no hypothesis tests. |
+| 2026-09-22 | v3 helper tests verified: 46 passed, 0 failed (includes `select`) | Pasted test log | Toy data only. No synthetic load. No hypothesis tests. |
+| 2026-09-22 | `renv.lock` written on Kaggle as a version record | Pasted console | testthat 3.2.2 + deps; R 4.4.0; some RSPM sources. Not used for restore. File still only on Kaggle until downloaded. |
 
 Hypothesis tests, exclusions/dedup, summaries, and fallbacks have **not** been run.

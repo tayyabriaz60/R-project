@@ -8,13 +8,30 @@ The analyst’s PC does **not** have R. You run R on **Kaggle**. The client late
 
 ## v3 reload (now)
 
-**Cell 1**
+**Cell 1 — find or clone (do not `setwd` until the folder exists)**
+
+```r
+cat("R version: ", R.version.string, "\n", sep = "")
+print(list.files("/kaggle/working", recursive = FALSE))
+print(list.files("/kaggle/input", recursive = FALSE))
+print(dir.exists("/kaggle/working/R-project"))
+```
+
+If that last line is `FALSE`, this session has no clone. Clone once (type a **fresh read-only token** only in the notebook, never paste it into chat, then delete the cell):
+
+```r
+setwd("/kaggle/working")
+system("git clone https://<TOKEN>@github.com/tayyabriaz60/R-project.git R-project")
+print(file.exists("/kaggle/working/R-project/config/config.R"))
+print(file.exists("/kaggle/working/R-project/R/utils_select.R"))
+```
+
+If `dir.exists("/kaggle/working/R-project")` is already `TRUE`:
 
 ```r
 setwd("/kaggle/working/R-project")
 system("git pull origin main")
 print(file.exists("R/utils_select.R"))
-print(file.exists("data/synthetic/README_SYNTHETIC_DATA.md"))
 ```
 
 **Cell 2 — load + QC**

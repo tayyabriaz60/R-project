@@ -2,6 +2,7 @@
 data/real/
 output/
 docs/spec/
+data/_synthetic_v3_extract/
 *.zip
 *.docx
 

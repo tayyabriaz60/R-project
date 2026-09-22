@@ -1,98 +1,57 @@
 # Handoff — Categorical Colormap Optimization (R / SAP)
 
-Last updated: 22 September 2026. This file is for Tayyab (and any assistant) so work can continue if another chat hits a usage limit.
+Last updated: 22 September 2026. **Internal (Tayyab / assistant). Do not send this file to the client.**
 
 ---
 
 ## Business
 
 - **Freelancer:** Tayyab Riaz (Upwork).
-- **Client:** Fatimah Alqahtani (PhD student).
-- **Contract:** Active. Fixed price **$150** total. Three milestones of **$50**: Study 1, Study 2, Study 3.
-- **Scope:** Implementation only, in R, of her **frozen SAP** for three visualization/HCI studies. Follow SAP, then Implementation Brief, then Data Dictionary. Do not change methodology. Flag every ambiguity in `docs/QUESTIONS_FOR_CLIENT.md` **before** changing anything.
-- **Privacy:** Synthetic data only in this repo. Fatimah runs the final scripts locally on real data with **R 4.6.1**. Troubleshooting from errors / non-sensitive outputs she shares is in scope.
-- **Study 1 deadline:** Originally **Tuesday 22 September 2026**. Q1–Q14 were sent; a ~24-hour extension after her answers was **proposed, not confirmed**. Waiting for her reply.
+- **Client:** Fatimah Alqahtani.
+- **Contract:** $150, three $50 milestones: Study 1, Study 2, Study 3.
+- **Honest status:** Milestone 1 (full Study 1 analysis) is **not finished**. Load/QC + Q1–Q14 config + helper tests are done. H1–H3 / tables / figures are not.
+- **Share with her:** `README.md` + `docs/FOR_CLIENT.md` + the code. Do **not** send this HANDOFF (token note, rates).
 
 ---
 
 ## Technical
 
-- **No local R.** Testing is on **Kaggle** (observed kernel: **R 4.4.0**). Client target: **R 4.6.1**. Write portable R. **No renv.** Use `scripts/00_setup.R`.
-- **Private GitHub:** https://github.com/tayyabriaz60/R-project.git  
-  On Kaggle: clone into `/kaggle/working/R-project`. Clone already worked (`file.exists(config/config.R)` was TRUE).
-- **Rules:** `.cursor/rules/r-analysis.mdc` (always apply). Human copy: `docs/PROJECT_RULES.md`. Old `cursor_rules.md` copies were removed (commit `889d934`).
-- **Do not edit:** `docs/spec/`, `data/synthetic/`.
-- **Never commit:** real data, `data/real/`, client `.docx`, `*.zip`, `output/`.
+- No local R. Kaggle **R 4.4.0**. Client target **R 4.6.1**.
+- Private GitHub: https://github.com/tayyabriaz60/R-project.git
+- Rules: `.cursor/rules/r-analysis.mdc`. Do not edit `docs/spec/` or invent methodology.
+- Never commit real data, `data/real/`, client `.docx`, `*.zip`, `output/`.
 
 ---
 
 ## Security
 
-- A GitHub token was **accidentally shown in a screenshot**. **Confirm it is revoked** on GitHub (Settings → Developer settings → Personal access tokens).
-- Future Kaggle clone: use a **fresh, fine-grained, read-only, short-expiry** token, typed only at runtime, never stored in any file, deleted from the notebook, then **revoked**. Never paste tokens into chat or files.
-- Keep the repo **private**. After the project: delete or archive it.
+- A GitHub token was shown in a screenshot. Confirm it is **revoked**.
+- Do not invite the client to a repo that still contains this handoff if you can avoid it; send a zip without `docs/HANDOFF.md` and `.cursor/`.
 
 ---
 
 ## Chunk status
 
-| Chunk | What | Status |
-|-------|------|--------|
-| Phase 1 | Read specs, questions, plan, synthetic audit | Done (docs only) |
-| Chunk A | `config/config.R`, `scripts/00_setup.R`, Kaggle docs | **Verified on Kaggle R 4.4.0** (22 Sep 2026). `testthat` 3.2.2; pending params stay NA. |
-| Pre-2A leftovers | `scripts/01_load.R`, old `R/utils_load.R` | **Superseded.** Do not source `01_load.R`. |
-| Chunk B | `R/utils_*.R`, `R/study1_load.R`, QC, `run_all.R` | **Verified on Kaggle R 4.4.0** (22 Sep 2026). 1200/600/200; Q1–Q3/Q5/Q6 not applied; no tests. |
-| Chunk C | `tests/testthat/`, `tests/run_tests.R`, README | **Verified on Kaggle R 4.4.0** (22 Sep 2026). Extra select/ID tests added — re-verify. |
-| Q1–Q14 | Client answers logged; config filled; v3 synthetic + dictionary v2 | **Answers recorded.** Load/QC updated. Exclusions/summaries/tests not started. |
-| Phase 2B | Dedup (Q2/Q31), summaries, H1–H3, ES/CIs, RT/errors, vision, tables/figures | **Next after v3 load re-verify.** Q30/Q31 still open for figures/dedup. |
+| Chunk | Status |
+|-------|--------|
+| Phase 1 docs | Done |
+| Chunk A/B/C | Verified Kaggle R 4.4.0 |
+| v3 load/QC + Q5/Q6 | Verified (1200/600/200; 50 IDs; Object Name kept) |
+| Helper tests after v3 | Verified 46 passed |
+| renv.lock on Kaggle | Written; **not in local git** until downloaded |
+| Phase 2B (summaries, H1–H3, …) | **Not started.** Q31 blocks dedup; Q30 blocks figure colours. |
 
 ---
 
-## Pending client questions (Q1–Q14)
+## Next coding (when Tayyab says go)
 
-Full text: `docs/QUESTIONS_FOR_CLIENT.md`.
-
-1. Q1 — Vision-subset **rule** (size 48 given; inclusion rule missing)
-2. Q2 — Study 1 exclusion list and order
-3. Q3 — Failed pairwise-mapping rows (drop / NA / stop)
-4. Q4 — Incomplete cells / missing trials
-5. Q5 — `Object Name` blank: how to filter
-6. Q6 — Study 1 participant ID when Public ID is `BLINDED`
-7. Q7 — “Severe” non-normality fallback trigger (no invented cutoff)
-8. Q8 — Which accuracy vectors for normality histograms
-9. Q9 — Effect-size conventions (d, partial η², rank-biserial, CIs)
-10. Q10 — Wilcoxon zero-difference convention
-11. Q11 — ANOVA Type / contrasts / Condition reference
-12. Q12 — Skewness formula (RT log if skewness > 1)
-13. Q13 — Figure list / colours / sizes
-14. Q14 — Export formats; AE × K 95% CI yes/no
-
-Also open (not 1–14): SAP vs Brief authority (Q21); Brief-only geometric-mean ratio (Q15).
-
----
-
-## Ordered next steps
-
-1. **Confirm leaked GitHub token is revoked.**
-2. **Re-verify load/QC + helper tests on Kaggle** against v3 synthetic (see `docs/KAGGLE_RUN.md`).
-3. Optional: `kaggle/run_renv_lock.R` to write a version-record `renv.lock` (not restore).
-4. Then Phase 2B: Q2/Q31 dedup only after Q31; then summaries and H1–H3. Do not invent Q30 colours.
-4. **Before delivery:** `run_all.R` clean on a fresh Kaggle session; every SAP item in `docs/SAP_TRACEABILITY.md`; synthetic outputs labelled pipeline-test only; README with setup.
-5. **Delivery message (English, honest):** tested on synthetic data on Kaggle with R 4.4.0; her target is R 4.6.1; she should run `scripts/00_setup.R` first; send any difference on her machine for a fix. Then send the Study 1 milestone message.
+1. Participant-level summaries (no Q31 needed if we skip dedup and only flag duplicate counts — already 0 on synthetic).
+2. Then diagnostics + stop (Q7), not auto-fallback.
+3. Then H1–H3 only after she has seen diagnostics **or** she confirms stay parametric on synthetic-pipeline first? Q7 says stop and send diagnostics on real data. On synthetic we can generate diagnostics and still not treat them as findings.
+4. Do not invent Q30 colours.
 
 ---
 
 ## Git
 
-- Repo: https://github.com/tayyabriaz60/R-project.git (private)
-- Branch: `main`
-- Known commits: `421aff0` initial; `889d934` remove duplicate rules files; `742806b` HANDOFF; `591a9a9` Chunk B; `cb17056` Chunk C tests
-
----
-
-## Assistant rules (short)
-
-- Never claim code ran without real Kaggle output. Say NOT EXECUTED.
-- Never invent results or change SAP methodology.
-- If about to leak a secret, over-promise, or skip a check: stop and say so plainly.
-- “What next?” → only the **single** next step, with exact cells/commands.
+- Branch `main`. Latest analysis commit before this handoff refresh: `e1721ef`.
