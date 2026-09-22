@@ -1,5 +1,4 @@
-# Q8 diagnostic histograms only. Q7: do not auto-switch to a fallback.
-# Q30 colours are NA: use default greyscale. These are not Q13 report figures.
+# Q8 diagnostic histograms only. Not Q13 report figures.
 
 source(file.path(PROJECT_ROOT, "R", "utils_paths.R"))
 source(file.path(PROJECT_ROOT, "R", "utils_logging.R"))
@@ -19,7 +18,7 @@ diag_png <- function(name, width_in, height_in) {
 
 save_study1_q8_histograms <- function(summary_df, log_path) {
   if (isTRUE(require_param("fallback_normality_cutoff") == "no_cutoff_diagnostics_then_stop")) {
-    log_msg(log_path, "Q7: no numeric cutoff; histograms only; fallback NOT applied")
+    log_msg(log_path, "Q7: no numeric cutoff; histograms only; locked path runs in analyse")
   }
 
   k_order <- as.integer(SAP$k_levels_study1)
@@ -71,16 +70,7 @@ save_study1_q8_histograms <- function(summary_df, log_path) {
   grDevices::dev.off()
   log_msg(log_path, "wrote diagnostic ", basename(p3))
 
-  log_msg(
-    log_path,
-    "Q7 STOP before fallback: diagnostics saved. ",
-    "Do not switch to Wilcoxon/Friedman until the client reviews these plots. ",
-    "H1-H3 were not run."
-  )
-  message(
-    "Q7: diagnostic histograms written. Fallback NOT applied. ",
-    "Hypothesis tests were not run. Send the three diagnostic PNGs to the client ",
-    "before any fallback decision."
-  )
+  log_msg(log_path, "Q8 diagnostics saved. Locked Q7 tests run in analyse, not here.")
+  message("Q7: diagnostic histograms written. Locked tests run in analyse.")
   c(p1, p2, p3)
 }

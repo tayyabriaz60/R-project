@@ -149,6 +149,14 @@ Fresh Kaggle clone of `e8d51b8`, then `run_notebook.R`. Synthetic only.
 
 **SYNTHETIC DATA: pipeline test only.** Not findings.
 
-## Q7 locked npar path — NOT EXECUTED
+## Q7 locked npar path — verified 22 Sep 2026 (pasted)
 
-H1 Wilcoxon, H2 Friedman, H3 Wilcoxon, RT/AE t. Re-run `kaggle/run_notebook.R` + `kaggle/run_tests.R` on synthetic. Expect H1 `V=` / H2 `Friedman` / H3 `V=` in the analysis log, not ANOVA F. Those numbers are not findings.
+Fresh Kaggle clone of `20ea55f`. Synthetic only. Not findings.
+
+| Item | Result |
+|------|--------|
+| Path | H1 Wilcoxon, H2 Friedman, H3 Wilcoxon; RT/AE paired t |
+| Primary | H1 V=552.5 p=0.1106 n_nonzero=41; H2 chi2=1.2711 df=3 p=0.7360 followups=FALSE; H3 V=867 p=0.0000 n_nonzero=44 |
+| Vision N=48 | same tests; sig_agrees H1/H2/H3 TRUE |
+| Tables | h1_wilcoxon, h2_friedman, h2_followups, h3; no Gorilla IDs |
+| Helper tests | n_passed=103 n_failed=0 n_error=0 |
