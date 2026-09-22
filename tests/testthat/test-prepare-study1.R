@@ -39,6 +39,25 @@ test_that("duplicate audit counts extras and does not drop rows", {
   expect_equal(nrow(d), 26L)
 })
 
+test_that("Q31 halts when the guess key finds duplicates and the key is still NA", {
+  tmp <- tempfile()
+  writeLines("tmp", tmp)
+  d <- tiny_disc(n_extra = 2L)
+  d$condition[25:26] <- d$condition[1:2]
+  d$K[25:26] <- d$K[1:2]
+  d$configuration_instance[25:26] <- d$configuration_instance[1:2]
+  expect_error(log_duplicate_audit(d, tmp), "Q31 GATE")
+  expect_equal(nrow(d), 26L)
+})
+
+test_that("Q31 audit continues when the guess key finds no duplicates", {
+  tmp <- tempfile()
+  writeLines("tmp", tmp)
+  aud <- log_duplicate_audit(tiny_disc(), tmp)
+  expect_equal(aud$n_dup_keys, 0L)
+  expect_false(aud$applied)
+})
+
 test_that("Q3 gate stops when mapping_fail > 0 and passes when 0", {
   tmp <- tempfile()
   writeLines("tmp", tmp)

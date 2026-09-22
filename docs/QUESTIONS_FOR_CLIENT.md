@@ -286,7 +286,7 @@ A short polite cover note is at the bottom. You can paste the BLOCKING Study 1 q
 - **Issue:** Two parts are still unspecified: (1) the **configured-trial key** (Condition × K × configuration instance? Gorilla Trial Number? stimulus `Spreadsheet: image`?); (2) what **earliest** means as the primary clock if Event Index is only the tie-break (UTC Timestamp vs Local Timestamp vs Event Index as the only sort).
 - **Options:** (A) key = Condition × K × `configuration_instance` (variation); earliest = smallest Event Index only. (B) key includes `Spreadsheet: image`; earliest = UTC Timestamp then Event Index. (C) another key she names.
 - **Impact:** Changes which row is kept if duplicates exist on the real export. Synthetic v3 is one row per configured trial, so this does not change the current pipeline test.
-- **Until answered:** Dedup is **not applied**. Prepare logs how many keys/rows the current guess (`participant × Condition × K × configuration_instance`, keep min Event Index) *would* drop. Flip `SAP$duplicate_dedup_apply` only after she confirms the key.
+- **Until answered:** Dedup is **not applied**. The script logs how many keys/rows the current guess *would* drop. If `n_dup_keys > 0`, it **halts** (Q31 GATE) and does not continue on undeduplicated rows. Flip `SAP$duplicate_dedup_apply` only after she confirms the key.
 - **Suggested message:** “For Study 1 duplicate discrimination rows, please confirm the trial key (for example Condition × K × configuration instance) and whether ‘earliest’ means smallest Event Index only, or UTC Timestamp with Event Index as the tie-break.”
 
 ### Q29 — non-blocking (Study 3 design documentation)

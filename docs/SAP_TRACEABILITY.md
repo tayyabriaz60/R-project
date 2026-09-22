@@ -1,7 +1,7 @@
 # SAP / Brief traceability
 
-**Phase:** 2C H1–H3 / tables / figures verified on synthetic v3.  
-**Kaggle:** H1–H3 verified on R 4.4.0 (afex 1.4.1, effectsize 1.0.0). Q7 fallback not applied. Q30 Okabe-Ito placeholder. Numbers are pipeline-test output, not findings.  
+**Phase:** Study 1 delivery (synthetic pipeline). Studies 2–3 not implemented.  
+**Kaggle:** Load/QC, prepare, and H1–H3 verified on R 4.4.0 (v3 synthetic). Q7 fallback not applied. Q30 Okabe-Ito placeholder. Q31 audit-only; **halts if `n_dup_keys > 0` while the key is NA** (added for real-data safety; synthetic had 0). Numbers are pipeline-test output, not findings.  
 **Source order:** SAP > Brief > Dictionary.
 
 Planned paths assume the structure in `docs/IMPLEMENTATION_PLAN.md`. Q14 table/figure formats are recorded in config; Q30 colours remain NA.
@@ -20,14 +20,14 @@ Planned paths assume the structure in `docs/IMPLEMENTATION_PLAN.md`. Q14 table/f
 | R1.6 | SAP §1; Brief §1, §15 | Fallbacks only if assumptions violated; no mixed models | `R/assumptions.R`; `R/models_npar.R` | analysis log | not implemented |
 | R1.7 | SAP §6 | 13-step analysis/reporting order | `scripts/run_study1.R` | full output tree | not implemented |
 | R1.8 | Brief §3 | QA/mapping before deriving analysis variables | `R/study1_load.R` | `output/logs/study1_log_data_qc_SYNTHETIC.txt` | implemented (load/QC; Kaggle synthetic) |
-| R1.9 | Brief §9; Q7 | Document fallback **before** looking at Condition significance | `save_study1_q8_histograms` (no auto-switch) | prepare log | implemented (Kaggle: diagnostics written; fallback not applied; H1–H3 not run) |
+| R1.9 | Brief §9; Q7 | Document fallback **before** looking at Condition significance | `write_q7_client_report` then parametric tests | Q7 report + analysis log | implemented (Kaggle: report first; fallback not applied) |
 | R1.10 | Brief §9 | No invented numeric ANOVA/t fallback cutoff | `R/study1_diagnostics.R` (Q7 no auto-switch) | prepare log | implemented (Kaggle: no numeric cutoff; fallback not applied) |
 | R1.11 | Dict §1 | No questionnaire predictors | loaders omit those fields | — | not implemented |
 | R1.12 | Dict §1; Q2 | Exclusions before summaries | `apply_study1_primary_population`; Q31 audit | prepare log | implemented (Kaggle: N=50; Q31 applied=FALSE; n_dup_keys=0) |
 | R1.13 | Dict §12; Q3/Q4 | Stop/flag on ambiguity | `gate_pairwise_mapping_q3`; `gate_incomplete_cells_q4` | prepare log | implemented (Kaggle R 4.4.0 prepare) |
 | R1.14 | SAP §3.4 | Primary N = 50 | `apply_study1_primary_population` | prepare log | implemented (Kaggle R 4.4.0 prepare) |
 | R1.15 | SAP §3.4 | Document condition order; do not model it | `R/recode_factors.R` (G1/G2 as design note) | analysis log | not implemented |
-| R1.16 | SAP §1; Q2 | Primary = all 50; dedup placeholder until Q31 | `audit_disc_duplicates_guess` | prepare log | implemented (Kaggle: applied=FALSE; n_dup_keys=0; n_keys=1200) |
+| R1.16 | SAP §1; Q2 | Primary = all 50; dedup placeholder until Q31 | `audit_disc_duplicates_guess`; Q31 GATE if n_dup_keys>0 | prepare log | implemented (Kaggle: applied=FALSE; n_dup_keys=0). Halt if dups exist while Q31 is NA. |
 | R1.17 | SAP §3.3.1; Brief §8.1 | RT drop missing / non-positive / documented technical error only | `valid_rt_rows` | prepare log `n_rt_dropped` | implemented (Kaggle: n_rt_dropped=0; n_valid_rt_trials=1200) |
 | R1.18 | Dict §9; Q2 | No outcome-based trial drops | `apply_study1_primary_population` | prepare log | implemented (Kaggle R 4.4.0 prepare) |
 | R1.19 | Dict §3 | Map Public ID → participant_id after reconciliation | `R/dictionary_map.R` | — | not implemented |
@@ -91,7 +91,7 @@ Planned paths assume the structure in `docs/IMPLEMENTATION_PLAN.md`. Q14 table/f
 | R1.77 | SAP §3.3.1 | RT Wilcoxon reporting | `R/export_tables.R` | RT fallback table | not implemented |
 | R1.78 | SAP §3.3.2; Brief §8.2 | Mean AE Orig vs Opt averaging K; paired t | `paired_t_opt_minus_orig` | `study1_table_ae` | implemented (Kaggle R 4.4.0 H1-H3) |
 | R1.79 | SAP §3.3.2 | AE difference histogram; Wilcoxon if extremely skewed | `save_study1_assumption_hists`; Q7 no switch | `study1_diag_ae_diff_SYNTHETIC.png` | implemented (Kaggle: hist written; Wilcoxon not applied) |
-| R1.80 | SAP §3.3.2 | AE reporting + fallback | `write_study1_tables` | `study1_table_ae` | implemented (t-test table; fallback not applied; **NOT EXECUTED**) |
+| R1.80 | SAP §3.3.2 | AE reporting + fallback | `write_study1_tables` | `study1_table_ae` | implemented (Kaggle R 4.4.0 H1-H3; fallback not applied) |
 | R1.81 | Brief §8.2 | Descriptive AE by Condition × K (CI if template) | `cell_mean_ci` | `study1_table_ae_by_k_desc` | implemented (Kaggle R 4.4.0 H1-H3) |
 | R1.82 | SAP §3.3.3; Brief §8.3 | Signed error mean/SD by condition; no test | `write_study1_tables` | `study1_table_signed_error` | implemented (Kaggle R 4.4.0 H1-H3) |
 | R1.83 | SAP §3.4; Brief §11 | Repeat primary accuracy + pairwise on N=48 subset | `run_h1_h2_h3` on score==4 | `study1_table_vision_sensitivity` | implemented (Kaggle R 4.4.0 H1-H3) |
@@ -100,7 +100,7 @@ Planned paths assume the structure in `docs/IMPLEMENTATION_PLAN.md`. Q14 table/f
 | R1.86 | Brief §9.1 | Wilcoxon zero convention (Q10) | `R/models_npar.R` | analysis log | not implemented |
 | R1.87 | Brief §9.1, §10 | Document ES package/function/convention (Q9) | `log_effectsize_versions` | analysis log | implemented (Kaggle R 4.4.0 H1-H3) |
 | R1.88 | SAP §3; Brief §14 | Publication-ready summary tables | `write_table_csv_docx` | `output/tables/study1_table_*` | implemented (Kaggle R 4.4.0 H1-H3) |
-| R1.89 | SAP §6; Brief §14 | Figures (SAP-specified = histograms; others Q13) | `write_study1_figures` | `study1_fig_*` PNG+PDF | implemented (Okabe–Ito placeholder; **NOT EXECUTED**) |
+| R1.89 | SAP §6; Brief §14 | Figures (SAP-specified = histograms; others Q13) | `write_study1_figures` | `study1_fig_*` PNG+PDF | implemented (Kaggle: 4 fig png+pdf; Okabe-Ito placeholder) |
 | R1.90 | Brief §14 | Reusable exports (Q14) | export helpers | `output/` | not implemented |
 | R1.91 | Brief §12, §14 | Regenerating pipeline; renv; README; analysis log | `scripts/run_study1.R`; `renv.lock` | `output/logs/study1_analysis_log`; README | not implemented |
 | R1.92 | Brief §12, §16 | Record SAP Final / 21 Sep 2026 / R 4.6.1 | README; log | those files | not implemented |

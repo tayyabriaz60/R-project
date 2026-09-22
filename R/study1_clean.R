@@ -68,5 +68,17 @@ log_duplicate_audit <- function(disc, log_path) {
   if (isTRUE(SAP$duplicate_dedup_apply)) {
     stop("duplicate_dedup_apply is TRUE but Q31 is still pending. Do not apply.", call. = FALSE)
   }
+  q31_pending <- length(SAP$duplicate_trial_key) == 1L && is.na(SAP$duplicate_trial_key)
+  if (q31_pending && aud$n_dup_keys > 0L) {
+    stop(
+      "Q31 GATE: ", aud$n_dup_keys,
+      " duplicate discrimination keys were found under the audit-only guess (",
+      SAP$duplicate_audit_key_guess, "). n_rows_would_drop=",
+      aud$n_rows_would_drop,
+      ". Rows were NOT dropped. Confirm the configured-trial key and ",
+      "'earliest' rule (Q31) before continuing. Do not analyse undeduplicated rows.",
+      call. = FALSE
+    )
+  }
   aud
 }

@@ -73,4 +73,7 @@ Methodological choices that the SAP leaves open are **not** decided here; they a
 | 2026-09-22 | H1–H3 first Kaggle run stopped on Mauchly row names | Pasted Cell 2 | `as.data.frame(sphericity.tests)` yielded rows `1; 2; 3; 4`. Fixed with `as.data.frame.matrix` / unflatten. |
 | 2026-09-22 | H1–H3 re-run verified on Kaggle R 4.4.0 | Pasted Cell 2+3 | Mauchly rows `K; condition:K`. H2 used GG (mauchly_p=0.0183). H2 follow-ups not run (interaction ns). Q7 fallback not applied. Vision N=48, sig_agrees H1/H2/H3. 12 table pairs, 4 figures png+pdf. Tests 75/0/0. Synthetic only; not findings. PDF warned on U+2013 in captions (now ASCII). |
 
-Dedup remains unapplied (Q31). Figure colours remain the Okabe-Ito placeholder (Q30).
+| 2026-09-22 | Q31: halt if the guess key finds duplicates while the key is still NA | Q2; Q31; real-data safety | Was audit-and-continue. That would analyse undeduplicated real rows. Now `log_duplicate_audit` stops with `Q31 GATE` when `n_dup_keys > 0` and `duplicate_trial_key` is NA. Synthetic v3 had 0, so the verified run is unchanged. Dedup is still not applied. |
+| 2026-09-22 | Study 1 delivery docs finalized for a fresh `run_all.R` check | Rules §4, §8 | README states R 4.4.0 vs 4.6.1, `00_setup.R`, renv.lock as version record only, SYNTHETIC label, Q30/Q31 open. |
+
+Dedup remains unapplied (Q31) and **stops** if any duplicates are found before she answers. Figure colours remain the Okabe-Ito placeholder (Q30).
