@@ -4,7 +4,7 @@ The analyst’s PC does **not** have R. You run R on **Kaggle**. The client late
 
 **H1–H3 verified 22 Sep 2026** from pasted Kaggle output after the Mauchly fix (R 4.4.0, synthetic v3). Cells below are the record of what was run.
 
-**Q30 / Q31 / real-path update:** coded locally. Kaggle re-run of this update is **NOT EXECUTED** until you paste the console. Same three cells after `git pull`. On synthetic expect Q31 `applied=TRUE` and `n_rows_dropped=0`.
+**Q7 locked path verified 22 Sep 2026** from pasted Kaggle output (R 4.4.0, synthetic, commit `20ea55f`). H1 Wilcoxon / H2 Friedman / H3 Wilcoxon; RT/AE paired t. Tests 103/0/0. Not findings.
 
 ---
 
@@ -127,7 +127,7 @@ source(file.path(PROJECT_ROOT, "kaggle", "run_tests.R"))
 - summary `n_data_rows=50`
 - `header_has_gorilla_id_column=FALSE`
 - three PNGs: `study1_diag_accuracy_cells_SYNTHETIC.png`, `study1_diag_h1_diff_SYNTHETIC.png`, `study1_diag_h2_k_diffs_SYNTHETIC.png`
-- Q7 line: fallback NOT applied; H1–H3 were not run
+- Q7 line: locked tests run in analyse (prepare writes histograms only)
 - Q12 `trial_rt_skewness=` a number (or NA) and `analysis_scale=` `raw` or `log`
 
 If Q3 or Q4 fires a `stop()`, paste the full error. That is a real gate, not a crash to “fix” by dropping rows.

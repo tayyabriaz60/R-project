@@ -89,7 +89,7 @@ This file is **not yet in the local git repo**. Download it from the Kaggle work
 | V-P5 summaries | 50 rows; header has participant_anon_id only | n_data_rows=50; first column `participant_anon_id` |
 | V-P6 no Gorilla IDs | header_has_gorilla_id_column=FALSE | FALSE |
 | V-P7 Q8 PNGs | three `study1_diag_*_SYNTHETIC.png` | all three written |
-| V-P8 Q7 | “fallback NOT applied”; no H1–H3 | present; “H1-H3 were not run” |
+| V-P8 Q7 | (superseded) prepare no longer says “do not switch”; locked tests run in analyse | verified 22 Sep 2026: path_locked=TRUE |
 | V-P9 Q12 | trial_rt_skewness printed; e1071 loaded | e1071 1.7.16; skewness=1.1808; threshold=1; analysis_scale=log; n_valid_rt=1200; n_rt_dropped=0 |
 | V-P10 helper tests | all previous + prepare toys pass | n_passed=57 n_failed=0 n_error=0; no synthetic load in tests |
 

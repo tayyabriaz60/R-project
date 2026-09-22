@@ -1,7 +1,7 @@
 # SAP / Brief traceability
 
 **Phase:** Study 1 delivery (synthetic pipeline). Studies 2–3 not implemented.  
-**Kaggle:** Fresh-session `run_all.R` verified on R 4.4.0 (v3 synthetic), 22 Sep 2026 (before Q30/Q31 lock). Q7 fallback not applied. Helper tests 79 passed on that run. **This Q30/Q31/real-path update is NOT EXECUTED on Kaggle yet.** Numbers from the earlier run are pipeline-test output, not findings.  
+**Kaggle:** Q7 locked npar path verified on R 4.4.0 (v3 synthetic), 22 Sep 2026, commit `20ea55f`. H1 Wilcoxon / H2 Friedman / H3 Wilcoxon; RT/AE paired t. Helper tests 103 passed, 0 failed. Numbers are pipeline-test output, not findings.  
 **Source order:** SAP > Brief > Dictionary.
 
 Planned paths assume the structure in `docs/IMPLEMENTATION_PLAN.md`. Q30 colours and Q31 key are recorded in config.
@@ -65,20 +65,20 @@ Planned paths assume the structure in `docs/IMPLEMENTATION_PLAN.md`. Q30 colours
 | R1.51 | SAP §3.1; Brief §5.1 | Zero-variance K: no inferential follow-up/d; Holm on rest | `h2_followups` | follow-up table + log | implemented (Kaggle R 4.4.0 H1-H3) |
 | R1.52 | SAP §3.1; Q8 | Diagnostic accuracy histograms (8 cells + H1 + H2 diffs) | `save_study1_q8_histograms` | `output/figures/study1_diag_*_SYNTHETIC.png` | implemented (Kaggle R 4.4.0 prepare) |
 | R1.53 | SAP §3.1 | Mauchly; Greenhouse–Geisser if violated | `sphericity_choice` | ANOVA table + log | implemented (Kaggle R 4.4.0 H1-H3) |
-| R1.54 | SAP §3.1; Q7 | Fallback if severe non-normality | locked H1 Wilcoxon / H2 Friedman / H3 Wilcoxon | H1/H2/H3 npar tables | implemented (code, 22 Sep). Kaggle of this lock: NOT EXECUTED. |
-| R1.55 | SAP §3.1 | Fallback H1: paired Wilcoxon overall Orig vs Opt | `R/models_npar.R` | `output/tables/study1_h1_wilcoxon` | not implemented |
-| R1.56 | SAP §3.1; Brief §9 | Fallback H2: Friedman on Opt−Orig diffs; pairwise Wilcoxon on diffs, Holm ×6 | `R/models_npar.R` | `output/tables/study1_h2_friedman` | not implemented |
+| R1.54 | SAP §3.1; Q7 | Fallback if severe non-normality | locked H1 Wilcoxon / H2 Friedman / H3 Wilcoxon | H1/H2/H3 npar tables | implemented (Kaggle R 4.4.0 locked path) |
+| R1.55 | SAP §3.1 | Fallback H1: paired Wilcoxon overall Orig vs Opt | `paired_wilcoxon_opt_minus_orig` | `study1_table_h1_wilcoxon` | implemented (Kaggle R 4.4.0 locked path) |
+| R1.56 | SAP §3.1; Brief §9 | Fallback H2: Friedman on Opt−Orig diffs; pairwise Wilcoxon on diffs, Holm ×6 | `friedman_h2_on_k_diffs`; `h2_friedman_followups` | `study1_table_h2_friedman` | implemented (Kaggle R 4.4.0 locked path; follow-ups off when Friedman ns) |
 | R1.57 | SAP §3.1 | Report H1 F, df, p, partial η², 95% CI | `partial_eta_table` + export | `study1_table_h1_h2_anova` | implemented (Kaggle R 4.4.0 H1-H3) |
 | R1.58 | SAP §3.1 | Report H2 same; if sig, mean diff, CI, t, df, d, Holm p | `h2_followups` | follow-up table | implemented (Kaggle R 4.4.0 H1-H3) |
 | R1.59 | SAP §3.1 | Mean and SD accuracy Original vs Optimized | `write_study1_tables` | `study1_table_accuracy_descriptives` | implemented (Kaggle R 4.4.0 H1-H3) |
-| R1.60 | SAP §3.1 | Fallback H1: V, p, rank-biserial, 95% CI | `R/effect_sizes.R` | Wilcoxon table | not implemented |
-| R1.61 | SAP §3.1 | Fallback H2: Friedman, df, p, Kendall’s W (+ pairwise if sig) | `R/effect_sizes.R` | Friedman table | not implemented |
+| R1.60 | SAP §3.1 | Fallback H1: V, p, rank-biserial, 95% CI | `extract_rank_biserial` | `study1_table_h1_wilcoxon` | implemented (Kaggle R 4.4.0 locked path) |
+| R1.61 | SAP §3.1 | Fallback H2: Friedman, df, p, Kendall’s W (+ pairwise if sig) | `effectsize::kendalls_w` | `study1_table_h2_friedman` | implemented (Kaggle R 4.4.0 locked path) |
 | R1.62 | SAP §3.2; Brief §5.2 | Participant Optimized-choice proportion / 12 | `pairwise_proportion` | summary CSV | implemented (Kaggle R 4.4.0 prepare) |
 | R1.63 | SAP §3.2 | Two-sided one-sample t vs 0.50 | `onesample_t_vs` | `study1_table_h3` | implemented (Kaggle R 4.4.0 H1-H3) |
 | R1.64 | SAP §3.2 | Histogram of proportions | `save_study1_assumption_hists` | `study1_diag_h3_prop_SYNTHETIC.png` | implemented (Kaggle R 4.4.0 H1-H3) |
-| R1.65 | SAP §3.2 | Fallback one-sample Wilcoxon vs 0.50 if very skewed | `R/models_npar.R` | `output/tables/study1_h3_wilcoxon` | not implemented |
+| R1.65 | SAP §3.2 | Fallback one-sample Wilcoxon vs 0.50 if very skewed | `onesample_wilcoxon_vs` | `study1_table_h3` | implemented (Kaggle R 4.4.0 locked path) |
 | R1.66 | SAP §3.2 | Report mean, SD, 95% CI, t, df, p, d | `write_study1_tables` | `study1_table_h3` | implemented (Kaggle R 4.4.0 H1-H3) |
-| R1.67 | SAP §3.2 | Fallback V, p, rank-biserial, 95% CI | `R/export_tables.R` | H3 Wilcoxon table | not implemented |
+| R1.67 | SAP §3.2 | Fallback V, p, rank-biserial, 95% CI | `write_study1_tables` | `study1_table_h3` | implemented (Kaggle R 4.4.0 locked path) |
 | R1.68 | SAP §3.3.1 | All valid trials regardless of accuracy | `valid_rt_rows` (no accuracy filter) | prepare log | implemented (Kaggle: n_rt_dropped=0; n_valid_rt_trials=1200) |
 | R1.69 | SAP §3.3.1 | Only specified RT exclusions | `R/rt_preprocess.R` | RT QC | not implemented |
 | R1.70 | SAP §3.3.1; Q12 | Trial-level e1071 type-2 skewness; log if > 1 | `trial_rt_skewness` | prepare log + summary scale column | implemented (Kaggle R 4.4.0 prepare) |
@@ -97,7 +97,7 @@ Planned paths assume the structure in `docs/IMPLEMENTATION_PLAN.md`. Q30 colours
 | R1.83 | SAP §3.4; Brief §11 | Repeat primary accuracy + pairwise on N=48 subset | `run_h1_h2_h3` on score==4 | `study1_table_vision_sensitivity` | implemented (Kaggle R 4.4.0 H1-H3) |
 | R1.84 | Dict §7 | Vision items/keys/score 0–4 | `map_study1_vision`; QC score by private ID | QC log | partial (item map + QC count; no analysis population) |
 | R1.85 | Dict §7; Q1 | vision_subset_flag score==4; not a primary exclusion | `map_study1_vision` + QC | QC log | implemented (Kaggle v3: 48/2; subset not applied) |
-| R1.86 | Brief §9.1 | Wilcoxon zero convention (Q10) | `R/models_npar.R` | analysis log | not implemented |
+| R1.86 | Brief §9.1 | Wilcoxon zero convention (Q10) | `nonzero_paired_diffs` | analysis log `n_nonzero` | implemented (Kaggle R 4.4.0 locked path) |
 | R1.87 | Brief §9.1, §10 | Document ES package/function/convention (Q9) | `log_effectsize_versions` | analysis log | implemented (Kaggle R 4.4.0 H1-H3) |
 | R1.88 | SAP §3; Brief §14 | Publication-ready summary tables | `write_table_csv_docx` | `output/tables/study1_table_*` | implemented (Kaggle R 4.4.0 H1-H3) |
 | R1.89 | SAP §6; Brief §14 | Figures (SAP-specified = histograms; others Q13) | `write_study1_figures` | `study1_fig_*` PNG+PDF | implemented (Kaggle: 4 fig png+pdf; Okabe-Ito placeholder) |
@@ -202,4 +202,4 @@ Study 2 “uses the same … as Study 1 unless otherwise stated” (SAP §4). Ro
 ---
 
 **Counts:** Study 1 = 94 (R1.1–R1.94); Study 2 = 28 (R2.1–R2.28); Study 3 = 36 (R3.1–R3.36); plus 5 project rows (P1–P5).  
-Study 1 H1–H3 / ES / Q13 tables and figures are **verified** on Kaggle R 4.4.0 (v3 synthetic), including the Q30/Q31 apply run (22 Sep 2026). Wilcoxon/Friedman remain unused (Q7). Q30/Q31 recorded. Helper tests after that run: 89 passed, 1 leftover Q30-pending test (fixed after the paste).
+Study 1 locked Q7 path (H1 Wilcoxon / H2 Friedman / H3 Wilcoxon; RT/AE t) is **verified** on Kaggle R 4.4.0 (v3 synthetic, 22 Sep 2026). Helper tests 103 passed, 0 failed. Numbers are pipeline tests, not findings.

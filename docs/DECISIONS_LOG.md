@@ -84,6 +84,7 @@ Methodological choices that the SAP leaves open are **not** decided here; they a
 
 | 2026-09-22 | Q30/Q31/real-path run on Kaggle R 4.4.0 | Pasted Cell 2 | Q31 applied=TRUE, n_rows_dropped=0. Q30 confirmed. Same synthetic H1–H3 path as before. Tests 89 pass / 1 leftover pending-Q30 assert (fixed after paste). |
 
-| 2026-09-22 | Q7 path locked from real-data plots | Q7; SAP §3.1–§3.3 | H1 paired Wilcoxon; H2 Friedman on Opt-Orig by K (pairwise Wilcoxon + Holm x6 only if Friedman sig); H3 one-sample Wilcoxon vs 0.50; RT paired t (analysis scale); AE paired t. Same tests on N=48. Primary N=50. Q10 omit-zeros. ANOVA is not the reported primary path. Kaggle re-run of this lock: NOT EXECUTED. |
+| 2026-09-22 | Q7 path locked from real-data plots | Q7; SAP §3.1–§3.3 | H1 paired Wilcoxon; H2 Friedman on Opt-Orig by K (pairwise Wilcoxon + Holm x6 only if Friedman sig); H3 one-sample Wilcoxon vs 0.50; RT paired t (analysis scale); AE paired t. Same tests on N=48. Primary N=50. Q10 omit-zeros. ANOVA is not the reported primary path. |
+| 2026-09-22 | Q7 locked path verified on Kaggle R 4.4.0 | Pasted Cell 2+3; commit 20ea55f | Synthetic only, not findings. Primary H1 V=552.5 p=0.1106 n_nonzero=41; H2 chi2=1.2711 p=0.7360 followups=FALSE; H3 V=867 p=0.0000 n_nonzero=44; RT t=-0.3574 log; AE t=-1.5909. Vision N=48, sig_agrees TRUE. Tests 103/0/0. Prepare-log wording later cleaned in 1484dc6. |
 
 Q15–Q17 remain NA.
