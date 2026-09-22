@@ -124,7 +124,7 @@ run_study1_analyse <- function(study1, study1_prep) {
   log_path <- output_log_path("study1_log_analysis")
   start_log(log_path, "STUDY 1 ANALYSIS (aggregates only; SYNTHETIC DATA: pipeline test only)")
   log_msg(log_path, "SAP §3.1 H1/H2; §3.2 H3; §3.3 RT/AE/SE; §3.4 vision sensitivity.")
-  log_msg(log_path, "Q7: fallback will NOT be applied. Q30/Q31 still pending.")
+  log_msg(log_path, "Q7: fallback will NOT be applied. Q30/Q31 recorded in config.")
 
   summaries <- study1_prep$summaries
   extra_diag <- save_study1_assumption_hists(summaries, log_path)

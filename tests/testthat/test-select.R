@@ -28,8 +28,10 @@ test_that("anonymous IDs are sequential and do not embed the source ID", {
   expect_false(any(grepl("S1PUB", unname(mp), fixed = TRUE)))
 })
 
-test_that("require_param returns filled Q1 and still stops on pending figure_colours", {
+test_that("require_param returns filled Q1 and Q30 and still stops on pending Q15", {
   expect_identical(require_param("vision_subset_rule"), "score_equals_4")
   expect_identical(require_param("object_name_disc"), "Response")
-  expect_error(require_param("figure_colours"), "PENDING a client answer")
+  pal <- require_param("figure_colours")
+  expect_identical(pal$Original, "#E69F00")
+  expect_error(require_param("geometric_mean_rt_ratio"), "PENDING a client answer")
 })

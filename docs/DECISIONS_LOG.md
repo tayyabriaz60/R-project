@@ -82,4 +82,6 @@ Methodological choices that the SAP leaves open are **not** decided here; they a
 | 2026-09-22 | Q31 confirmed and applied | Q2; Q31 | Key = `participant_id\|condition\|K\|configuration_instance`. Keep min UTC Timestamp, then min Event Index. Cleaning runs in prepare. Real files found by task id under `data/real/`. |
 | 2026-09-22 | Real Study 1 paths configurable | Client 22 Sep | G1 `task-y3n9`, G2 `task-z8oq`, pairwise `task-yfcn`, vision `task-hxml`. `DATA_SOURCE <- "real"`. No manual edit of raw Gorilla files. |
 
+| 2026-09-22 | Q30/Q31/real-path run on Kaggle R 4.4.0 | Pasted Cell 2 | Q31 applied=TRUE, n_rows_dropped=0. Q30 confirmed. Same synthetic H1–H3 path as before. Tests 89 pass / 1 leftover pending-Q30 assert (fixed after paste). |
+
 Q15–Q17 remain NA. Q7 still does not auto-switch.

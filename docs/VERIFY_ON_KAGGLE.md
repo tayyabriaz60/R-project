@@ -133,6 +133,18 @@ Empty `/kaggle/working`, then clone, then `kaggle/run_notebook.R` + `kaggle/run_
 
 **SYNTHETIC DATA: pipeline test only.** Not findings.
 
-## Q30 / Q31 / real-path update — NOT EXECUTED
+## Q30 / Q31 / real-path update — pipeline verified 22 Sep 2026 (pasted)
 
-Code now applies Q31 (UTC then Event Index) and locks Q30 colours. Real files resolve by task id. Re-run `kaggle/run_notebook.R` + `kaggle/run_tests.R` on synthetic (expect 0 dups dropped) before sending the updated zip. Real data stays on her machine.
+Fresh Kaggle clone of `e8d51b8`, then `run_notebook.R`. Synthetic only.
+
+| Item | Result |
+|------|--------|
+| Files resolved | G1/G2/pairwise/vision synthetic names |
+| Q31 | key confirmed; applied=TRUE; n_dup_keys=0; n_rows_dropped=0; UTC and Event Index present |
+| Q30 | `confirmed_Q30` `#E69F00` / `#0072B2` |
+| Q3/Q4 | 0; continued |
+| Q7 | fallback not applied |
+| Tables / figures | 12 pairs; 4 fig png+pdf; no Gorilla IDs |
+| Helper tests | n_passed=89 n_failed=1 (old `figure_colours` pending test in `test-select.R`; fixed after this paste) |
+
+**SYNTHETIC DATA: pipeline test only.** Not findings.

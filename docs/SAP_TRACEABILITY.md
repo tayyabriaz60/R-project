@@ -202,4 +202,4 @@ Study 2 “uses the same … as Study 1 unless otherwise stated” (SAP §4). Ro
 ---
 
 **Counts:** Study 1 = 94 (R1.1–R1.94); Study 2 = 28 (R2.1–R2.28); Study 3 = 36 (R3.1–R3.36); plus 5 project rows (P1–P5).  
-Study 1 H1–H3 / ES / Q13 tables and figures are **verified** on Kaggle R 4.4.0 (v3 synthetic). Wilcoxon/Friedman remain unused (Q7). Q30/Q31 still pending.
+Study 1 H1–H3 / ES / Q13 tables and figures are **verified** on Kaggle R 4.4.0 (v3 synthetic), including the Q30/Q31 apply run (22 Sep 2026). Wilcoxon/Friedman remain unused (Q7). Q30/Q31 recorded. Helper tests after that run: 89 passed, 1 leftover Q30-pending test (fixed after the paste).
