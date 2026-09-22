@@ -2,7 +2,7 @@
 
 The analyst’s PC does **not** have R. You run R on **Kaggle**. The client later runs the same scripts on **R 4.6.1**.
 
-**Now: re-run H1–H3 after the Mauchly row-name fix** (first run stopped: Mauchly rows `1; 2; 3; 4`). Internet ON if packages need a reinstall.
+**H1–H3 verified 22 Sep 2026** from pasted Kaggle output after the Mauchly fix (R 4.4.0, synthetic v3). Cells below are the record of what was run.
 
 ---
 

@@ -296,7 +296,7 @@ write_study1_tables <- function(primary, vision_tab, ae_k, pw_rt, log_path) {
 write_study1_figures <- function(acc_cells, h3, rt_ms, ae_k, log_path) {
   pal <- study1_palette(log_path)
   cap <- paste0(
-    "Palette: Okabe–Ito placeholder pending Q30 (", pal$Original, " = Original, ",
+    "Palette: Okabe-Ito placeholder pending Q30 (", pal$Original, " = Original, ",
     pal$Optimized, " = Optimized). ", synthetic_note()
   )
   acc_cells$K <- factor(acc_cells$K, levels = as.integer(SAP$k_levels_study1))

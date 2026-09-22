@@ -10,7 +10,7 @@ run_study1_prepare <- function(study1) {
   ensure_output_dirs()
   log_path <- output_log_path("study1_log_prepare")
   start_log(log_path, "STUDY 1 PREPARE (aggregates only; SYNTHETIC DATA: pipeline test only)")
-  log_msg(log_path, "H1-H3 not run. Effect sizes not computed. Q13 figures not drawn.")
+  log_msg(log_path, "Prepare step only. H1-H3 / ES / Q13 figures run in analyse, not here.")
 
   study1 <- apply_study1_primary_population(study1, log_path)
   disc <- study1$discrimination

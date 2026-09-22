@@ -95,18 +95,24 @@ This file is **not yet in the local git repo**. Download it from the Kaggle work
 
 ## H1–H3 chunk — first Kaggle run 22 Sep 2026 (pasted console)
 
-Packages: afex 1.4.1, effectsize 1.0.0, ggplot2 3.5.1, officer 0.6.7, flextable 0.9.7. Helper tests: **71 passed, 0 failed**.
+Stopped on Mauchly rows `1; 2; 3; 4`. Fixed in `0689ebe`. Helper tests that run: 71 passed.
+
+## H1–H3 chunk — verified 22 Sep 2026 after Mauchly fix (pasted console)
+
+Packages: afex 1.4.1, effectsize 1.0.0, ggplot2 3.5.1, officer 0.6.7, flextable 0.9.7. Helper tests: **75 passed, 0 failed**.
+
+Synthetic pipeline numbers below are **not findings**.
 
 | Item | What to check | Result |
 |------|----------------|--------|
-| V-H1 Q7 report | fallback_applied=FALSE; client text printed | written before the stop; fallback not applied |
-| V-H1b Mauchly | parse condition:K p-value | **FAILED**: Mauchly rows logged as `1; 2; 3; 4`. Fix written, **not re-run**. |
-| V-H2 H1/H2 ANOVA | F, df, p, pes, two-sided 95% CI; Mauchly/GG logged | **NOT EXECUTED** |
-| V-H3 H2 follow-ups | only if interaction p < alpha; Holm; zero-var skip | **NOT EXECUTED** |
-| V-H4 H3 | one-sample t vs 0.50; d vs 0.50 | **NOT EXECUTED** |
-| V-H5 RT | analysis_scale=log; paired t; ms descriptives | **NOT EXECUTED** |
-| V-H6 AE / SE | AE paired t; SE table has no test | **NOT EXECUTED** |
-| V-H7 vision | n_ids=48; separate table | **NOT EXECUTED** |
-| V-H8 tables | csv+docx; no Gorilla ID columns | **NOT EXECUTED** |
-| V-H9 figures | 4 report fig png+pdf; Okabe–Ito caption | **NOT EXECUTED** |
-| V-H10 no fallback | no Wilcoxon/Friedman in the log | **NOT EXECUTED** |
+| V-H1 Q7 report | fallback_applied=FALSE; client text printed | present; six diagnostic PNGs listed |
+| V-H1b Mauchly | named rows including condition:K | rows=`K; condition:K`; columns=`Test statistic; p-value` |
+| V-H2 H1/H2 ANOVA | F, df, p, pes; Mauchly/GG logged | H1 F=2.5310 df=1,49 p=0.1181 pes=0.0491 sphericity=none; H2 F=0.2402 GG df p=0.8367 pes=0.0049 mauchly_p=0.0183 |
+| V-H3 H2 follow-ups | only if interaction p < alpha | `H2_followups_ran=FALSE reason=interaction_not_significant` |
+| V-H4 H3 | one-sample t vs 0.50; d vs 0.50 | t=4.9138 df=49 p=0.0000 mean=0.5933 d=0.6949 |
+| V-H5 RT | analysis_scale=log; paired t | t=-0.3574 p=0.7223 scale=log |
+| V-H6 AE / SE | AE paired t; SE table written | AE t=-1.5909 p=0.1181; signed-error table written |
+| V-H7 vision | n_ids=48; separate table | 48; H1/H2/H3 sig_agrees=TRUE; not merged |
+| V-H8 tables | csv+docx; no Gorilla ID columns | 12 csv + 12 docx; all `header_has_gorilla_id_column=FALSE` |
+| V-H9 figures | 4 report fig png+pdf; Okabe-Ito caption | all eight files written; PDF warned on en-dash (caption fix pending next run) |
+| V-H10 no fallback | no Wilcoxon/Friedman in the log | none; Q9 unused ES logged as not computed |

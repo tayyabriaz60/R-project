@@ -9,7 +9,7 @@ Last updated: 22 September 2026. **Internal (Tayyab / assistant). Do not send th
 - **Freelancer:** Tayyab Riaz (Upwork).
 - **Client:** Fatimah Alqahtani.
 - **Contract:** $150, three $50 milestones: Study 1, Study 2, Study 3.
-- **Honest status:** Milestone 1 (full Study 1 analysis) is **not finished**. Load/QC + Q1–Q14 config + helper tests are done. H1–H3 / tables / figures are not.
+- **Honest status:** Study 1 synthetic pipeline through H1–H3 / tables / figures is **verified on Kaggle**. Q30/Q31 still open. Studies 2–3 not started. Do not treat synthetic numbers as findings.
 - **Share with her:** `README.md` + `docs/FOR_CLIENT.md` + the code. Do **not** send this HANDOFF (token note, rates).
 
 ---
@@ -40,13 +40,13 @@ Last updated: 22 September 2026. **Internal (Tayyab / assistant). Do not send th
 | Helper tests after v3 | Verified 46, then 57 after prepare toys |
 | renv.lock on Kaggle | Written; **not in local git** until downloaded |
 | Prepare (summaries + Q8 diags) | **Verified** Kaggle R 4.4.0. Q31 still audit-only. Q30 still NA. |
-| H1–H3 / ES / Q13 figures | **Code written; Kaggle NOT EXECUTED.** Q7 no auto-fallback. Q30 Okabe–Ito placeholder. |
+| H1–H3 / ES / Q13 figures | **Verified** Kaggle R 4.4.0 synthetic. Q7 no auto-fallback. Q30 Okabe-Ito placeholder. |
 
 ---
 
-## Next coding (after Kaggle confirms H1–H3)
+## Next coding (when Tayyab says go)
 
-1. Fix only from pasted Kaggle errors (afex/effectsize extractors if names differ).
+1. Study 2, or client-facing zip / Milestone 1 wrap-up — only if asked.
 2. Do not invent Q30 colours; do not apply Q31 dedup.
 
 ---

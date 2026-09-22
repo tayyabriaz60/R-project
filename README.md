@@ -10,9 +10,9 @@ Implementation of the **frozen SAP** (21 September 2026). The scripts follow the
 |------|--------|
 | Study 1 load, Object Name filter, ID mapping, QC log | Ready (tested on synthetic v3) |
 | Your Q1–Q14 answers | Recorded in `config/config.R` and `docs/DECISIONS_LOG.md` |
-| Helper unit tests (toy data) | 57 passed on Kaggle (prepare chunk); H1–H3 helpers not yet run |
+| Helper unit tests (toy data) | 75 passed on Kaggle |
 | Study 1 summaries + Q8 diagnostics | Ready (tested on synthetic v3) |
-| Study 1 H1–H3, RT/AE, Q13 tables/figures | **Written; not yet run on Kaggle** |
+| Study 1 H1–H3, RT/AE, Q13 tables/figures | Ready (tested on synthetic v3; not findings) |
 | Studies 2 and 3 analysis | **Not written yet** |
 
 Development was tested on **Kaggle R 4.4.0**. Your specified version is **R 4.6.1**. Please run `scripts/00_setup.R` first on your machine and send any error text if something differs.
