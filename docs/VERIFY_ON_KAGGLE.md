@@ -132,3 +132,7 @@ Empty `/kaggle/working`, then clone, then `kaggle/run_notebook.R` + `kaggle/run_
 | Helper tests | n_passed=79 n_failed=0 n_error=0 (includes Q31 halt toys) |
 
 **SYNTHETIC DATA: pipeline test only.** Not findings.
+
+## Q30 / Q31 / real-path update — NOT EXECUTED
+
+Code now applies Q31 (UTC then Event Index) and locks Q30 colours. Real files resolve by task id. Re-run `kaggle/run_notebook.R` + `kaggle/run_tests.R` on synthetic (expect 0 dups dropped) before sending the updated zip. Real data stays on her machine.

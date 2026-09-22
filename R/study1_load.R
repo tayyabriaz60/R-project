@@ -1,7 +1,7 @@
 # Study 1 load + map + QC. Dictionary v2 §3–§4, §7–§10. SAP §3.4 N / trial structure.
 # Applies: Object Name filter (Q5), configurable participant_id + anon reporting ID (Q6).
-# Does NOT: Q2 duplicate-dedup / exclusions, Q3 analysis-time stop, Q4 incomplete-cell
-# stop, Q1 vision-subset as a primary exclusion, or any hypothesis test.
+# Does NOT: Q2 duplicate-dedup (that is prepare / Q31), Q3 analysis-time stop,
+# Q4 incomplete-cell stop, Q1 vision-subset as a primary exclusion, or any test.
 
 source(file.path(PROJECT_ROOT, "R", "utils_paths.R"))
 source(file.path(PROJECT_ROOT, "R", "utils_logging.R"))
@@ -11,6 +11,7 @@ source(file.path(PROJECT_ROOT, "R", "utils_select.R"))
 
 STUDY1_DISC_RAW <- c(
   "Participant Public ID", "Participant Private ID",
+  "Event Index", "UTC Timestamp",
   "Task Name", "Response Type", "Object Name",
   "Response", "Reaction Time", "Correct",
   "Spreadsheet: condition", "Spreadsheet: colormap",
@@ -33,6 +34,24 @@ STUDY1_VIS_RAW <- c(
   "Response", "Correct",
   "Spreadsheet: tag", "Spreadsheet: correct_answer"
 )
+
+# Gorilla UTC Timestamp is numeric epoch (ms or s). Do not guess a date string.
+parse_utc_timestamp <- function(x, file_label) {
+  raw <- as.character(x)
+  empty <- is.na(raw) | !nzchar(trimws(raw))
+  num <- suppressWarnings(as.numeric(raw))
+  n_bad <- sum(!empty & is.na(num))
+  if (n_bad > 0L) {
+    stop(
+      file_label,
+      ": UTC Timestamp has ", n_bad,
+      " values that are not numeric. Do not guess a date format. ",
+      "Q31 needs a numeric UTC Timestamp (Gorilla epoch).",
+      call. = FALSE
+    )
+  }
+  num
+}
 
 # Dictionary §4.1: baseline → Original; sa → Optimized.
 recode_condition_study1 <- function(x, file_label) {
@@ -57,17 +76,15 @@ map_study1_discrimination <- function(raw, file_label) {
   acc <- as.integer(resp == ans)
   acc[is.na(resp) | is.na(ans)] <- NA_integer_
   mismatch <- as.integer(!is.na(correct_raw) & !is.na(acc) & correct_raw != acc)
-  event_index <- if ("Event Index" %in% names(raw)) {
-    suppressWarnings(as.integer(raw[["Event Index"]]))
-  } else {
-    NA_integer_
-  }
+  event_index <- suppressWarnings(as.integer(raw[["Event Index"]]))
+  utc_timestamp <- parse_utc_timestamp(raw[["UTC Timestamp"]], file_label)
   data.frame(
     participant_public_id = as.character(raw[["Participant Public ID"]]),
     participant_private_id = as.character(raw[["Participant Private ID"]]),
     participant_id = NA_character_,  # set in run_study1_load (Q6)
     participant_anon_id = NA_character_,
     event_index = event_index,
+    utc_timestamp = utc_timestamp,
     task_name = raw[["Task Name"]],
     response_type = raw[["Response Type"]],
     object_name = raw[["Object Name"]],
@@ -183,30 +200,38 @@ rows_per_id_counts <- function(id) {
 }
 
 run_study1_load <- function() {
-  if (!identical(DATA_SOURCE, "synthetic")) {
-    stop(
-      "DATA_SOURCE is not synthetic. Real-export file names are NOT SPECIFIED. ",
-      "Keep DATA_SOURCE <- \"synthetic\" until the client documents real paths.",
-      call. = FALSE
-    )
-  }
   ensure_output_dirs()
   qc_txt <- output_log_path("study1_log_data_qc")
   qc_csv <- file.path(OUTPUT_LOGS, paste0("study1_log_data_qc", OUTPUT_SUFFIX, ".csv"))
-  start_log(qc_txt, "STUDY 1 DATA QC (aggregates only; SYNTHETIC DATA: pipeline test only)")
+  qc_title <- if (identical(DATA_SOURCE, "synthetic")) {
+    "STUDY 1 DATA QC (aggregates only; SYNTHETIC DATA: pipeline test only)"
+  } else {
+    "STUDY 1 DATA QC (aggregates only; real export; no participant IDs in this log)"
+  }
+  start_log(qc_txt, qc_title)
+  log_msg(qc_txt, "DATA_SOURCE=", DATA_SOURCE)
   log_msg(qc_txt, "Applied at load: Q5 Object Name filter; Q6 participant_id from ",
           require_param("study1_id_column"), " + anonymous reporting IDs")
-  log_msg(qc_txt, "Not applied at load: Q2 exclusions/dedup; Q3 pairwise analysis stop; Q4 incomplete-cell stop; Q1 vision subset as exclusion")
+  log_msg(qc_txt, "Not applied at load: Q2 exclusions/Q31 dedup; Q3 pairwise analysis stop; Q4 incomplete-cell stop; Q1 vision subset as exclusion")
 
-  g1 <- load_one_raw(SYNTHETIC_FILES$study1_disc_g1, "study1_disc_g1", qc_txt, require_param("object_name_disc"))
-  g2 <- load_one_raw(SYNTHETIC_FILES$study1_disc_g2, "study1_disc_g2", qc_txt, require_param("object_name_disc"))
+  p_g1 <- resolve_study1_file("study1_disc_g1")
+  p_g2 <- resolve_study1_file("study1_disc_g2")
+  p_pw <- resolve_study1_file("study1_pairwise")
+  p_vis <- resolve_study1_file("study1_vision")
+  log_msg(qc_txt, "resolved files: disc_g1=", basename(p_g1),
+          " disc_g2=", basename(p_g2),
+          " pairwise=", basename(p_pw),
+          " vision=", basename(p_vis))
+
+  g1 <- load_one_raw(p_g1, "study1_disc_g1", qc_txt, require_param("object_name_disc"))
+  g2 <- load_one_raw(p_g2, "study1_disc_g2", qc_txt, require_param("object_name_disc"))
   disc <- rbind(
     map_study1_discrimination(g1, "study1_disc_g1"),
     map_study1_discrimination(g2, "study1_disc_g2")
   )
-  pw_raw <- load_one_raw(SYNTHETIC_FILES$study1_pairwise, "study1_pairwise", qc_txt, require_param("object_name_pairwise"))
+  pw_raw <- load_one_raw(p_pw, "study1_pairwise", qc_txt, require_param("object_name_pairwise"))
   pw <- map_study1_pairwise(pw_raw, "study1_pairwise")
-  vis_raw <- load_one_raw(SYNTHETIC_FILES$study1_vision, "study1_vision", qc_txt, require_param("object_name_vision"))
+  vis_raw <- load_one_raw(p_vis, "study1_vision", qc_txt, require_param("object_name_vision"))
   vis <- map_study1_vision(vis_raw, "study1_vision")
 
   disc <- apply_study1_analysis_id(disc, "study1_disc")
@@ -227,10 +252,17 @@ run_study1_load <- function() {
   assert_allowed_values(disc$condition, c("Original", "Optimized"), "condition", "study1_disc")
   assert_allowed_values(disc$K, SAP$k_levels_study1, "K", "study1_disc")
   assert_allowed_values(disc$configuration_instance, c(1, 2, 3), "configuration_instance", "study1_disc")
-  assert_allowed_values(disc$task_name, c("Discrimination Task G1", "Discrimination Task G2"), "task_name", "study1_disc")
   assert_allowed_values(disc$response_type, "response", "response_type", "study1_disc")
-  assert_allowed_values(pw$task_name, "Pairwise Comparison Task2", "task_name", "study1_pairwise")
-  assert_allowed_values(vis$task_name, "Vision Check", "task_name", "study1_vision")
+  if (identical(DATA_SOURCE, "synthetic")) {
+    assert_allowed_values(disc$task_name, c("Discrimination Task G1", "Discrimination Task G2"), "task_name", "study1_disc")
+    assert_allowed_values(pw$task_name, "Pairwise Comparison Task2", "task_name", "study1_pairwise")
+    assert_allowed_values(vis$task_name, "Vision Check", "task_name", "study1_vision")
+  } else {
+    log_msg(qc_txt, "real task_name unique_n disc=", n_unique_nonempty(disc$task_name),
+            " pairwise=", n_unique_nonempty(pw$task_name),
+            " vision=", n_unique_nonempty(vis$task_name),
+            " (names not logged)")
+  }
   assert_allowed_values(vis$vision_item, c("Q1_answer", "Q2_answer", "Q3_answer", "Q4_answer"), "vision_item", "study1_vision")
   assert_allowed_values(vis$vision_correct_answer, SAP$vision_correct_keys, "vision_correct_answer", "study1_vision")
 

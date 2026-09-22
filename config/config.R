@@ -105,14 +105,32 @@ DATA_DIR <- if (identical(DATA_SOURCE, "synthetic")) {
 
 OUTPUT_SUFFIX <- if (identical(DATA_SOURCE, "synthetic")) "_SYNTHETIC" else ""
 
-# Synthetic file names from SYNTHETIC_MANIFEST.csv (Study 1). Real names NOT SPECIFIED.
+# Synthetic file names from SYNTHETIC_MANIFEST.csv (Study 1).
 SYNTHETIC_FILES <- list(
-  study1_disc_g1 = file.path(DATA_DIR, "Study1", "study1_discrimination_G1_SYNTHETIC.csv"),
-  study1_disc_g2 = file.path(DATA_DIR, "Study1", "study1_discrimination_G2_SYNTHETIC.csv"),
-  study1_pairwise = file.path(DATA_DIR, "Study1", "study1_pairwise_SYNTHETIC.csv"),
-  study1_vision = file.path(DATA_DIR, "Study1", "study1_vision_SYNTHETIC.csv"),
-  study2_tasks = file.path(DATA_DIR, "Study2", "study2_tasks_SYNTHETIC.csv"),
-  study3_tasks = file.path(DATA_DIR, "Study3", "study3_tasks_SYNTHETIC.csv")
+  study1_disc_g1 = file.path(PROJECT_ROOT, "data", "synthetic", "Study1", "study1_discrimination_G1_SYNTHETIC.csv"),
+  study1_disc_g2 = file.path(PROJECT_ROOT, "data", "synthetic", "Study1", "study1_discrimination_G2_SYNTHETIC.csv"),
+  study1_pairwise = file.path(PROJECT_ROOT, "data", "synthetic", "Study1", "study1_pairwise_SYNTHETIC.csv"),
+  study1_vision = file.path(PROJECT_ROOT, "data", "synthetic", "Study1", "study1_vision_SYNTHETIC.csv"),
+  study2_tasks = file.path(PROJECT_ROOT, "data", "synthetic", "Study2", "study2_tasks_SYNTHETIC.csv"),
+  study3_tasks = file.path(PROJECT_ROOT, "data", "synthetic", "Study3", "study3_tasks_SYNTHETIC.csv")
+)
+
+# Real Study 1 Gorilla task IDs (22 Sep 2026). Files stay unedited under data/real/.
+# The loader finds a CSV whose filename contains the task id (e.g. task-y3n9.csv
+# or data_exp_..._task-y3n9.csv). Cleaning stays in the pipeline.
+REAL_STUDY1_TASK_IDS <- list(
+  study1_disc_g1 = "task-y3n9",
+  study1_disc_g2 = "task-z8oq",
+  study1_pairwise = "task-yfcn",
+  study1_vision = "task-hxml"
+)
+
+# Optional exact path under data/real/ (relative or absolute). NA = find by task id.
+REAL_STUDY1_FILES <- list(
+  study1_disc_g1 = NA_character_,
+  study1_disc_g2 = NA_character_,
+  study1_pairwise = NA_character_,
+  study1_vision = NA_character_
 )
 
 # -----------------------------------------------------------------------------
@@ -151,7 +169,7 @@ SAP <- list(
   # --- answered Q1-Q14 (22 Sep 2026); recorded in DECISIONS_LOG ------------
   vision_subset_rule = "score_equals_4", # Q1; sensitivity only, not a primary exclusion
   vision_subset_is_primary_exclusion = FALSE, # Q1
-  study1_exclusion_order = "primary_all_50_no_outcome_exclusion; self_test_outside_sample; duplicate_keep_earliest_tiebreak_event_index", # Q2; primary applied in prepare; dedup audit-only until Q31
+  study1_exclusion_order = "primary_all_50_no_outcome_exclusion; self_test_outside_sample; duplicate_keep_earliest_utc_timestamp_tiebreak_event_index", # Q2; Q31 applied in prepare
   pairwise_failed_row_rule = "flag_and_stop", # Q3; gate in prepare
   incomplete_cell_rule = "flag_and_stop", # Q4; gate in prepare
   object_name_filter_when_blank = "keep_filter", # Q5
@@ -192,21 +210,19 @@ SAP <- list(
   export_figure_formats = c("png_300dpi", "pdf"),
   export_reusable_formats = c("csv", "rds"),
   ae_by_k_include_ci = TRUE,             # Q14; descriptive only, no inferential test
-  # Q31 audit-only guess (NOT applied; swap this string when she answers)
-  duplicate_audit_key_guess = "participant_id|condition|K|configuration_instance",
-  duplicate_audit_keep_guess = "min_event_index",
-  duplicate_dedup_apply = FALSE,
-  # --- still pending (must stay NA; do not guess) --------------------------
-  figure_colours = NA,                   # PENDING Q30 (Q13 did not name colours)
-  # Placeholder only. One-line swap when Q30 is answered: fill figure_colours and use it.
-  figure_palette_placeholder = list(
+  # Q30 confirmed 22 Sep 2026: keep current Okabe-Ito pair
+  figure_colours = list(
     name = "okabe_ito",
-    status = "placeholder_pending_Q30",
+    status = "confirmed_Q30",
     Original = "#E69F00",
     Optimized = "#0072B2",
     reference = "#000000"
   ),
-  duplicate_trial_key = NA,              # PENDING Q31
+  # Q31 confirmed 22 Sep 2026: Participant x Condition x K x configuration_instance
+  duplicate_trial_key = "participant_id|condition|K|configuration_instance",
+  duplicate_keep_rule = "min_utc_timestamp_then_min_event_index",
+  duplicate_dedup_apply = TRUE,
+  # --- still pending (must stay NA; do not guess) --------------------------
   geometric_mean_rt_ratio = NA,          # PENDING client answer Q15
   side_label_case = NA,                  # PENDING client answer Q16
   rt_column_if_disagree = NA             # PENDING client answer Q17

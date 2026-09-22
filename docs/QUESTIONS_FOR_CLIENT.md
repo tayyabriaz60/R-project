@@ -7,7 +7,7 @@
 
 **Q1–Q14 were answered by Fatimah on 22 September 2026.** Quoted answers and implementation notes are in `docs/DECISIONS_LOG.md`. Status on each item below is **Answered** unless a follow-up is marked.
 
-Still open for Study 1: Q15–Q17, Q30 (figure colours), Q31 (Q2 duplicate-trial key / “earliest” clock). Study 2–3: Q18–Q20. Non-blocking: Q21–Q23, Q25–Q26, Q28–Q29. Q24 is closed by Q9 (Kendall’s W 95% CI).
+Still open for Study 1: Q15–Q17. Q30 and Q31 answered 22 Sep 2026. Study 2–3: Q18–Q20. Non-blocking: Q21–Q23, Q25–Q26, Q28–Q29. Q24 is closed by Q9 (Kendall’s W 95% CI).
 
 ---
 
@@ -30,7 +30,7 @@ A short polite cover note is at the bottom. You can paste the BLOCKING Study 1 q
 - **Suggested message:** “The SAP gives vision-screen subset sizes (Study 1 N = 48) but not the inclusion rule. The synthetic files treat score 4/4 as the subset. Please confirm the frozen rule (for example: all four Ishihara-style items correct) so we do not redefine it from the data.”
 
 ### Q2 — Answered 22 Sep 2026
-- **Status:** Answered (follow-up: Q31 before applying the duplicate rule).
+- **Status:** Answered. Q31 follow-up answered 22 Sep 2026 (UTC Timestamp, then Event Index; key = Participant × Condition × K × configuration_instance). Dedup is applied in prepare.
 - **Fatimah:** “primary population = all 50 recruited participants, no outcome-based exclusion. Pre-recruitment self-test session is outside the sample. For duplicate discrimination responses: keep the earliest valid response per participant x configured trial, tie-broken by Event Index.”
 - **Where:** SAP §1 “predefined primary analysis populations and documented data-cleaning rules”; Study 1 has **no named participant exclusions** (Study 2 names the researcher session). Dictionary §1: do not infer eligibility from raw row counts.
 - **Issue:** Study 1 exclusion list and **exact order** of exclusions are not specified.
@@ -273,21 +273,17 @@ A short polite cover note is at the bottom. You can paste the BLOCKING Study 1 q
 - **Impact:** Package install failures at her end.
 - **Suggested message:** “We will pin packages for R 4.6.1 as specified. Please confirm that is the version you will use to run the final scripts.”
 
-### Q30 — BLOCKING when Study 1 figures are drawn
-- **Where:** Q13 figure list (answered); no palette / colour / linetype specification.
-- **Issue:** Fatimah named the plots but not colours, greyscale vs colour, or colourblind-safe tokens. `SAP$figure_colours` stays NA.
-- **Options:** (A) she names hex/colours (or a named palette). (B) we use a documented greyscale / colourblind-safe default **after she approves that default**.
-- **Impact:** Cannot freeze publication figures without inventing a palette.
-- **Until answered:** No analysis figures will pick an unapproved colour scheme. Diagnostic histograms can use default `graphics` greyscale.
-- **Suggested message:** “Q13 lists the Study 1 figures. Which colours (or greyscale) should we freeze? If you have no preference we can propose a colourblind-safe default for your approval.”
+### Q30 — Answered 22 Sep 2026
+- **Status:** Answered.
+- **Fatimah:** “keep the current colours: Original #E69F00, Optimized #0072B2.”
+- **Where:** Q13 figure list; `SAP$figure_colours`.
+- **Recorded:** Okabe-Ito pair in `config/config.R`. Captions label the two hex values.
 
-### Q31 — BLOCKING before Study 1 duplicate-response cleaning (Q2)
-- **Where:** Q2: “keep the earliest valid response per participant x configured trial, tie-broken by Event Index.”
-- **Issue:** Two parts are still unspecified: (1) the **configured-trial key** (Condition × K × configuration instance? Gorilla Trial Number? stimulus `Spreadsheet: image`?); (2) what **earliest** means as the primary clock if Event Index is only the tie-break (UTC Timestamp vs Local Timestamp vs Event Index as the only sort).
-- **Options:** (A) key = Condition × K × `configuration_instance` (variation); earliest = smallest Event Index only. (B) key includes `Spreadsheet: image`; earliest = UTC Timestamp then Event Index. (C) another key she names.
-- **Impact:** Changes which row is kept if duplicates exist on the real export. Synthetic v3 is one row per configured trial, so this does not change the current pipeline test.
-- **Until answered:** Dedup is **not applied**. The script logs how many keys/rows the current guess *would* drop. If `n_dup_keys > 0`, it **halts** (Q31 GATE) and does not continue on undeduplicated rows. Flip `SAP$duplicate_dedup_apply` only after she confirms the key.
-- **Suggested message:** “For Study 1 duplicate discrimination rows, please confirm the trial key (for example Condition × K × configuration instance) and whether ‘earliest’ means smallest Event Index only, or UTC Timestamp with Event Index as the tie-break.”
+### Q31 — Answered 22 Sep 2026
+- **Status:** Answered. Dedup is **applied** in prepare.
+- **Fatimah:** key = Participant × Condition × K × configuration_instance (variation). Keep the earliest valid response using UTC Timestamp, with Event Index as the tie-breaker.
+- **Where:** Q2 duplicate discrimination responses.
+- **Recorded:** `SAP$duplicate_trial_key`, `SAP$duplicate_keep_rule`, `SAP$duplicate_dedup_apply = TRUE`. Numeric Gorilla UTC Timestamp only (no guessed date strings). If a duplicate group is missing UTC or Event Index, or both clocks tie, the script stops.
 
 ### Q29 — non-blocking (Study 3 design documentation)
 - **Where:** Study 3 `participant_group` counts 13/13/12/12, not 12.5-equal.

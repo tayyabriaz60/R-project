@@ -80,8 +80,7 @@ write_q7_client_report <- function(diag_files, log_path) {
     "If you want Wilcoxon / Friedman instead of the parametric tests, say so.",
     "Until you do, the reported Study 1 tests stay parametric.",
     "",
-    "Q30 (figure colours) and Q31 (duplicate-trial key) are still open.",
-    "They do not change this fallback question."
+    "Q30 colours and Q31 duplicate key are recorded in config (confirmed)."
   )
   writeLines(lines, path)
   log_msg(log_path, "Q7 report written: ", basename(path), " fallback_applied=FALSE")

@@ -1,5 +1,6 @@
 ﻿# Client / local-only (never commit)
-data/real/
+data/real/*
+!data/real/README.md
 output/
 docs/spec/
 data/_synthetic_v3_extract/

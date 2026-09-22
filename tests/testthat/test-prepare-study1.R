@@ -9,6 +9,7 @@ tiny_disc <- function(n_extra = 0L) {
     K = rep(rep(c(5L, 10L, 20L, 30L), each = 3L), length.out = n),
     configuration_instance = rep(c(1L, 2L, 3L), length.out = n),
     event_index = seq_len(n),
+    utc_timestamp = as.numeric(seq_len(n)),
     accuracy = as.integer(rep(c(1, 0, 1), length.out = n)),
     absolute_error = rep(0, n),
     signed_error = rep(0, n),
@@ -39,23 +40,57 @@ test_that("duplicate audit counts extras and does not drop rows", {
   expect_equal(nrow(d), 26L)
 })
 
-test_that("Q31 halts when the guess key finds duplicates and the key is still NA", {
-  tmp <- tempfile()
-  writeLines("tmp", tmp)
-  d <- tiny_disc(n_extra = 2L)
-  d$condition[25:26] <- d$condition[1:2]
-  d$K[25:26] <- d$K[1:2]
-  d$configuration_instance[25:26] <- d$configuration_instance[1:2]
-  expect_error(log_duplicate_audit(d, tmp), "Q31 GATE")
-  expect_equal(nrow(d), 26L)
+test_that("Q31 keeps the earliest UTC Timestamp, then Event Index", {
+  d <- tiny_disc()
+  extra <- d[1, , drop = FALSE]
+  extra$utc_timestamp <- d$utc_timestamp[1] + 50
+  extra$event_index <- 99L
+  extra$accuracy <- 0L
+  later <- rbind(d, extra)
+  out <- apply_study1_discrimination_dedup(later)
+  expect_equal(nrow(out), 24L)
+  kept <- out[out$condition == later$condition[1] &
+                out$K == later$K[1] &
+                out$configuration_instance == later$configuration_instance[1], ]
+  expect_equal(nrow(kept), 1L)
+  expect_equal(kept$utc_timestamp, d$utc_timestamp[1])
+  expect_equal(kept$accuracy, d$accuracy[1])
 })
 
-test_that("Q31 audit continues when the guess key finds no duplicates", {
+test_that("Q31 uses Event Index when UTC Timestamp ties", {
+  d <- tiny_disc()
+  extra <- d[1, , drop = FALSE]
+  extra$utc_timestamp <- d$utc_timestamp[1]
+  extra$event_index <- d$event_index[1] + 10L
+  extra$accuracy <- 0L
+  earlier_event <- d[1, , drop = FALSE]
+  earlier_event$event_index <- d$event_index[1] - 1L
+  earlier_event$accuracy <- 1L
+  later <- rbind(d[-1, ], extra, earlier_event)
+  out <- apply_study1_discrimination_dedup(later)
+  kept <- out[out$condition == d$condition[1] &
+                out$K == d$K[1] &
+                out$configuration_instance == d$configuration_instance[1], ]
+  expect_equal(nrow(kept), 1L)
+  expect_equal(kept$event_index, d$event_index[1] - 1L)
+})
+
+test_that("Q31 stops if a duplicate-key row has no UTC Timestamp", {
+  d <- tiny_disc(n_extra = 1L)
+  d$condition[25] <- d$condition[1]
+  d$K[25] <- d$K[1]
+  d$configuration_instance[25] <- d$configuration_instance[1]
+  d$utc_timestamp[25] <- NA_real_
+  expect_error(apply_study1_discrimination_dedup(d), "UTC Timestamp")
+})
+
+test_that("Q31 apply drops extras and continues when there are no duplicates", {
   tmp <- tempfile()
   writeLines("tmp", tmp)
-  aud <- log_duplicate_audit(tiny_disc(), tmp)
-  expect_equal(aud$n_dup_keys, 0L)
-  expect_false(aud$applied)
+  clean <- apply_study1_q31_dedup(list(discrimination = tiny_disc()), tmp)
+  expect_true(clean$duplicate_audit$applied)
+  expect_equal(clean$duplicate_audit$n_dup_keys, 0L)
+  expect_equal(nrow(clean$discrimination), 24L)
 })
 
 test_that("Q3 gate stops when mapping_fail > 0 and passes when 0", {

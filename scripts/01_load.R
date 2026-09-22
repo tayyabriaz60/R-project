@@ -13,10 +13,10 @@ source(file.path(PROJECT_ROOT, "R", "utils_load.R"))
 load_log <- file.path(OUTPUT_LOGS, paste0("study_all_log_load", OUTPUT_SUFFIX, ".txt"))
 start_log(load_log, "LOAD SUMMARY (counts only; SYNTHETIC DATA: pipeline test only if synthetic)")
 
+# SUPERSEDED. Real + synthetic Study 1 load is R/study1_load.R via run_all.R.
 if (!identical(DATA_SOURCE, "synthetic")) {
   stop(
-    "DATA_SOURCE is not synthetic. Real-export file names are NOT SPECIFIED in the handoff. ",
-    "For Kaggle chunk 1 keep DATA_SOURCE <- \"synthetic\" in config/config.R.",
+    "scripts/01_load.R is superseded. Use run_all.R (R/study1_load.R) for real exports.",
     call. = FALSE
   )
 }

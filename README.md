@@ -10,7 +10,7 @@ Implementation of the **frozen SAP** (21 September 2026). The scripts follow the
 |------|--------|
 | Load, Object Name filter, ID mapping, QC | Ready (tested on synthetic v3) |
 | Q1–Q14 answers in `config/config.R` | Recorded |
-| Exclusions / flags (Q2 population, Q3/Q4 gates, Q31 audit) | Ready |
+| Exclusions / flags (Q2 population, Q3/Q4 gates, Q31 clean) | Ready |
 | Participant summaries + Q8 diagnostic histograms | Ready |
 | H1–H3, RT, AE, signed error, vision sensitivity | Ready (parametric path; Q7 does not auto-switch) |
 | Q13/Q14 tables (`.csv` + `.docx`) and figures (`.png` 300 dpi + `.pdf`) | Ready |
@@ -41,7 +41,7 @@ source(file.path(PROJECT_ROOT, "run_all.R"))
 1. `config/config.R` (paths, seed, SAP parameters)
 2. `scripts/00_setup.R` (install missing packages only, then load them)
 3. Study 1 load + QC
-4. Population / Q31 audit / Q3–Q4 gates / participant summaries / Q8 diagnostics
+4. Population / Q31 duplicate clean / Q3–Q4 gates / participant summaries / Q8 diagnostics
 5. Q7 fallback-review note (no auto-switch)
 6. H1–H3, RT, AE, signed-error descriptives, vision sensitivity
 7. Tables and figures
@@ -53,7 +53,9 @@ PROJECT_ROOT <- "C:/path/to/this/folder"
 source(file.path(PROJECT_ROOT, "tests", "run_tests.R"))
 ```
 
-Switch synthetic vs real in **one place**: `DATA_SOURCE` in `config/config.R`. Keep `"synthetic"` until the real export file names are set in that same file. Put real files only under `data/real/` on your computer (that folder is empty and gitignored).
+Switch synthetic vs real in **one place**: `DATA_SOURCE` in `config/config.R`.
+
+For the real export: put the unedited Gorilla CSVs under `data/real/` (filenames must contain `task-y3n9`, `task-z8oq`, `task-yfcn`, `task-hxml`). Do not filter or rename columns. Then set `DATA_SOURCE <- "real"` and run `run_all.R`.
 
 ## Packages
 
@@ -89,11 +91,11 @@ Look first at:
 
 ## Still open (do not guess)
 
-- **Q30 — figure colours.** Report figures use an **Okabe-Ito placeholder** (`#E69F00` Original, `#0072B2` Optimized), labelled on every caption. One-line change in `config/config.R` (`figure_colours` / `figure_palette_placeholder`) when you confirm a palette.
-- **Q31 — duplicate-trial key.** Dedup is **not applied**. The script **audits** a best-guess key and **halts** if that guess finds any duplicates (`n_dup_keys > 0`) while Q31 is still unanswered. Synthetic v3 has zero duplicates, so the test run continues. On a real export with duplicates, confirm the key before analysis continues.
 - Q15 geometric-mean RT ratio (Brief only)
 - Q16 left/right letter case
 - Q17 which RT column if they disagree
+
+Q30 colours (`#E69F00` Original, `#0072B2` Optimized) and Q31 (Participant × Condition × K × configuration_instance; earliest UTC Timestamp, Event Index tie-break) are recorded and applied.
 
 Q7: the pipeline does **not** auto-switch to Wilcoxon/Friedman. Review `study1_q7_fallback_review_SYNTHETIC.txt` and the `study1_diag_*` plots first.
 

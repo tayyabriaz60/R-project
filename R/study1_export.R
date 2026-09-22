@@ -1,5 +1,5 @@
 # Q13 / Q14 tables (.csv + .docx) and report figures (.png 300 dpi + .pdf).
-# Q30 colours are NA: Okabe–Ito placeholder only.
+# Q30 colours confirmed: Original #E69F00, Optimized #0072B2.
 
 source(file.path(PROJECT_ROOT, "R", "utils_paths.R"))
 source(file.path(PROJECT_ROOT, "R", "utils_io.R"))
@@ -23,9 +23,9 @@ synthetic_note <- function() {
 }
 
 study1_palette <- function(log_path = NULL) {
-  pal <- SAP$figure_palette_placeholder
+  pal <- require_param("figure_colours")
   if (!is.null(log_path)) {
-    log_msg(log_path, "Q30 PENDING: using placeholder palette ", pal$name,
+    log_msg(log_path, "Q30 palette ", pal$name,
             " status=", pal$status,
             " Original=", pal$Original, " Optimized=", pal$Optimized)
   }
@@ -296,8 +296,8 @@ write_study1_tables <- function(primary, vision_tab, ae_k, pw_rt, log_path) {
 write_study1_figures <- function(acc_cells, h3, rt_ms, ae_k, log_path) {
   pal <- study1_palette(log_path)
   cap <- paste0(
-    "Palette: Okabe-Ito placeholder pending Q30 (", pal$Original, " = Original, ",
-    pal$Optimized, " = Optimized). ", synthetic_note()
+    "Palette: Original ", pal$Original, ", Optimized ", pal$Optimized,
+    " (Q30). ", synthetic_note()
   )
   acc_cells$K <- factor(acc_cells$K, levels = as.integer(SAP$k_levels_study1))
   acc_cells$condition <- factor(acc_cells$condition, levels = require_param("condition_level_order"))

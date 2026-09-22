@@ -1,10 +1,10 @@
 # SAP / Brief traceability
 
 **Phase:** Study 1 delivery (synthetic pipeline). Studies 2–3 not implemented.  
-**Kaggle:** Fresh-session `run_all.R` verified on R 4.4.0 (v3 synthetic), 22 Sep 2026. Q7 fallback not applied. Q30 Okabe-Ito placeholder. Q31 audit-only; **halts if `n_dup_keys > 0` while the key is NA** (synthetic had 0). Helper tests 79 passed. Numbers are pipeline-test output, not findings.  
+**Kaggle:** Fresh-session `run_all.R` verified on R 4.4.0 (v3 synthetic), 22 Sep 2026 (before Q30/Q31 lock). Q7 fallback not applied. Helper tests 79 passed on that run. **This Q30/Q31/real-path update is NOT EXECUTED on Kaggle yet.** Numbers from the earlier run are pipeline-test output, not findings.  
 **Source order:** SAP > Brief > Dictionary.
 
-Planned paths assume the structure in `docs/IMPLEMENTATION_PLAN.md`. Q14 table/figure formats are recorded in config; Q30 colours remain NA.
+Planned paths assume the structure in `docs/IMPLEMENTATION_PLAN.md`. Q30 colours and Q31 key are recorded in config.
 
 ---
 
@@ -23,11 +23,11 @@ Planned paths assume the structure in `docs/IMPLEMENTATION_PLAN.md`. Q14 table/f
 | R1.9 | Brief §9; Q7 | Document fallback **before** looking at Condition significance | `write_q7_client_report` then parametric tests | Q7 report + analysis log | implemented (Kaggle: report first; fallback not applied) |
 | R1.10 | Brief §9 | No invented numeric ANOVA/t fallback cutoff | `R/study1_diagnostics.R` (Q7 no auto-switch) | prepare log | implemented (Kaggle: no numeric cutoff; fallback not applied) |
 | R1.11 | Dict §1 | No questionnaire predictors | loaders omit those fields | — | not implemented |
-| R1.12 | Dict §1; Q2 | Exclusions before summaries | `apply_study1_primary_population`; Q31 audit | prepare log | implemented (Kaggle: N=50; Q31 applied=FALSE; n_dup_keys=0) |
+| R1.12 | Dict §1; Q2 | Exclusions before summaries | `apply_study1_primary_population`; Q31 apply | prepare log | implemented (code). Last Kaggle run was audit-only; re-verify after this update. |
 | R1.13 | Dict §12; Q3/Q4 | Stop/flag on ambiguity | `gate_pairwise_mapping_q3`; `gate_incomplete_cells_q4` | prepare log | implemented (Kaggle R 4.4.0 prepare) |
 | R1.14 | SAP §3.4 | Primary N = 50 | `apply_study1_primary_population` | prepare log | implemented (Kaggle R 4.4.0 prepare) |
 | R1.15 | SAP §3.4 | Document condition order; do not model it | `R/recode_factors.R` (G1/G2 as design note) | analysis log | not implemented |
-| R1.16 | SAP §1; Q2 | Primary = all 50; dedup placeholder until Q31 | `audit_disc_duplicates_guess`; Q31 GATE if n_dup_keys>0 | prepare log | implemented (Kaggle: applied=FALSE; n_dup_keys=0). Halt if dups exist while Q31 is NA. |
+| R1.16 | SAP §1; Q2; Q31 | Primary = all 50; Q31 key applied | `apply_study1_q31_dedup` | prepare log | implemented (code, 22 Sep). Key + UTC then Event Index. Kaggle re-run pending. |
 | R1.17 | SAP §3.3.1; Brief §8.1 | RT drop missing / non-positive / documented technical error only | `valid_rt_rows` | prepare log `n_rt_dropped` | implemented (Kaggle: n_rt_dropped=0; n_valid_rt_trials=1200) |
 | R1.18 | Dict §9; Q2 | No outcome-based trial drops | `apply_study1_primary_population` | prepare log | implemented (Kaggle R 4.4.0 prepare) |
 | R1.19 | Dict §3 | Map Public ID → participant_id after reconciliation | `R/dictionary_map.R` | — | not implemented |

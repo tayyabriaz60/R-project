@@ -55,8 +55,9 @@ test_that("coerce_mauchly_df keeps effect names from a 2x2 matrix or flattened t
   expect_equal(as.numeric(d2["condition:K", grep("p", names(d2), ignore.case = TRUE)[1]]), 0.04)
 })
 
-test_that("Q30 figure_colours stays pending and placeholder is Okabe-Ito", {
-  expect_error(require_param("figure_colours"), "PENDING a client answer")
-  expect_identical(SAP$figure_palette_placeholder$name, "okabe_ito")
-  expect_identical(SAP$figure_palette_placeholder$status, "placeholder_pending_Q30")
+test_that("Q30 figure_colours is the confirmed Okabe-Ito pair", {
+  pal <- require_param("figure_colours")
+  expect_identical(pal$status, "confirmed_Q30")
+  expect_identical(pal$Original, "#E69F00")
+  expect_identical(pal$Optimized, "#0072B2")
 })

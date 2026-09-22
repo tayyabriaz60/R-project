@@ -18,11 +18,10 @@
 | RT, Absolute Error, Signed Error | Implemented (RT log scale; SE descriptive only) |
 | Vision-screen sensitivity (N=48) | Implemented as a separate table |
 | Publication-ready tables (.csv + .docx) | Implemented |
-| Q13 figures (.png 300 dpi + .pdf) | Implemented (Okabe-Ito placeholder, Q30) |
+| Q13 figures (.png 300 dpi + .pdf) | Implemented (Q30 colours confirmed) |
 
 ## Still open
 
-- **Q30** figure colours (placeholder in use)
-- **Q31** duplicate key (audit-only; **halts** if `n_dup_keys > 0` while unanswered)
+- Q30 / Q31 **answered and coded** (Kaggle re-run of this update: NOT EXECUTED)
 - Client machine **R 4.6.1** not yet run
 - Studies 2 and 3 not written

@@ -78,4 +78,8 @@ Methodological choices that the SAP leaves open are **not** decided here; they a
 
 | 2026-09-22 | Fresh Kaggle session reproduced `run_all.R` end-to-end | Pasted Cell 2+3 | Empty working dir; clone; load through figures. Q31 n_dup_keys=0 (no GATE). Tests 79/0/0. Synthetic only. |
 
-Dedup remains unapplied (Q31) and **stops** if any duplicates are found before she answers. Figure colours remain the Okabe-Ito placeholder (Q30).
+| 2026-09-22 | Q30 confirmed: Original `#E69F00`, Optimized `#0072B2` | Q30 | `SAP$figure_colours` filled. Same pair as the earlier placeholder. |
+| 2026-09-22 | Q31 confirmed and applied | Q2; Q31 | Key = `participant_id\|condition\|K\|configuration_instance`. Keep min UTC Timestamp, then min Event Index. Cleaning runs in prepare. Real files found by task id under `data/real/`. |
+| 2026-09-22 | Real Study 1 paths configurable | Client 22 Sep | G1 `task-y3n9`, G2 `task-z8oq`, pairwise `task-yfcn`, vision `task-hxml`. `DATA_SOURCE <- "real"`. No manual edit of raw Gorilla files. |
+
+Q15–Q17 remain NA. Q7 still does not auto-switch.

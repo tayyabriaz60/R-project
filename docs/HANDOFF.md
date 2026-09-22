@@ -9,7 +9,7 @@ Last updated: 22 September 2026. **Internal (Tayyab / assistant). Do not send th
 - **Freelancer:** Tayyab Riaz (Upwork).
 - **Client:** Fatimah Alqahtani.
 - **Contract:** $150, three $50 milestones: Study 1, Study 2, Study 3.
-- **Honest status:** Study 1 synthetic pipeline through H1–H3 / tables / figures is **verified on Kaggle**. Q30/Q31 still open. Studies 2–3 not started. Do not treat synthetic numbers as findings.
+- **Honest status:** Study 1 synthetic pipeline through H1–H3 / tables / figures was **verified on Kaggle** before Q30/Q31 lock. Q30/Q31 are now recorded and coded. Real paths by task id. Studies 2–3 not started. Do not treat synthetic numbers as findings. Kaggle re-run of this update: NOT EXECUTED.
 - **Share with her:** `README.md` + `docs/FOR_CLIENT.md` + the code. Do **not** send this HANDOFF (token note, rates).
 
 ---
@@ -39,15 +39,15 @@ Last updated: 22 September 2026. **Internal (Tayyab / assistant). Do not send th
 | v3 load/QC + Q5/Q6 | Verified (1200/600/200; 50 IDs; Object Name kept) |
 | Helper tests after v3 | Verified 46, then 57 after prepare toys |
 | renv.lock on Kaggle | Written; **not in local git** until downloaded |
-| Prepare (summaries + Q8 diags) | **Verified** Kaggle R 4.4.0. Q31 still audit-only. Q30 still NA. |
-| H1–H3 / ES / Q13 figures | **Verified** Kaggle R 4.4.0 synthetic. Q7 no auto-fallback. Q30 Okabe-Ito placeholder. |
+| Prepare (summaries + Q8 diags) | **Verified** Kaggle R 4.4.0 (pre-Q31-apply). Q31 now applied in code. |
+| H1–H3 / ES / Q13 figures | **Verified** Kaggle R 4.4.0 synthetic. Q7 no auto-fallback. Q30 now confirmed. |
 
 ---
 
 ## Next coding (when Tayyab says go)
 
 1. Study 2, or client-facing zip / Milestone 1 wrap-up — only if asked.
-2. Do not invent Q30 colours; do not apply Q31 dedup.
+2. Kaggle re-run of Q30/Q31/real-path update, then send her the new zip. Do not start Study 2 unless asked.
 
 ---
 

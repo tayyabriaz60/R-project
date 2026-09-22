@@ -4,6 +4,8 @@ The analyst’s PC does **not** have R. You run R on **Kaggle**. The client late
 
 **H1–H3 verified 22 Sep 2026** from pasted Kaggle output after the Mauchly fix (R 4.4.0, synthetic v3). Cells below are the record of what was run.
 
+**Q30 / Q31 / real-path update:** coded locally. Kaggle re-run of this update is **NOT EXECUTED** until you paste the console. Same three cells after `git pull`. On synthetic expect Q31 `applied=TRUE` and `n_rows_dropped=0`.
+
 ---
 
 ## H1–H3 chunk (now)

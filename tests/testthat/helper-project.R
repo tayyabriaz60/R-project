@@ -65,6 +65,8 @@ toy_disc_raw <- function(condition = c("baseline", "sa"),
   data.frame(
     "Participant Public ID" = rep("TOY_PUB", n),
     "Participant Private ID" = rep("TOY_PRIV", n),
+    "Event Index" = as.character(seq_len(n)),
+    "UTC Timestamp" = as.character(1000L + seq_len(n)),
     "Task Name" = rep("Discrimination Task G1", n),
     "Response Type" = rep("response", n),
     "Object Name" = rep(NA_character_, n),
