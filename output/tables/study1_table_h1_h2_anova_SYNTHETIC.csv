@@ -1,0 +1,3 @@
+"hypothesis","effect","F","df_num","df_den","p","partial_eta_sq","pes_ci_low","pes_ci_high","mauchly_p","sphericity_correction"
+"H1_Condition","condition",2.5309772499642,1,49,0.118062857042636,0.0491156462585029,0,0.206227149902903,NA,"none"
+"H2_Condition_x_K","condition:K",0.240241026984544,2.54177235696756,124.54684549141,0.836734865080561,0.00487895716945999,0,0.0255067152393421,0.0182686076383599,"GG"

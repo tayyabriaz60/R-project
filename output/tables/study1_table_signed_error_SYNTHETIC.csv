@@ -1,0 +1,3 @@
+"condition","n","mean_signed_error","sd_signed_error"
+"Original",50,-0.708333333333333,0.590756941704738
+"Optimized",50,-0.6,0.571924388069729

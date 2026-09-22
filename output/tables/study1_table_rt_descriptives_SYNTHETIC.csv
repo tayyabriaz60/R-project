@@ -1,0 +1,3 @@
+"condition","n","mean_rt_ms","sd_rt_ms","analysis_scale","mean_rt_analysis","sd_rt_analysis"
+"Original",50,5702.4465,712.24751836766,"log",8.53672666024906,0.109514542711213
+"Optimized",50,5668.9155,698.114579169581,"log",8.52938238080643,0.115049912165187

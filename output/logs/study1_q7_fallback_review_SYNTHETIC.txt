@@ -1,0 +1,35 @@
+STUDY 1 — Q7 fallback review (send this file + the diagnostic plots to Fatimah)
+time: 2026-09-22 12:20:41.768226
+R.version.string: R version 4.4.0 (2024-04-24)
+SYNTHETIC DATA: pipeline test only. These plots are for pipeline testing, not findings.
+
+Q7 (your instruction): no new numerical cutoff. Generate the SAP-specified
+diagnostics, then STOP before switching to a fallback test. Do not auto-switch.
+
+What this run did NOT do:
+- Did not apply Wilcoxon signed-rank or Friedman tests.
+- Did not invent a skewness / Shapiro cutoff for ANOVA or t-tests.
+- Did not treat any histogram as a programmed switch.
+
+What this run will do after this report is written:
+- SAP §3.1 recommended path: 2 × 4 RM-ANOVA (H1 = Condition; H2 = Condition × K).
+- If H2 is significant: paired t at K = 5, 10, 20, 30, Holm on the estimable tests.
+- SAP §3.2: one-sample t of Optimized-choice proportion vs 0.50 (H3).
+- SAP §3.3.1–§3.3.2: paired t for RT (log scale; Q12) and AE; signed error stays descriptive.
+
+Please review these diagnostic plots before any fallback decision:
+- study1_diag_accuracy_cells_SYNTHETIC.png
+- study1_diag_ae_diff_SYNTHETIC.png
+- study1_diag_h1_diff_SYNTHETIC.png
+- study1_diag_h2_k_diffs_SYNTHETIC.png
+- study1_diag_h3_prop_SYNTHETIC.png
+- study1_diag_rt_diff_SYNTHETIC.png
+
+Primary N = 50. Vision-screen sensitivity (N = 48) is a separate analysis,
+not a change of the primary population (SAP §3.4; Q1).
+
+If you want Wilcoxon / Friedman instead of the parametric tests, say so.
+Until you do, the reported Study 1 tests stay parametric.
+
+Q30 (figure colours) and Q31 (duplicate-trial key) are still open.
+They do not change this fallback question.

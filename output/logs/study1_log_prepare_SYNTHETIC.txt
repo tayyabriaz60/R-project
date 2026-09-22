@@ -1,0 +1,25 @@
+STUDY 1 PREPARE (aggregates only; SYNTHETIC DATA: pipeline test only)
+time: 2026-09-22 12:20:40.813644
+R.version.string: R version 4.4.0 (2024-04-24)
+DATA_SOURCE: synthetic
+ENV_NAME: kaggle
+LABEL: SYNTHETIC DATA: pipeline test only
+
+Prepare step only. H1-H3 / ES / Q13 figures run in analyse, not here.
+Q2 population: all recruited participants in the loaded files; no outcome-based exclusion
+Q2 self-test session: not present in these files (outside sample); no extra drop
+Q1 vision subset: not applied as a primary exclusion
+Q2 n_unique_participant_id=50 (synthetic expected 50)
+Q31 PENDING: duplicate key is NA. Audit uses guess only; rows NOT dropped
+Q31 guess key=participant_id|condition|K|configuration_instance keep=min_event_index
+Q31 audit n_keys=1200 n_dup_keys=0 n_rows_would_drop=0 event_index_available=TRUE applied=FALSE
+Q3 gate mapping_fail_rows=0 rule=flag_and_stop
+Q4 gate n_short_disc_ids=0 n_short_pw_ids=0 n_cells_not_3_instances=0 n_missing_cells=0
+Q12 trial_rt_skewness=1.1808 threshold=1 analysis_scale=log n_valid_rt_trials=1200 n_rt_dropped=0
+summaries n_participants=50 n_anon=50 (Gorilla IDs not written)
+wrote study1_participant_summaries_SYNTHETIC.csv
+Q7: no numeric cutoff; histograms only; fallback NOT applied
+wrote diagnostic study1_diag_accuracy_cells_SYNTHETIC.png
+wrote diagnostic study1_diag_h1_diff_SYNTHETIC.png
+wrote diagnostic study1_diag_h2_k_diffs_SYNTHETIC.png
+Q7 STOP before fallback: diagnostics saved. Do not switch to Wilcoxon/Friedman until the client reviews these plots. H1-H3 were not run.

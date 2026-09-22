@@ -1,0 +1,41 @@
+STUDY 1 DATA QC (aggregates only; SYNTHETIC DATA: pipeline test only)
+time: 2026-09-22 12:20:40.347409
+R.version.string: R version 4.4.0 (2024-04-24)
+DATA_SOURCE: synthetic
+ENV_NAME: kaggle
+LABEL: SYNTHETIC DATA: pipeline test only
+
+Applied at load: Q5 Object Name filter; Q6 participant_id from participant_public_id + anonymous reporting IDs
+Not applied at load: Q2 exclusions/dedup; Q3 pairwise analysis stop; Q4 incomplete-cell stop; Q1 vision subset as exclusion
+N_FLOW step=study1_disc_g1_blank_drop rows_before=600 rows_after=600 dropped=0
+N_FLOW step=study1_disc_g1_object_name_Response rows_before=600 rows_after=600 dropped=0
+N_FLOW step=study1_disc_g2_blank_drop rows_before=600 rows_after=600 dropped=0
+N_FLOW step=study1_disc_g2_object_name_Response rows_before=600 rows_after=600 dropped=0
+N_FLOW step=study1_pairwise_blank_drop rows_before=600 rows_after=600 dropped=0
+N_FLOW step=study1_pairwise_object_name_Image_Response rows_before=600 rows_after=600 dropped=0
+N_FLOW step=study1_vision_blank_drop rows_before=200 rows_after=200 dropped=0
+N_FLOW step=study1_vision_object_name_Number_Entry rows_before=200 rows_after=200 dropped=0
+expected_disc_rows (primary_n * 24)=1200
+expected_pairwise_rows (primary_n * 12)=600
+expected_vision_rows (primary_n * 4)=200
+disc_rows=1200 n_unique_participant_id=50 n_unique_anon=50 n_unique_private_qa_only=50
+disc_rows_per_participant_id (count of n_rows): 24 = 50
+disc_condition_counts: Original=600 Optimized=600
+disc_K_counts: 5 = 300; 10 = 300; 20 = 300; 30 = 300
+disc_object_name_missing=0 disc_object_name_expected=Response
+disc_correct_mismatch_rows=0
+disc_duplicate_rows=0
+disc_rt_missing=0 disc_rt_nonpositive=0
+pairwise_rows=600 n_unique_participant_id=50
+pairwise_rows_per_participant_id: 12 = 50
+pairwise_mapping_fail_rows=0 (Q3: counted at load; flag-and-stop runs in prepare)
+pairwise_object_name_missing=0 pairwise_object_name_expected=Image Response
+pairwise_duplicate_rows=0
+vision_rows=200 n_unique_participant_id=50
+vision_rows_per_participant_id: 4 = 50
+vision_object_name_missing=0 vision_object_name_expected=Number Entry
+vision_score_by_participant_id: n_score4=48 n_below4=2 (Q1: flag computed; not used as a primary exclusion)
+vision_subset_flag n_true_rows=192 n_false_rows=8
+participant_id missing=0 (must be 0)
+reporting_id_scheme=S1_P001..; source Gorilla IDs are not written to this log
+Wrote study1_log_data_qc CSV (aggregates). LOAD COMPLETE. No tests run.

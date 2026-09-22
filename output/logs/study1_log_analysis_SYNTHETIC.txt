@@ -1,0 +1,59 @@
+STUDY 1 ANALYSIS (aggregates only; SYNTHETIC DATA: pipeline test only)
+time: 2026-09-22 12:20:41.665125
+R.version.string: R version 4.4.0 (2024-04-24)
+DATA_SOURCE: synthetic
+ENV_NAME: kaggle
+LABEL: SYNTHETIC DATA: pipeline test only
+
+SAP §3.1 H1/H2; §3.2 H3; §3.3 RT/AE/SE; §3.4 vision sensitivity.
+Q7: fallback will NOT be applied. Q30/Q31 still pending.
+wrote diagnostic study1_diag_h3_prop_SYNTHETIC.png
+wrote diagnostic study1_diag_rt_diff_SYNTHETIC.png
+wrote diagnostic study1_diag_ae_diff_SYNTHETIC.png
+Q7 report written: study1_q7_fallback_review_SYNTHETIC.txt fallback_applied=FALSE
+Q9 effectsize_version=1.0.0
+Q9 eta_squared: effectsize::eta_squared(fit, partial=TRUE, generalized=FALSE, ci=0.95, alternative="two.sided")
+Q9 paired_d: effectsize::cohens_d(opt, orig, paired=TRUE, ci=0.95, alternative="two.sided")  # Cohen's dz = mean_diff / sd_diff
+Q9 onesample_d: effectsize::cohens_d(x, mu=0.50, ci=0.95, alternative="two.sided")
+Q9 rank_biserial / kendalls_w: wrappers exist; NOT computed because Q7 fallback was not applied
+afex_version=1.4.1 type=3 contrasts=contr.sum
+primary n_participants=50
+wrote study1_h1_h2_anova_primary_SYNTHETIC.txt
+primary Mauchly table rows=K; condition:K columns=Test statistic; p-value
+primary ANOVA rows=condition; K; condition:K
+primary H1 F=2.5310 df=1,49 p=0.1181 pes=0.0491 sphericity=none
+primary H2 F=0.2402 df=2.54177235696756,124.54684549141 p=0.8367 pes=0.0049 mauchly_p=0.0183 sphericity=GG reason=mauchly_p_lt_alpha_gg
+primary H2_followups_ran=FALSE reason=interaction_not_significant
+primary H3 t=4.9138 df=49 p=0.0000 mean=0.5933 d=0.6949
+primary RT paired t=-0.3574 p=0.7223 scale=log
+primary AE paired t=-1.5909 p=0.1181
+vision_sensitivity n_ids=48 (SAP expected 48)
+Q12 trial_rt_skewness=1.2223 threshold=1 analysis_scale=log n_valid_rt_trials=1152 n_rt_dropped=0
+summaries n_participants=48 n_anon=48 (Gorilla IDs not written)
+vision_sens n_participants=48
+wrote study1_h1_h2_anova_vision_sens_SYNTHETIC.txt
+vision_sens Mauchly table rows=K; condition:K columns=Test statistic; p-value
+vision_sens ANOVA rows=condition; K; condition:K
+vision_sens H1 F=1.4772 df=1,47 p=0.2303 pes=0.0305 sphericity=none
+vision_sens H2 F=0.4770 df=2.48191928678786,116.65020647903 p=0.6630 pes=0.0100 mauchly_p=0.0108 sphericity=GG reason=mauchly_p_lt_alpha_gg
+vision_sens H2_followups_ran=FALSE reason=interaction_not_significant
+vision_sens H3 t=4.7746 df=47 p=0.0000 mean=0.5938 d=0.6891
+vision_sensitivity H1_sig_agrees=TRUE H2_sig_agrees=TRUE H3_sig_agrees=TRUE
+wrote study1_table_accuracy_descriptives_SYNTHETIC.csv and study1_table_accuracy_descriptives_SYNTHETIC.docx
+wrote study1_table_h1_h2_anova_SYNTHETIC.csv and study1_table_h1_h2_anova_SYNTHETIC.docx
+wrote study1_table_h2_followups_SYNTHETIC.csv and study1_table_h2_followups_SYNTHETIC.docx
+wrote study1_table_h3_SYNTHETIC.csv and study1_table_h3_SYNTHETIC.docx
+wrote study1_table_rt_descriptives_SYNTHETIC.csv and study1_table_rt_descriptives_SYNTHETIC.docx
+wrote study1_table_rt_SYNTHETIC.csv and study1_table_rt_SYNTHETIC.docx
+wrote study1_table_ae_descriptives_SYNTHETIC.csv and study1_table_ae_descriptives_SYNTHETIC.docx
+wrote study1_table_ae_SYNTHETIC.csv and study1_table_ae_SYNTHETIC.docx
+wrote study1_table_ae_by_k_desc_SYNTHETIC.csv and study1_table_ae_by_k_desc_SYNTHETIC.docx
+wrote study1_table_signed_error_SYNTHETIC.csv and study1_table_signed_error_SYNTHETIC.docx
+wrote study1_table_pairwise_rt_desc_SYNTHETIC.csv and study1_table_pairwise_rt_desc_SYNTHETIC.docx
+wrote study1_table_vision_sensitivity_SYNTHETIC.csv and study1_table_vision_sensitivity_SYNTHETIC.docx
+Q30 PENDING: using placeholder palette okabe_ito status=placeholder_pending_Q30 Original=#E69F00 Optimized=#0072B2
+wrote study1_fig_accuracy_condition_k_SYNTHETIC.png and study1_fig_accuracy_condition_k_SYNTHETIC.pdf
+wrote study1_fig_pairwise_prop_SYNTHETIC.png and study1_fig_pairwise_prop_SYNTHETIC.pdf
+wrote study1_fig_rt_by_condition_SYNTHETIC.png and study1_fig_rt_by_condition_SYNTHETIC.pdf
+wrote study1_fig_ae_condition_k_SYNTHETIC.png and study1_fig_ae_condition_k_SYNTHETIC.pdf
+ANALYSIS COMPLETE. Fallback not applied. Numbers are synthetic pipeline output.

@@ -1,0 +1,14 @@
+"item","value"
+"disc_rows",1200
+"pairwise_rows",600
+"vision_rows",200
+"disc_n_participant_id",50
+"pairwise_n_participant_id",50
+"vision_n_participant_id",50
+"disc_n_anon",50
+"disc_correct_mismatch",0
+"pairwise_mapping_fail",0
+"vision_n_score4",48
+"vision_subset_applied_as_exclusion",0
+"exclusions_applied",0
+"object_name_filter_applied",1
