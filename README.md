@@ -14,7 +14,7 @@ Implementation of the **frozen SAP** (21 September 2026). The scripts follow the
 | Participant summaries + Q8 diagnostic histograms | Ready |
 | H1–H3, RT, AE, signed error, vision sensitivity | Ready (parametric path; Q7 does not auto-switch) |
 | Q13/Q14 tables (`.csv` + `.docx`) and figures (`.png` 300 dpi + `.pdf`) | Ready |
-| Helper unit tests (toy data) | 75 passed on Kaggle (plus new Q31 halt tests, not yet re-run) |
+| Helper unit tests (toy data) | 79 passed on Kaggle (fresh session) |
 | Studies 2 and 3 | **Not written yet** |
 
 ## R versions

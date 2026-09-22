@@ -116,3 +116,19 @@ Synthetic pipeline numbers below are **not findings**.
 | V-H8 tables | csv+docx; no Gorilla ID columns | 12 csv + 12 docx; all `header_has_gorilla_id_column=FALSE` |
 | V-H9 figures | 4 report fig png+pdf; Okabe-Ito caption | all eight files written; PDF warned on en-dash (caption fix pending next run) |
 | V-H10 no fallback | no Wilcoxon/Friedman in the log | none; Q9 unused ES logged as not computed |
+
+## Fresh `run_all.R` — verified 22 Sep 2026 (new Kaggle session, pasted console)
+
+Empty `/kaggle/working`, then clone, then `kaggle/run_notebook.R` + `kaggle/run_tests.R`. No manual steps after clone.
+
+| Item | Result |
+|------|--------|
+| Load/QC | 1200/600/200; N=50; Object Name dropped 0 |
+| Q31 | n_dup_keys=0; applied=FALSE; no GATE (halt tests covered by Cell 3) |
+| Q3/Q4 | all zero; pipeline continued |
+| Q7 | fallback_applied=FALSE; six diagnostic PNGs |
+| H1–H3 / RT / AE / vision | same synthetic pipeline numbers as the previous verified run |
+| Tables / figures | 12 csv+docx pairs; 4 fig png+pdf; no Gorilla IDs |
+| Helper tests | n_passed=79 n_failed=0 n_error=0 (includes Q31 halt toys) |
+
+**SYNTHETIC DATA: pipeline test only.** Not findings.

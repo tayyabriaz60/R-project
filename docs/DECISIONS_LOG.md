@@ -76,4 +76,6 @@ Methodological choices that the SAP leaves open are **not** decided here; they a
 | 2026-09-22 | Q31: halt if the guess key finds duplicates while the key is still NA | Q2; Q31; real-data safety | Was audit-and-continue. That would analyse undeduplicated real rows. Now `log_duplicate_audit` stops with `Q31 GATE` when `n_dup_keys > 0` and `duplicate_trial_key` is NA. Synthetic v3 had 0, so the verified run is unchanged. Dedup is still not applied. |
 | 2026-09-22 | Study 1 delivery docs finalized for a fresh `run_all.R` check | Rules §4, §8 | README states R 4.4.0 vs 4.6.1, `00_setup.R`, renv.lock as version record only, SYNTHETIC label, Q30/Q31 open. |
 
+| 2026-09-22 | Fresh Kaggle session reproduced `run_all.R` end-to-end | Pasted Cell 2+3 | Empty working dir; clone; load through figures. Q31 n_dup_keys=0 (no GATE). Tests 79/0/0. Synthetic only. |
+
 Dedup remains unapplied (Q31) and **stops** if any duplicates are found before she answers. Figure colours remain the Okabe-Ito placeholder (Q30).

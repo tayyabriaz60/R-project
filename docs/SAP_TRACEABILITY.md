@@ -1,7 +1,7 @@
 # SAP / Brief traceability
 
 **Phase:** Study 1 delivery (synthetic pipeline). Studies 2–3 not implemented.  
-**Kaggle:** Load/QC, prepare, and H1–H3 verified on R 4.4.0 (v3 synthetic). Q7 fallback not applied. Q30 Okabe-Ito placeholder. Q31 audit-only; **halts if `n_dup_keys > 0` while the key is NA** (added for real-data safety; synthetic had 0). Numbers are pipeline-test output, not findings.  
+**Kaggle:** Fresh-session `run_all.R` verified on R 4.4.0 (v3 synthetic), 22 Sep 2026. Q7 fallback not applied. Q30 Okabe-Ito placeholder. Q31 audit-only; **halts if `n_dup_keys > 0` while the key is NA** (synthetic had 0). Helper tests 79 passed. Numbers are pipeline-test output, not findings.  
 **Source order:** SAP > Brief > Dictionary.
 
 Planned paths assume the structure in `docs/IMPLEMENTATION_PLAN.md`. Q14 table/figure formats are recorded in config; Q30 colours remain NA.
