@@ -1,6 +1,7 @@
-# Master script. Chunk B: setup + Study 1 load/QC only (verified on Kaggle).
-# Helper tests are separate: source tests/run_tests.R (Chunk C).
+# Master script. Study 1 load + QC (v3 synthetic; Object Name filter + Q6 IDs).
+# Helper tests: source tests/run_tests.R. Version-record lockfile: scripts/write_renv_lock.R.
 # Requires PROJECT_ROOT (or resolvable by config).
+# Does not run exclusions, summaries, or hypothesis tests.
 
 if (!exists("PROJECT_ROOT")) {
   env <- Sys.getenv("PROJECT_ROOT", unset = "")
@@ -27,4 +28,4 @@ study1 <- run_study1_load()
 #   vision-screen sensitivity (Q1)
 #   tables / figures / exports (Q13, Q14)
 
-message("run_all.R Chunk B finished. No statistical tests were run.")
+message("run_all.R load/QC finished (v3 synthetic). No statistical tests were run.")

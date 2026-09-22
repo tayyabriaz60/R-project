@@ -11,6 +11,11 @@ docs/spec/
 .Rproj.user/
 .Ruserdata
 
+# renv must not become the restore mechanism (lockfile is a version record only)
+renv/library/
+renv/staging/
+renv/activate.R
+
 # OS / editor junk
 .DS_Store
 Thumbs.db

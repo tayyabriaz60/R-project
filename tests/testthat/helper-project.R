@@ -36,6 +36,9 @@ if (!exists("SAP")) {
 if (!exists("map_study1_discrimination")) {
   source(file.path(PROJECT_ROOT, "R", "study1_load.R"), local = FALSE)
 }
+if (!exists("filter_object_name")) {
+  source(file.path(PROJECT_ROOT, "R", "utils_select.R"), local = FALSE)
+}
 if (!exists("fmt_p")) {
   source(file.path(PROJECT_ROOT, "R", "utils_format.R"), local = FALSE)
 }

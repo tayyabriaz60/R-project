@@ -148,28 +148,55 @@ SAP <- list(
   sphericity_correction = "greenhouse_geisser", # SAP §3.1 if Mauchly violated
   keep_k30 = TRUE,                       # SAP §3.4
   mixed_effects_as_primary = FALSE,      # Brief §1 / §15
-  # --- PENDING client answer Q1-Q14 (must stay NA; do not guess) ------------
-  vision_subset_rule = NA,               # PENDING client answer Q1
-  study1_exclusion_order = NA,           # PENDING client answer Q2
-  pairwise_failed_row_rule = NA,         # PENDING client answer Q3
-  incomplete_cell_rule = NA,             # PENDING client answer Q4
-  object_name_filter_when_blank = NA,    # PENDING client answer Q5
-  study1_id_column = NA,                 # PENDING client answer Q6
-  fallback_normality_cutoff = NA,        # PENDING client answer Q7
-  accuracy_histogram_which = NA,         # PENDING client answer Q8
-  paired_d_convention = NA,              # PENDING client answer Q9
-  onesample_d_convention = NA,           # PENDING client answer Q9
-  partial_eta_squared_ci_method = NA,    # PENDING client answer Q9
-  rank_biserial_convention = NA,         # PENDING client answer Q9
-  wilcox_zero_convention = NA,           # PENDING client answer Q10
-  anova_ss_type = NA,                    # PENDING client answer Q11
-  anova_contrasts = NA,                  # PENDING client answer Q11
-  condition_reference_level = NA,        # PENDING client answer Q11
-  skewness_function = NA,                # PENDING client answer Q12
-  figure_list = NA,                      # PENDING client answer Q13
-  figure_colours = NA,                   # PENDING client answer Q13
-  export_table_formats = NA,             # PENDING client answer Q14
-  ae_by_k_include_ci = NA                # PENDING client answer Q14
+  # --- answered Q1-Q14 (22 Sep 2026); recorded in DECISIONS_LOG ------------
+  vision_subset_rule = "score_equals_4", # Q1; sensitivity only, not a primary exclusion
+  vision_subset_is_primary_exclusion = FALSE, # Q1
+  study1_exclusion_order = "primary_all_50_no_outcome_exclusion; self_test_outside_sample; duplicate_keep_earliest_tiebreak_event_index", # Q2; NOT applied at load
+  pairwise_failed_row_rule = "flag_and_stop", # Q3; stop is at pairwise analysis, not load
+  incomplete_cell_rule = "flag_and_stop", # Q4; stop is at summaries/tests, not load
+  object_name_filter_when_blank = "keep_filter", # Q5
+  object_name_disc = "Response",         # Dict §10; Q5
+  object_name_pairwise = "Image Response",
+  object_name_vision = "Number Entry",
+  study1_id_raw_column = "Participant Public ID", # Q6; configurable
+  study1_id_column = "participant_public_id",     # Q6 canonical after map
+  anonymous_id_prefix_study1 = "S1_P",   # Q6 reporting IDs: S1_P001, ...
+  fallback_normality_cutoff = "no_cutoff_diagnostics_then_stop", # Q7
+  accuracy_histogram_which = c(
+    "condition_k_cells_8",
+    "h1_opt_minus_orig",
+    "h2_opt_minus_orig_by_k"
+  ),                                     # Q8
+  paired_d_convention = "cohens_dz",     # Q9; effectsize
+  onesample_d_convention = "cohens_d_vs_0.50",
+  partial_eta_squared_ci_method = "effectsize_partial_eta_squared_two_sided_95",
+  rank_biserial_convention = "effectsize_rank_biserial_two_sided_95",
+  kendall_w_ci_method = "effectsize_kendalls_w_95", # Q9; also closes Q24
+  effectsize_package = "effectsize",
+  wilcox_zero_convention = "omit_zeros_report_nonzero_n", # Q10
+  anova_ss_type = "III",                 # Q11
+  anova_contrasts = "sum_to_zero",
+  condition_reference_level = "Original",
+  condition_level_order = c("Original", "Optimized"),
+  difference_direction = "Optimized_minus_Original",
+  skewness_function = "e1071::skewness(x, type = 2, na.rm = TRUE)", # Q12
+  figure_list = c(
+    "accuracy_condition_k_ci",
+    "pairwise_prop_ci_ref50",
+    "rt_by_condition_desc",
+    "ae_condition_k_desc",
+    "signed_error_table",
+    "assumption_histograms_diagnostics"
+  ),                                     # Q13
+  export_table_formats = c("docx", "csv"), # Q14
+  export_figure_formats = c("png_300dpi", "pdf"),
+  export_reusable_formats = c("csv", "rds"),
+  ae_by_k_include_ci = TRUE,             # Q14; descriptive only, no inferential test
+  # --- still pending (must stay NA; do not guess) --------------------------
+  figure_colours = NA,                   # PENDING Q30 (Q13 did not name colours)
+  geometric_mean_rt_ratio = NA,          # PENDING client answer Q15
+  side_label_case = NA,                  # PENDING client answer Q16
+  rt_column_if_disagree = NA             # PENDING client answer Q17
 )
 
 # Stops if a pending (NA) parameter is requested.

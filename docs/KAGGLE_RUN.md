@@ -2,7 +2,43 @@
 
 The analyst’s PC does **not** have R. You run R on **Kaggle**. The client later runs the same scripts on **R 4.6.1**.
 
-**Chunks A, B, and C are verified** from pasted Kaggle output (22 Sep 2026). Do not start Phase 2B until Q1–Q14 are answered.
+**Now: re-verify load/QC + helper tests on v3 synthetic** after Q1–Q14 were filled. Chunks A–C on the old synthetic package are already verified; this is a new data + filter pass.
+
+---
+
+## v3 reload (now)
+
+**Cell 1**
+
+```r
+setwd("/kaggle/working/R-project")
+system("git pull origin main")
+print(file.exists("R/utils_select.R"))
+print(file.exists("data/synthetic/README_SYNTHETIC_DATA.md"))
+```
+
+**Cell 2 — load + QC**
+
+```r
+PROJECT_ROOT <- "/kaggle/working/R-project"
+source(file.path(PROJECT_ROOT, "kaggle", "run_notebook.R"))
+```
+
+**Cell 3 — helper tests**
+
+```r
+PROJECT_ROOT <- "/kaggle/working/R-project"
+source(file.path(PROJECT_ROOT, "kaggle", "run_tests.R"))
+```
+
+**Cell 4 — optional version-record lockfile (not restore)**
+
+```r
+PROJECT_ROOT <- "/kaggle/working/R-project"
+source(file.path(PROJECT_ROOT, "kaggle", "run_renv_lock.R"))
+```
+
+Paste the full console from Cells 2–3 (and 4 if you run it). Expect on Cell 2: disc/pw/vis **1200/600/200** after Object Name filter; **50** unique `participant_id`; Object Name missing **0**; vision n_score4 **48**; no Gorilla IDs in the log; “No tests run”.
 
 Nothing new is “passed” until you paste the notebook output.
 

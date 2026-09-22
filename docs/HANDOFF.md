@@ -42,8 +42,9 @@ Last updated: 22 September 2026. This file is for Tayyab (and any assistant) so 
 | Chunk A | `config/config.R`, `scripts/00_setup.R`, Kaggle docs | **Verified on Kaggle R 4.4.0** (22 Sep 2026). `testthat` 3.2.2; pending params stay NA. |
 | Pre-2A leftovers | `scripts/01_load.R`, old `R/utils_load.R` | **Superseded.** Do not source `01_load.R`. |
 | Chunk B | `R/utils_*.R`, `R/study1_load.R`, QC, `run_all.R` | **Verified on Kaggle R 4.4.0** (22 Sep 2026). 1200/600/200; Q1–Q3/Q5/Q6 not applied; no tests. |
-| Chunk C | `tests/testthat/`, `tests/run_tests.R`, README | **Verified on Kaggle R 4.4.0** (22 Sep 2026). 38 passed, 0 failed, 0 error. Toy data only; no hypothesis tests. |
-| Phase 2B | Summaries, exclusions, tests, ES/CIs, RT/errors, vision, tables/figures | **Blocked on Q1–Q14** |
+| Chunk C | `tests/testthat/`, `tests/run_tests.R`, README | **Verified on Kaggle R 4.4.0** (22 Sep 2026). Extra select/ID tests added — re-verify. |
+| Q1–Q14 | Client answers logged; config filled; v3 synthetic + dictionary v2 | **Answers recorded.** Load/QC updated. Exclusions/summaries/tests not started. |
+| Phase 2B | Dedup (Q2/Q31), summaries, H1–H3, ES/CIs, RT/errors, vision, tables/figures | **Next after v3 load re-verify.** Q30/Q31 still open for figures/dedup. |
 
 ---
 
@@ -73,7 +74,9 @@ Also open (not 1–14): SAP vs Brief authority (Q21); Brief-only geometric-mean 
 ## Ordered next steps
 
 1. **Confirm leaked GitHub token is revoked.**
-2. **Wait for Fatimah’s Q1–Q14 answers.** Do not start Phase 2B without them. When they arrive: record each answer in `docs/DECISIONS_LOG.md` and `docs/QUESTIONS_FOR_CLIENT.md`, then Phase 2B in small Kaggle-testable chunks (SAP only).
+2. **Re-verify load/QC + helper tests on Kaggle** against v3 synthetic (see `docs/KAGGLE_RUN.md`).
+3. Optional: `kaggle/run_renv_lock.R` to write a version-record `renv.lock` (not restore).
+4. Then Phase 2B: Q2/Q31 dedup only after Q31; then summaries and H1–H3. Do not invent Q30 colours.
 4. **Before delivery:** `run_all.R` clean on a fresh Kaggle session; every SAP item in `docs/SAP_TRACEABILITY.md`; synthetic outputs labelled pipeline-test only; README with setup.
 5. **Delivery message (English, honest):** tested on synthetic data on Kaggle with R 4.4.0; her target is R 4.6.1; she should run `scripts/00_setup.R` first; send any difference on her machine for a fix. Then send the Study 1 milestone message.
 

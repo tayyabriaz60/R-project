@@ -17,8 +17,9 @@ Only analysis-relevant `Response Type = response` rows are generated. Gorilla in
 
 ## Study 1
 - 50 synthetic primary participants.
-- `Participant Public ID` is intentionally set to `BLINDED`, matching the real export behavior.
-- Use the unique synthetic `Participant Private ID` to identify participants in this Study 1 test data.
+- `Participant Public ID` contains a unique **dummy** ID for each synthetic participant, mirroring the structure of Fatimah's local unblinded Study 1 Gorilla export without exposing any real identifier.
+- Use `Participant Public ID` as the Study 1 participant key in the synthetic workflow and local unblinded run. `Participant Private ID` remains synthetic and may be retained for QA only.
+- `Participant External Session ID` is blank in the supplied Study 1 export and should not be used as the participant key.
 - Discrimination: 24 rows/participant = 2 Condition × 4 K × 3 configuration instances.
 - Pairwise: 12 rows/participant.
 - Vision: 4 rows/participant; exactly 48/50 synthetic participants score 4/4.
@@ -70,3 +71,12 @@ Derive `optimized_side` independently from `Spreadsheet: image_left` and `Spread
 - Real stimulus/file naming patterns are retained only to exercise parsing and QA logic.
 - Synthetic RTs are positive and right-skewed so the prespecified RT diagnostics can be exercised.
 - No synthetic result should be used to infer the actual study findings.
+
+## v2 correction
+The `Object Name` field is populated to mirror the supplied Gorilla response-event structure. Study 1 synthetic data contain the 50 recruited primary participants only; the real pre-recruitment self-test session is not included.
+
+
+## v3 Study 1 identifier update
+The real Study 1 data will be run locally from an **unblinded Gorilla export** kept on Fatimah's device. In that export, `Participant Public ID` is populated and unique, while `Participant External Session ID` is blank. The Study 1 synthetic files therefore now use unique dummy `Participant Public ID` values (`S1PUB001`–`S1PUB050`) so Tayyab can build the pipeline against the same identifier pattern without receiving real participant IDs.
+
+The analysis code should treat the participant-ID column as configurable and must not write original Gorilla identifiers into publication tables, figures, or shareable reports. If an identifier is needed in an output, generate an anonymous sequential study ID.

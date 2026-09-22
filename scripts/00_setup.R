@@ -1,6 +1,8 @@
 # scripts/00_setup.R
-# No renv. Install only packages that are missing. Base R + one CRAN package.
+# Install only packages that are missing. Base R + listed CRAN packages.
 # Source config/config.R first so OUTPUT_LOGS exists.
+# renv is NOT the restore mechanism. A lockfile, if written, is a version record
+# only (scripts/write_renv_lock.R). Do not run renv::restore() or renv::init().
 
 # Package names only. Reasons in comments. Only packages we are sure exist on CRAN.
 required_packages <- c(

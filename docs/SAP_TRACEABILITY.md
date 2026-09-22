@@ -1,7 +1,7 @@
 # SAP / Brief traceability
 
 **Phase:** 2A (load/QC + helper tests). Hypothesis tests remain `not implemented`.  
-**Kaggle:** Chunk A, B, and C verified on R 4.4.0 (22 Sep 2026). Hypothesis tests remain `not implemented`.  
+**Kaggle:** Chunk A, B, and C verified on R 4.4.0 (old synthetic). v3 reload + Q5/Q6 load updates **NOT EXECUTED**. Hypothesis tests remain `not implemented`.  
 **Source order:** SAP > Brief > Dictionary.
 
 Planned paths assume the structure in `docs/IMPLEMENTATION_PLAN.md`. Output names are **planned**; exact file extensions remain NOT SPECIFIED (Brief: “reusable formats”) until Q14 is answered.
