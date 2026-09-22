@@ -40,6 +40,21 @@ test_that("accuracy_long_from_summary has 8 cells for one participant", {
   expect_equal(long$accuracy[long$condition == "Optimized" & long$K == 5], 1)
 })
 
+test_that("coerce_mauchly_df keeps effect names from a 2x2 matrix or flattened table", {
+  m <- matrix(
+    c(0.80, 0.70, 0.12, 0.04),
+    nrow = 2L,
+    dimnames = list(c("K", "condition:K"), c("Test statistic", "p-value"))
+  )
+  d1 <- coerce_mauchly_df(m)
+  expect_equal(rownames(d1), c("K", "condition:K"))
+  expect_equal(d1["condition:K", "p-value"], 0.04)
+  tab <- as.table(m)
+  d2 <- coerce_mauchly_df(as.data.frame(tab))
+  expect_true("condition:K" %in% rownames(d2))
+  expect_equal(as.numeric(d2["condition:K", grep("p", names(d2), ignore.case = TRUE)[1]]), 0.04)
+})
+
 test_that("Q30 figure_colours stays pending and placeholder is Okabe-Ito", {
   expect_error(require_param("figure_colours"), "PENDING a client answer")
   expect_identical(SAP$figure_palette_placeholder$name, "okabe_ito")

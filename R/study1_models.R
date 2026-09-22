@@ -163,6 +163,35 @@ resolve_effect_name <- function(rn, candidates) {
        call. = FALSE)
 }
 
+# car/afex 1.4.1: as.data.frame() on the Mauchly object can flatten a 2x2
+# table into 4 rows named 1:4 (Kaggle 22 Sep 2026). Keep effects on rows.
+coerce_mauchly_df <- function(sph) {
+  if (is.matrix(sph) || (is.array(sph) && length(dim(sph)) == 2L)) {
+    return(as.data.frame.matrix(as.matrix(sph), stringsAsFactors = FALSE))
+  }
+  df <- as.data.frame(sph, stringsAsFactors = FALSE)
+  nms <- names(df)
+  if (nrow(df) >= 2L && all(c("Var1", "Var2", "Freq") %in% nms)) {
+    effects <- unique(as.character(df$Var1))
+    measures <- unique(as.character(df$Var2))
+    wide <- data.frame(row.names = effects, check.names = FALSE)
+    for (meas in measures) {
+      wide[[meas]] <- vapply(effects, function(eff) {
+        as.numeric(df$Freq[as.character(df$Var1) == eff &
+                             as.character(df$Var2) == meas][1])
+      }, numeric(1))
+    }
+    return(wide)
+  }
+  name_col <- intersect(nms, c("Effect", "effect", "Term", "term", "Parameter"))
+  if (length(name_col) == 1L) {
+    rn <- as.character(df[[name_col]])
+    df[[name_col]] <- NULL
+    rownames(df) <- rn
+  }
+  df
+}
+
 # Mauchly from the car Anova.mlm object stored by afex.
 mauchly_table <- function(fit) {
   if (is.null(fit$Anova)) {
@@ -177,7 +206,7 @@ mauchly_table <- function(fit) {
       call. = FALSE
     )
   }
-  as.data.frame(sph)
+  coerce_mauchly_df(sph)
 }
 
 mauchly_p_for <- function(sph, effect) {
@@ -213,7 +242,13 @@ sphericity_choice <- function(sph, effect, n_levels) {
   }
   mp <- mauchly_p_for(sph, effect)
   if (is.na(mp)) {
-    stop("No Mauchly p-value for effect '", effect, "'.", call. = FALSE)
+    stop(
+      "No Mauchly p-value for effect '", effect,
+      "'. Mauchly rows: ", paste(rownames(sph), collapse = ", "),
+      "; columns: ", paste(names(sph), collapse = ", "),
+      ".",
+      call. = FALSE
+    )
   }
   use_gg <- mp < as.numeric(SAP$alpha)
   list(

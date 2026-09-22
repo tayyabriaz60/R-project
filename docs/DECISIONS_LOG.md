@@ -70,4 +70,6 @@ Methodological choices that the SAP leaves open are **not** decided here; they a
 | 2026-09-22 | Vision sensitivity = repeat H1–H3 on score==4; not merged | SAP §3.4; Q1 | Synthetic expected N=48. Separate table. |
 | 2026-09-22 | Q13 figures use Okabe–Ito placeholder pending Q30 | Q13; Q14; Q30 | Original `#E69F00`, Optimized `#0072B2`. Caption and DECISIONS mark it as placeholder. `SAP$figure_colours` stays NA. PNG 300 dpi + PDF. Tables csv + docx. |
 
-Hypothesis tests, effect sizes, and Q13 figures are **written but NOT EXECUTED** until Kaggle output is pasted. Dedup remains unapplied (Q31).
+| 2026-09-22 | H1–H3 first Kaggle run stopped on Mauchly row names | Pasted Cell 2 | `as.data.frame(sphericity.tests)` yielded rows `1; 2; 3; 4`. ANOVA rows were `condition; K; condition:K`. Q7 report was written first (`fallback_applied=FALSE`). Helper tests 71/0/0. Fixed with `as.data.frame.matrix` / unflatten. **NOT re-run yet.** |
+
+Hypothesis tests after the Mauchly fix are **NOT EXECUTED**. Dedup remains unapplied (Q31).

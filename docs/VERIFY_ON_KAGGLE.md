@@ -93,11 +93,14 @@ This file is **not yet in the local git repo**. Download it from the Kaggle work
 | V-P9 Q12 | trial_rt_skewness printed; e1071 loaded | e1071 1.7.16; skewness=1.1808; threshold=1; analysis_scale=log; n_valid_rt=1200; n_rt_dropped=0 |
 | V-P10 helper tests | all previous + prepare toys pass | n_passed=57 n_failed=0 n_error=0; no synthetic load in tests |
 
-## H1–H3 chunk — NOT EXECUTED
+## H1–H3 chunk — first Kaggle run 22 Sep 2026 (pasted console)
+
+Packages: afex 1.4.1, effectsize 1.0.0, ggplot2 3.5.1, officer 0.6.7, flextable 0.9.7. Helper tests: **71 passed, 0 failed**.
 
 | Item | What to check | Result |
 |------|----------------|--------|
-| V-H1 Q7 report | fallback_applied=FALSE; client text printed | **NOT EXECUTED** |
+| V-H1 Q7 report | fallback_applied=FALSE; client text printed | written before the stop; fallback not applied |
+| V-H1b Mauchly | parse condition:K p-value | **FAILED**: Mauchly rows logged as `1; 2; 3; 4`. Fix written, **not re-run**. |
 | V-H2 H1/H2 ANOVA | F, df, p, pes, two-sided 95% CI; Mauchly/GG logged | **NOT EXECUTED** |
 | V-H3 H2 follow-ups | only if interaction p < alpha; Holm; zero-var skip | **NOT EXECUTED** |
 | V-H4 H3 | one-sample t vs 0.50; d vs 0.50 | **NOT EXECUTED** |

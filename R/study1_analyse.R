@@ -23,7 +23,8 @@ run_h1_h2_h3 <- function(summary_df, log_path, label) {
   log_msg(log_path, "wrote ", basename(model_path))
 
   sph <- mauchly_table(fit)
-  log_msg(log_path, label, " Mauchly table rows=", paste(rownames(sph), collapse = "; "))
+  log_msg(log_path, label, " Mauchly table rows=", paste(rownames(sph), collapse = "; "),
+          " columns=", paste(names(sph), collapse = "; "))
   tab0 <- as.data.frame(anova(fit, correction = "none", es = "none"))
   log_msg(log_path, label, " ANOVA rows=", paste(rownames(tab0), collapse = "; "))
   h1_name <- resolve_effect_name(rownames(tab0), c("condition", "Condition"))
