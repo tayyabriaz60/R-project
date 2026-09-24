@@ -7,7 +7,7 @@
 
 **Q1–Q14 were answered by Fatimah on 22 September 2026.** Quoted answers and implementation notes are in `docs/DECISIONS_LOG.md`. Status on each item below is **Answered** unless a follow-up is marked.
 
-Still open for Study 1: Q15–Q17. Q30 and Q31 answered 22 Sep 2026. Study 2–3: Q18–Q20. Non-blocking: Q21–Q23, Q25–Q26, Q28–Q29. Q24 is closed by Q9 (Kendall’s W 95% CI).
+Still open for Study 1: Q15–Q17. Q30 and Q31 answered 22 Sep 2026. Study 2: Q18, Q32, Q33. Study 3: Q19–Q20. Non-blocking: Q21–Q23, Q25–Q26, Q28–Q29. Q24 is closed by Q9 (Kendall’s W 95% CI).
 
 ---
 
@@ -193,8 +193,24 @@ A short polite cover note is at the bottom. You can paste the BLOCKING Study 1 q
 - **Issue:** Real-data identifier is not in the SAP.
 - **Options:** (A) a known Public/Private ID you will give us. (B) a flag column in the real export.
 - **Impact:** Primary N = 50 vs 51; every Study 2 test.
-- **Until answered:** Synthetic Study 2 will exclude those two synthetic IDs. Real-data ID still required before you run Study 2.
+- **Until answered:** Synthetic Study 2 excludes `S2_RESEARCHER_EXCLUDE` (Public ID). Real load `stop()`s until the real identifier is set in config.
 - **Suggested message:** “For Study 2, what identifier marks the researcher session in the real Gorilla export so we do not hard-code only the synthetic ID?”
+
+### Q32 — BLOCKING Study 2 test path
+- **Where:** SAP §4.1 “same … fallback procedure as Study 1”; Study 1 Q7 path was locked after you reviewed **Study 1** real-data plots (H1 Wilcoxon, H2 Friedman, H3 Wilcoxon; RT/AE t).
+- **Issue:** That lock was a Study 1 decision. Study 2 data may look different. The SAP still names ANOVA as the recommended path, with npar only if severe non-normality.
+- **Options:** (A) I generate Study 2 Q8 diagnostics first; you review them; then we lock Study 2 (same process as Study 1). (B) You want Study 2 to use the same locked npar path as Study 1 without a second plot review.
+- **Impact:** Which tests are reported for Study 2 H1–H3 / RT / AE.
+- **Until answered:** Load/QC only. No Study 2 hypothesis tests are run.
+- **Suggested message:** “For Study 2, should I send you the diagnostic plots first (as we did for Study 1), or apply the same locked Wilcoxon/Friedman path you chose for Study 1?”
+
+### Q33 — BLOCKING Study 2 real files
+- **Where:** Dictionary §2 Study 2 export `data_exp_263105-vall`; Study 1 real files were found by task id (`task-y3n9`, …).
+- **Issue:** Study 2 real Gorilla task IDs are not recorded.
+- **Options:** (A) send the four task ids (or one combined CSV filename). (B) you will set `REAL_STUDY2_FILES` / `REAL_STUDY2_COMBINED_FILE` yourself.
+- **Impact:** Real Study 2 load cannot find files.
+- **Until answered:** Synthetic uses `study2_tasks_SYNTHETIC.csv`. Real load `stop()`s.
+- **Suggested message:** “For Study 2, please send the Gorilla task ids (or one combined filename) so the scripts can find the unedited CSVs under data/real/, the same way as Study 1.”
 
 ### Q19 — BLOCKING Study 3 only
 - **Where:** Dictionary §6.1 `condition_order` = `optimized_first` / `original_first`; `block_order` = `black_first` / `white_first`. Synthetic values: `OptimizedFirst` / `OriginalFirst`; `BlackWhite` / `WhiteBlack`.

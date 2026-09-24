@@ -15,7 +15,9 @@ Implementation of the **frozen SAP** (21 September 2026). The scripts follow the
 | H1–H3, RT, AE, signed error, vision sensitivity | Ready (Q7 locked: H1/H2/H3 npar; RT/AE paired t) |
 | Q13/Q14 tables (`.csv` + `.docx`) and figures (`.png` 300 dpi + `.pdf`) | Ready |
 | Helper unit tests (toy data) | 79 passed on Kaggle (fresh session) |
-| Studies 2 and 3 | **Not written yet** |
+| Study 2 load + QC | Coded (Kaggle of this load: **NOT EXECUTED**) |
+| Study 2 prepare / H1–H3 | **Not written yet** (Q32) |
+| Study 3 | **Not written yet** |
 
 ## R versions
 

@@ -13,4 +13,6 @@ Filenames must contain these task ids (the rest of the Gorilla name can stay):
 
 Then in `config/config.R` set `DATA_SOURCE <- "real"` and run `run_all.R`.
 
+Study 2 real task ids are not set yet (Q33). Do not guess them. Study 2 real load will stop until Fatimah sends the ids or a combined filename.
+
 Do not commit or email these files.

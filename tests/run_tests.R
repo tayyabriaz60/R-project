@@ -11,6 +11,7 @@ if (!exists("PROJECT_ROOT")) {
 source(file.path(if (exists("PROJECT_ROOT")) PROJECT_ROOT else ".", "config", "config.R"))
 source(file.path(PROJECT_ROOT, "scripts", "00_setup.R"))
 source(file.path(PROJECT_ROOT, "R", "study1_load.R"))
+source(file.path(PROJECT_ROOT, "R", "study2_load.R"))
 source(file.path(PROJECT_ROOT, "R", "utils_format.R"))
 source(file.path(PROJECT_ROOT, "R", "study1_clean.R"))
 source(file.path(PROJECT_ROOT, "R", "study1_gates.R"))

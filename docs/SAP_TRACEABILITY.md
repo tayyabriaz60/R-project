@@ -115,8 +115,8 @@ Study 2 “uses the same … as Study 1 unless otherwise stated” (SAP §4). Ro
 
 | ID | SAP / brief section | Requirement | Planned function / script | Planned output file | Status |
 |----|---------------------|-------------|---------------------------|---------------------|--------|
-| R2.1 | SAP §4 | Same analytical approach as Study 1 unless stated | `scripts/run_study2.R` calling shared `R/` | `output/tables/study2_*` | not implemented |
-| R2.2 | SAP §4.4; Brief §6.1 | Exclude researcher session; primary N = 50 | `R/exclusions.R` (ID pending Q18) | `output/logs/study2_exclusions` | not implemented |
+| R2.1 | SAP §4 | Same analytical approach as Study 1 unless stated | `run_study2.R` (load only this chunk) | `output/logs/study2_log_data_qc` | load coded; prepare/tests not implemented |
+| R2.2 | SAP §4.4; Brief §6.1 | Exclude researcher session; primary N = 50 | `drop_study2_researcher` (real ID pending Q18) | study2 QC log | implemented in code (Kaggle: NOT EXECUTED) |
 | R2.3 | SAP §4.1; Brief §6.2 | 2×4 RM ANOVA as Study 1 | `R/models_anova.R` | `output/tables/study2_h1_h2_anova` | not implemented |
 | R2.4 | SAP §4.1; Brief §6.2 | Average accuracy across 3 Difficulty levels within Condition × K | `R/summarise_participants.R` | participant summaries | not implemented |
 | R2.5 | SAP §4.1; Brief §6.2, §15 | Do not add standalone Difficulty or Condition × Difficulty models | orchestrator (no extra models) | — | not implemented |
@@ -124,14 +124,14 @@ Study 2 “uses the same … as Study 1 unless otherwise stated” (SAP §4). Ro
 | R2.7 | Dict §5.1 | colormap distinctipy / distinctipysa traceability only | QA only | — | not implemented |
 | R2.8 | SAP §4.2; Brief §6.3 | H3 same as Study 1 after pairwise QA | shared pairwise + t-test | `output/tables/study2_h3` | not implemented |
 | R2.9 | Dict §5.2 | Reconstruct preferred_side; validate raw optimized_side vs filenames | `R/derive_pairwise.R` | `output/logs/study2_pairwise_qa` | not implemented |
-| R2.10 | Dict §10 | Task names: Discrimination Task G1/G2 (Clone); Pairwise Comparison Task2 (Clone); Vision Check | `R/select_trials.R` | structure log | not implemented |
+| R2.10 | Dict §10 | Task names: Discrimination Task G1/G2 (Clone); Pairwise Comparison Task2 (Clone); Vision Check | `filter_task_name` + `load_study2_role` | study2 QC log | implemented in code (Kaggle: NOT EXECUTED) |
 | R2.11 | Dict §9 | 24 disc + 12 pairwise + 4 vision after exclusion | `R/validate_structure.R` | structure log | not implemented |
 | R2.12 | SAP §4.3.1–4.3.3 | RT, AE, signed error as Study 1 | shared secondary helpers | `output/tables/study2_rt`, `_absolute_error`, `_signed_error` | not implemented |
 | R2.13 | SAP §4.4 | Vision sensitivity N = 43; primary remains 50 | `R/sensitivity_vision.R` | `output/tables/study2_vision_sensitivity` | not implemented |
 | R2.14 | SAP §4.4 | Condition order: same rules as Study 1 (document only) | analysis log | — | not implemented |
 | R2.15 | SAP §4.1 | Same assumptions, fallbacks, follow-ups, reporting as Study 1 | shared assumption/model helpers | study2 tables + log | not implemented |
-| R2.16 | README / data | Drop blank housekeeping row | `R/load_data.R` | — | not implemented |
-| R2.17 | Combined raw file vs Dict §8 | Map from single `study2_tasks_*.csv` | `R/load_data.R` | — | not implemented |
+| R2.16 | README / data | Drop blank housekeeping row | `drop_blank_rows` in `load_study2_role` | study2 QC log | implemented in code (Kaggle: NOT EXECUTED) |
+| R2.17 | Combined raw file vs Dict §8 | Map from single `study2_tasks_*.csv` | `resolve_study2_file` + task split | study2 QC log | implemented in code (Kaggle: NOT EXECUTED) |
 | R2.18 | Brief §11, §14 | Same deliverable classes as Study 1 for H1–H3 + secondaries + sensitivity | `scripts/run_study2.R` | `output/{tables,figures,logs}/study2_*` | not implemented |
 | R2.19 | SAP §4.1 inherit R1.50–R1.61 | H2 follow-ups / zero-variance / Friedman logic | shared | study2 follow-up tables | not implemented |
 | R2.20 | SAP §4.2 inherit R1.62–R1.67 | H3 t / Wilcoxon reporting | shared | study2 H3 tables | not implemented |
@@ -141,7 +141,7 @@ Study 2 “uses the same … as Study 1 unless otherwise stated” (SAP §4). Ro
 | R2.24 | Brief §12 | Same renv / R 4.6.1 / analysis-log fields | shared log | study2 log | not implemented |
 | R2.25 | Brief §1 | α = .05 per H1–H3; Holm only on named families | shared | — | not implemented |
 | R2.26 | Dict §7 | Same vision items/keys 12,16,29,26 | `R/derive_vision.R` | vision summary | not implemented |
-| R2.27 | Q18 | Real researcher ID — NOT SPECIFIED | config placeholder | config | not implemented |
+| R2.27 | Q18 | Real researcher ID — NOT SPECIFIED | `SAP$study2_researcher_ids_real` | config | coded as NA; real load `stop()` |
 | R2.28 | Brief §16 | Acceptance checklist items that apply to Study 2 | README | README | not implemented |
 
 ---

@@ -39,6 +39,9 @@ if (!exists("map_study1_discrimination")) {
 if (!exists("filter_object_name")) {
   source(file.path(PROJECT_ROOT, "R", "utils_select.R"), local = FALSE)
 }
+if (!exists("run_study2_load") && !exists("drop_study2_researcher")) {
+  source(file.path(PROJECT_ROOT, "R", "study2_load.R"), local = FALSE)
+}
 if (!exists("audit_disc_duplicates_guess")) {
   source(file.path(PROJECT_ROOT, "R", "study1_clean.R"), local = FALSE)
 }

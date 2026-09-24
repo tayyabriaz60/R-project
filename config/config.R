@@ -133,6 +133,23 @@ REAL_STUDY1_FILES <- list(
   study1_vision = NA_character_
 )
 
+# Real Study 2: task IDs pending Q33. Do not guess. Combined file optional.
+# Dictionary §10 names: Discrimination Task G1/G2 (Clone); Pairwise Comparison Task2 (Clone).
+REAL_STUDY2_TASK_IDS <- list(
+  study2_disc_g1 = NA_character_,
+  study2_disc_g2 = NA_character_,
+  study2_pairwise = NA_character_,
+  study2_vision = NA_character_
+)
+REAL_STUDY2_FILES <- list(
+  study2_disc_g1 = NA_character_,
+  study2_disc_g2 = NA_character_,
+  study2_pairwise = NA_character_,
+  study2_vision = NA_character_
+)
+# If she drops one combined Gorilla CSV, set this to that filename under data/real/.
+REAL_STUDY2_COMBINED_FILE <- NA_character_
+
 # -----------------------------------------------------------------------------
 # Seed (technical only; SAP does not specify a seed)
 # Logged in docs/DECISIONS_LOG.md as non-methodological.
@@ -229,6 +246,22 @@ SAP <- list(
   duplicate_trial_key = "participant_id|condition|K|configuration_instance",
   duplicate_keep_rule = "min_utc_timestamp_then_min_event_index",
   duplicate_dedup_apply = TRUE,
+  # --- Study 2 (SAP §4; Dictionary §5, §9–§10) -----------------------------
+  primary_n_study2 = 50L,                # SAP §4.4 after researcher exclusion
+  vision_subset_n_study2 = 43L,          # SAP §4.4 (sensitivity size; not a primary exclusion)
+  k_levels_study2 = c(5, 10, 20, 30),    # SAP §4.1 same as Study 1
+  study2_difficulty_index_levels = c(1L, 2L, 3L), # Dict §5.1; average across for H1/H2
+  study2_task_disc_g1 = "Discrimination Task G1 (Clone)",
+  study2_task_disc_g2 = "Discrimination Task G2 (Clone)",
+  study2_task_pairwise = "Pairwise Comparison Task2 (Clone)",
+  study2_task_vision = "Vision Check",
+  study2_id_column = "participant_public_id",
+  anonymous_id_prefix_study2 = "S2_P",
+  # Synthetic researcher Public ID (README). Real ID is Q18 — must stay NA.
+  study2_researcher_ids_synthetic = "S2_RESEARCHER_EXCLUDE",
+  study2_researcher_ids_real = NA_character_, # PENDING client answer Q18
+  # Q32: do not inherit Study 1 locked npar until she answers.
+  study2_q7_inherit_study1_lock = NA,    # PENDING client answer Q32
   # --- still pending (must stay NA; do not guess) --------------------------
   geometric_mean_rt_ratio = NA,          # PENDING client answer Q15
   side_label_case = NA,                  # PENDING client answer Q16

@@ -160,3 +160,7 @@ Fresh Kaggle clone of `20ea55f`. Synthetic only. Not findings.
 | Vision N=48 | same tests; sig_agrees H1/H2/H3 TRUE |
 | Tables | h1_wilcoxon, h2_friedman, h2_followups, h3; no Gorilla IDs |
 | Helper tests | n_passed=103 n_failed=0 n_error=0 |
+
+## Study 2 load — NOT EXECUTED
+
+`run_study2.R` / `kaggle/run_study2_load.R`. Synthetic only. Expect after researcher exclude: disc 1200 / pairwise 600 / vision 200; n_unique=50; vision n_score4=43. Helper tests should include `test-load-study2.R`. Do not treat those counts as findings. H1–H3 not run (Q32).
