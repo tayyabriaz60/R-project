@@ -161,6 +161,18 @@ Fresh Kaggle clone of `20ea55f`. Synthetic only. Not findings.
 | Tables | h1_wilcoxon, h2_friedman, h2_followups, h3; no Gorilla IDs |
 | Helper tests | n_passed=103 n_failed=0 n_error=0 |
 
-## Study 2 pipeline — NOT EXECUTED
+## Study 2 pipeline — verified 25 Sep 2026 (pasted)
 
-`run_study2.R` / `kaggle/run_study2.R`. Synthetic only. Expect after researcher exclude: disc 1200 / pairwise 600 / vision 200; n=50; vision score4=43. Analysis: H1/H2 ANOVA `F=`, H3 `t=`; Q32 npar not applied. Helper tests include `test-load-study2.R` and `test-prepare-study2.R`. Do not treat numbers as findings.
+Fresh Kaggle clone of `1550fe8`. Synthetic only. Not findings.
+
+| Item | Result |
+|------|--------|
+| Load | researcher matched=1; after exclude disc=1200 pairwise=600 vision=200; n=50 |
+| Difficulty | 1/2/3 = 400 each; averaged in Condition x K; no Difficulty model |
+| Q31 / Q3 / Q4 | applied; 0 dups; mapping_fail=0; incomplete=0 |
+| Q12 | trial_rt_skewness=1.3461; analysis_scale=log |
+| Path | H1/H2 ANOVA; H3 one-sample t; RT/AE paired t. Q32 npar not applied |
+| Primary | H1 F=0.2363 df=1,49 p=0.6290; H2 F=2.6179 GG (mauchly_p=0.0006) p=0.0678 followups=FALSE; H3 t=3.4357 df=49 p=0.0012 |
+| Vision N=43 | same tests; sig_agrees H1/H2/H3 TRUE |
+| Tables / figures | 12 table pairs; 4 fig png+pdf; 6 diag png; no Gorilla IDs |
+| Helper tests | n_passed=124 n_failed=0 n_error=0 |

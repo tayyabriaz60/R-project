@@ -88,6 +88,7 @@ Methodological choices that the SAP leaves open are **not** decided here; they a
 | 2026-09-22 | Q7 locked path verified on Kaggle R 4.4.0 | Pasted Cell 2+3; commit 20ea55f | Synthetic only, not findings. Primary H1 V=552.5 p=0.1106 n_nonzero=41; H2 chi2=1.2711 p=0.7360 followups=FALSE; H3 V=867 p=0.0000 n_nonzero=44; RT t=-0.3574 log; AE t=-1.5909. Vision N=48, sig_agrees TRUE. Tests 103/0/0. Prepare-log wording later cleaned in 1484dc6. |
 
 | 2026-09-24 | Start Study 2 with load/QC only | SAP §4; Fatimah “start study2” | Combined synthetic file split by Dict §10 Clone task names. Researcher drop uses synthetic Public ID `S2_RESEARCHER_EXCLUDE` only. Real researcher ID (Q18) and real task ids (Q33) stay NA and `stop()`. Study 1 Q7 lock is not inherited (Q32). `run_all.R` stays Study 1 only. |
-| 2026-09-25 | Study 2 uses SAP recommended ANOVA/t | SAP §4.1–§4.3; Q32 | H1/H2 2x4 RM-ANOVA; H3 one-sample t; RT/AE paired t; vision N=43 same tests. Difficulty averaged in Condition x K cells; no Difficulty model. Study 1 npar lock not inherited. Kaggle of this pipeline: NOT EXECUTED. |
+| 2026-09-25 | Study 2 uses SAP recommended ANOVA/t | SAP §4.1–§4.3; Q32 | H1/H2 2x4 RM-ANOVA; H3 one-sample t; RT/AE paired t; vision N=43 same tests. Difficulty averaged in Condition x K cells; no Difficulty model. Study 1 npar lock not inherited. |
+| 2026-09-25 | Study 2 pipeline verified on Kaggle R 4.4.0 | Pasted Cell 2+3; commit 1550fe8 | Synthetic only, not findings. Researcher 51→50. H1 F=0.2363 p=0.6290; H2 GG F=2.6179 p=0.0678 followups=FALSE; H3 t=3.4357 p=0.0012; RT t=-0.9902 log; AE t=0.4861. Vision N=43, sig_agrees TRUE. Tests 124/0/0. |
 
 Q15–Q17 remain NA. Study 2 Q18 / Q32 / Q33 remain NA.

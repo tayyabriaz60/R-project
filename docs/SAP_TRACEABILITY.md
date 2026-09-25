@@ -115,9 +115,9 @@ Study 2 “uses the same … as Study 1 unless otherwise stated” (SAP §4). Ro
 
 | ID | SAP / brief section | Requirement | Planned function / script | Planned output file | Status |
 |----|---------------------|-------------|---------------------------|---------------------|--------|
-| R2.1 | SAP §4 | Same analytical approach as Study 1 unless stated | `run_study2.R` | `output/tables/study2_*` | implemented in code (Kaggle: NOT EXECUTED) |
+| R2.1 | SAP §4 | Same analytical approach as Study 1 unless stated | `run_study2.R` | `output/tables/study2_*` | implemented (Kaggle R 4.4.0, 25 Sep 2026) |
 | R2.2 | SAP §4.4; Brief §6.1 | Exclude researcher session; primary N = 50 | `drop_study2_researcher` (real ID pending Q18) | study2 QC log | implemented in code (Kaggle: NOT EXECUTED) |
-| R2.3 | SAP §4.1; Brief §6.2 | 2×4 RM ANOVA as Study 1 | `run_study2_h1_h2_h3` | `study2_table_h1_h2_anova` | implemented in code (Kaggle: NOT EXECUTED) |
+| R2.3 | SAP §4.1; Brief §6.2 | 2×4 RM ANOVA as Study 1 | `run_study2_h1_h2_h3` | `study2_table_h1_h2_anova` | implemented (Kaggle R 4.4.0; H2 used GG) |
 | R2.4 | SAP §4.1; Brief §6.2 | Average accuracy across 3 Difficulty levels within Condition × K | `accuracy_cells_long` | study2 summaries | implemented in code (Kaggle: NOT EXECUTED) |
 | R2.5 | SAP §4.1; Brief §6.2, §15 | Do not add standalone Difficulty or Condition × Difficulty models | `run_study2_analyse` (no extra models) | — | implemented in code (Kaggle: NOT EXECUTED) |
 | R2.6 | Dict §5.1 | variation → difficulty_index 1,2,3; no outcome-inferred labels | `R/recode_factors.R` | — | not implemented |

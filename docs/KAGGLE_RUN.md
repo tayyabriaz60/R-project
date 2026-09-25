@@ -8,7 +8,13 @@ The analyst’s PC does **not** have R. You run R on **Kaggle**. The client late
 
 ---
 
-## Study 2 pipeline (now) — NOT EXECUTED until you paste the console
+## Study 2 pipeline — verified 25 Sep 2026 (pasted)
+
+Synthetic Kaggle R 4.4.0, commit `1550fe8`. ANOVA/t path. Tests 124/0/0. Not findings.
+
+---
+
+## Study 2 pipeline (record of what was run)
 
 If the Kaggle working copy is empty, clone first:
 

@@ -420,6 +420,9 @@ log_effectsize_versions <- function(log_path) {
           SAP$ci_level, ", alternative=\"two.sided\") on Q10 non-zero diffs")
   log_msg(log_path, "Q9 kendalls_w: effectsize::kendalls_w(mat, ci=",
           SAP$ci_level, ", alternative=\"two.sided\")")
+}
+
+log_study1_q7_lock <- function(log_path) {
   log_msg(log_path, "Q7 locked path: H1=", require_param("study1_h1_test"),
           " H2=", require_param("study1_h2_test"),
           " H3=", require_param("study1_h3_test"),

@@ -122,6 +122,7 @@ run_study1_analyse <- function(study1, study1_prep) {
   q8 <- list.files(OUTPUT_FIGURES, pattern = "study1_diag_.*\\.png$", full.names = TRUE)
   q7_path <- write_q7_client_report(sort(unique(c(q8, extra_diag))), log_path)
   log_effectsize_versions(log_path)
+  log_study1_q7_lock(log_path)
 
   primary <- run_study1_primary_bundle(summaries, log_path, "primary")
 

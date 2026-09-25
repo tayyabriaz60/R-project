@@ -71,7 +71,6 @@ save_q8_histograms <- function(summary_df, log_path, file_prefix, after_note) {
   log_msg(log_path, "wrote diagnostic ", basename(p3))
 
   log_msg(log_path, after_note)
-  message(after_note)
   c(p1, p2, p3)
 }
 
