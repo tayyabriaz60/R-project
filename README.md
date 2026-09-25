@@ -15,8 +15,8 @@ Implementation of the **frozen SAP** (21 September 2026). The scripts follow the
 | H1–H3, RT, AE, signed error, vision sensitivity | Ready (Q7 locked: H1/H2/H3 npar; RT/AE paired t) |
 | Q13/Q14 tables (`.csv` + `.docx`) and figures (`.png` 300 dpi + `.pdf`) | Ready |
 | Helper unit tests (toy data) | 79 passed on Kaggle (fresh session) |
-| Study 2 load + QC | Coded (Kaggle of this load: **NOT EXECUTED**) |
-| Study 2 prepare / H1–H3 | **Not written yet** (Q32) |
+| Study 2 load, prepare, H1–H3, RT/AE, tables, figures | Coded (Kaggle of this pipeline: **NOT EXECUTED**) |
+| Study 2 test path | SAP recommended ANOVA / t. Study 1 npar lock **not** inherited (Q32) |
 | Study 3 | **Not written yet** |
 
 ## R versions
@@ -53,6 +53,13 @@ Optional helper tests (toy data only; no synthetic load):
 ```r
 PROJECT_ROOT <- "C:/path/to/this/folder"
 source(file.path(PROJECT_ROOT, "tests", "run_tests.R"))
+```
+
+Study 2 (separate from `run_all.R`):
+
+```r
+PROJECT_ROOT <- "C:/path/to/this/folder"
+source(file.path(PROJECT_ROOT, "run_study2.R"))
 ```
 
 Switch synthetic vs real in **one place**: `DATA_SOURCE` in `config/config.R`.

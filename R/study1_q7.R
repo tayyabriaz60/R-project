@@ -14,10 +14,10 @@ save_vector_hist <- function(x, name, main, xlab, log_path) {
   path
 }
 
-save_study1_assumption_hists <- function(summary_df, log_path) {
+save_assumption_hists <- function(summary_df, log_path, file_prefix = "study1") {
   p_h3 <- save_vector_hist(
     summary_df$pairwise_prop_optimized,
-    "study1_diag_h3_prop",
+    paste0(file_prefix, "_diag_h3_prop"),
     "H3 Optimized-choice proportion (diagnostic)",
     "proportion",
     log_path
@@ -25,7 +25,7 @@ save_study1_assumption_hists <- function(summary_df, log_path) {
   rt_diff <- summary_df$mean_rt_analysis_Optimized - summary_df$mean_rt_analysis_Original
   p_rt <- save_vector_hist(
     rt_diff,
-    "study1_diag_rt_diff",
+    paste0(file_prefix, "_diag_rt_diff"),
     "RT Optimized-Original on analysis scale (diagnostic)",
     "difference",
     log_path
@@ -33,12 +33,16 @@ save_study1_assumption_hists <- function(summary_df, log_path) {
   ae_diff <- summary_df$mean_ae_Optimized - summary_df$mean_ae_Original
   p_ae <- save_vector_hist(
     ae_diff,
-    "study1_diag_ae_diff",
+    paste0(file_prefix, "_diag_ae_diff"),
     "AE Optimized-Original (diagnostic)",
     "difference",
     log_path
   )
   c(p_h3, p_rt, p_ae)
+}
+
+save_study1_assumption_hists <- function(summary_df, log_path) {
+  save_assumption_hists(summary_df, log_path, "study1")
 }
 
 write_q7_client_report <- function(diag_files, log_path) {

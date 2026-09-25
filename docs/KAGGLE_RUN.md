@@ -8,7 +8,7 @@ The analyst’s PC does **not** have R. You run R on **Kaggle**. The client late
 
 ---
 
-## Study 2 load (now) — NOT EXECUTED until you paste the console
+## Study 2 pipeline (now) — NOT EXECUTED until you paste the console
 
 If the Kaggle working copy is empty, clone first:
 
@@ -22,18 +22,18 @@ system("git clone https://github.com/tayyabriaz60/R-project.git")
 ```r
 setwd("/kaggle/working/R-project")
 system("git pull origin main")
-print(file.exists("R/study2_load.R"))
+print(file.exists("R/study2_analyse.R"))
 print(file.exists("run_study2.R"))
-print(file.exists("kaggle/run_study2_load.R"))
+print(file.exists("kaggle/run_study2.R"))
 ```
 
 All three must print `TRUE`.
 
-**Cell 2 — Study 2 load only (paste this whole console back)**
+**Cell 2 — Study 2 full pipeline (paste this whole console back)**
 
 ```r
 PROJECT_ROOT <- "/kaggle/working/R-project"
-source(file.path(PROJECT_ROOT, "kaggle", "run_study2_load.R"))
+source(file.path(PROJECT_ROOT, "kaggle", "run_study2.R"))
 ```
 
 **Cell 3 — helper tests (paste this whole console back)**
@@ -45,14 +45,14 @@ source(file.path(PROJECT_ROOT, "kaggle", "run_tests.R"))
 
 ### What to check in the Cell 2 paste
 
-- `researcher_n_ids_matched=1` on disc, pairwise, and vision
-- after exclude: `disc_rows=1200` `pairwise_rows=600` `vision_rows=200`
-- `n_unique_participant_id=50`
-- `vision_score_by_participant_id: n_score4=43`
-- `LOAD COMPLETE. No tests run.`
-- no Gorilla IDs in the log
+- `researcher_n_ids_matched=1`; after exclude disc 1200 / pairwise 600 / vision 200; n=50
+- vision `n_score4=43`; vision sensitivity n_ids=43
+- H1/H2 log `F=` (ANOVA), H3 `t=` (not Wilcoxon V)
+- `Q32 npar not applied`
+- `header_has_gorilla_id_column=FALSE` on every study2_table CSV
+- no Gorilla IDs in the logs
 
-Do **not** run `run_all.R` for this chunk (`run_all.R` is still Study 1 only).
+Do **not** run `run_all.R` for this chunk (`run_all.R` is still Study 1 only). Those ANOVA numbers are synthetic pipeline output, not findings.
 
 ---
 

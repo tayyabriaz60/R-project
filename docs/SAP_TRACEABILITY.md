@@ -115,24 +115,24 @@ Study 2 “uses the same … as Study 1 unless otherwise stated” (SAP §4). Ro
 
 | ID | SAP / brief section | Requirement | Planned function / script | Planned output file | Status |
 |----|---------------------|-------------|---------------------------|---------------------|--------|
-| R2.1 | SAP §4 | Same analytical approach as Study 1 unless stated | `run_study2.R` (load only this chunk) | `output/logs/study2_log_data_qc` | load coded; prepare/tests not implemented |
+| R2.1 | SAP §4 | Same analytical approach as Study 1 unless stated | `run_study2.R` | `output/tables/study2_*` | implemented in code (Kaggle: NOT EXECUTED) |
 | R2.2 | SAP §4.4; Brief §6.1 | Exclude researcher session; primary N = 50 | `drop_study2_researcher` (real ID pending Q18) | study2 QC log | implemented in code (Kaggle: NOT EXECUTED) |
-| R2.3 | SAP §4.1; Brief §6.2 | 2×4 RM ANOVA as Study 1 | `R/models_anova.R` | `output/tables/study2_h1_h2_anova` | not implemented |
-| R2.4 | SAP §4.1; Brief §6.2 | Average accuracy across 3 Difficulty levels within Condition × K | `R/summarise_participants.R` | participant summaries | not implemented |
-| R2.5 | SAP §4.1; Brief §6.2, §15 | Do not add standalone Difficulty or Condition × Difficulty models | orchestrator (no extra models) | — | not implemented |
+| R2.3 | SAP §4.1; Brief §6.2 | 2×4 RM ANOVA as Study 1 | `run_study2_h1_h2_h3` | `study2_table_h1_h2_anova` | implemented in code (Kaggle: NOT EXECUTED) |
+| R2.4 | SAP §4.1; Brief §6.2 | Average accuracy across 3 Difficulty levels within Condition × K | `accuracy_cells_long` | study2 summaries | implemented in code (Kaggle: NOT EXECUTED) |
+| R2.5 | SAP §4.1; Brief §6.2, §15 | Do not add standalone Difficulty or Condition × Difficulty models | `run_study2_analyse` (no extra models) | — | implemented in code (Kaggle: NOT EXECUTED) |
 | R2.6 | Dict §5.1 | variation → difficulty_index 1,2,3; no outcome-inferred labels | `R/recode_factors.R` | — | not implemented |
 | R2.7 | Dict §5.1 | colormap distinctipy / distinctipysa traceability only | QA only | — | not implemented |
-| R2.8 | SAP §4.2; Brief §6.3 | H3 same as Study 1 after pairwise QA | shared pairwise + t-test | `output/tables/study2_h3` | not implemented |
+| R2.8 | SAP §4.2; Brief §6.3 | H3 same as Study 1 after pairwise QA | `onesample_t_vs` | `study2_table_h3` | implemented in code (Kaggle: NOT EXECUTED) |
 | R2.9 | Dict §5.2 | Reconstruct preferred_side; validate raw optimized_side vs filenames | `R/derive_pairwise.R` | `output/logs/study2_pairwise_qa` | not implemented |
 | R2.10 | Dict §10 | Task names: Discrimination Task G1/G2 (Clone); Pairwise Comparison Task2 (Clone); Vision Check | `filter_task_name` + `load_study2_role` | study2 QC log | implemented in code (Kaggle: NOT EXECUTED) |
 | R2.11 | Dict §9 | 24 disc + 12 pairwise + 4 vision after exclusion | `R/validate_structure.R` | structure log | not implemented |
-| R2.12 | SAP §4.3.1–4.3.3 | RT, AE, signed error as Study 1 | shared secondary helpers | `output/tables/study2_rt`, `_absolute_error`, `_signed_error` | not implemented |
-| R2.13 | SAP §4.4 | Vision sensitivity N = 43; primary remains 50 | `R/sensitivity_vision.R` | `output/tables/study2_vision_sensitivity` | not implemented |
+| R2.12 | SAP §4.3.1–4.3.3 | RT, AE, signed error as Study 1 | shared secondary helpers | `study2_table_rt`, `_ae`, `_signed_error` | implemented in code (Kaggle: NOT EXECUTED) |
+| R2.13 | SAP §4.4 | Vision sensitivity N = 43; primary remains 50 | `run_study2_analyse` | `study2_table_vision_sensitivity` | implemented in code (Kaggle: NOT EXECUTED) |
 | R2.14 | SAP §4.4 | Condition order: same rules as Study 1 (document only) | analysis log | — | not implemented |
 | R2.15 | SAP §4.1 | Same assumptions, fallbacks, follow-ups, reporting as Study 1 | shared assumption/model helpers | study2 tables + log | not implemented |
 | R2.16 | README / data | Drop blank housekeeping row | `drop_blank_rows` in `load_study2_role` | study2 QC log | implemented in code (Kaggle: NOT EXECUTED) |
 | R2.17 | Combined raw file vs Dict §8 | Map from single `study2_tasks_*.csv` | `resolve_study2_file` + task split | study2 QC log | implemented in code (Kaggle: NOT EXECUTED) |
-| R2.18 | Brief §11, §14 | Same deliverable classes as Study 1 for H1–H3 + secondaries + sensitivity | `scripts/run_study2.R` | `output/{tables,figures,logs}/study2_*` | not implemented |
+| R2.18 | Brief §11, §14 | Same deliverable classes as Study 1 for H1–H3 + secondaries + sensitivity | `run_study2.R` | `output/{tables,figures,logs}/study2_*` | implemented in code (Kaggle: NOT EXECUTED) |
 | R2.19 | SAP §4.1 inherit R1.50–R1.61 | H2 follow-ups / zero-variance / Friedman logic | shared | study2 follow-up tables | not implemented |
 | R2.20 | SAP §4.2 inherit R1.62–R1.67 | H3 t / Wilcoxon reporting | shared | study2 H3 tables | not implemented |
 | R2.21 | Brief §8.2 | Descriptive AE by Condition × K | shared | `output/tables/study2_ae_by_K_desc` | not implemented |

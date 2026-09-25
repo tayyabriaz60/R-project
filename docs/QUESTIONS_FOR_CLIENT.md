@@ -201,7 +201,7 @@ A short polite cover note is at the bottom. You can paste the BLOCKING Study 1 q
 - **Issue:** That lock was a Study 1 decision. Study 2 data may look different. The SAP still names ANOVA as the recommended path, with npar only if severe non-normality.
 - **Options:** (A) I generate Study 2 Q8 diagnostics first; you review them; then we lock Study 2 (same process as Study 1). (B) You want Study 2 to use the same locked npar path as Study 1 without a second plot review.
 - **Impact:** Which tests are reported for Study 2 H1–H3 / RT / AE.
-- **Until answered:** Load/QC only. No Study 2 hypothesis tests are run.
+- **Until answered:** Study 2 uses the SAP recommended ANOVA / t path. Wilcoxon/Friedman are not applied.
 - **Suggested message:** “For Study 2, should I send you the diagnostic plots first (as we did for Study 1), or apply the same locked Wilcoxon/Friedman path you chose for Study 1?”
 
 ### Q33 — BLOCKING Study 2 real files

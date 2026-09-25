@@ -260,7 +260,13 @@ SAP <- list(
   # Synthetic researcher Public ID (README). Real ID is Q18 — must stay NA.
   study2_researcher_ids_synthetic = "S2_RESEARCHER_EXCLUDE",
   study2_researcher_ids_real = NA_character_, # PENDING client answer Q18
-  # Q32: do not inherit Study 1 locked npar until she answers.
+  # SAP §4.1 recommended path (same as Study 1 before the Study 1 Q7 lock).
+  # Q32: do not inherit Study 1 Wilcoxon/Friedman until she answers.
+  study2_h1_test = "rm_anova_condition",
+  study2_h2_test = "rm_anova_condition_k",
+  study2_h3_test = "onesample_t",
+  study2_rt_test = "paired_t",
+  study2_ae_test = "paired_t",
   study2_q7_inherit_study1_lock = NA,    # PENDING client answer Q32
   # --- still pending (must stay NA; do not guess) --------------------------
   geometric_mean_rt_ratio = NA,          # PENDING client answer Q15

@@ -16,9 +16,9 @@ diag_png <- function(name, width_in, height_in) {
   path
 }
 
-save_study1_q8_histograms <- function(summary_df, log_path) {
+save_q8_histograms <- function(summary_df, log_path, file_prefix, after_note) {
   if (isTRUE(require_param("fallback_normality_cutoff") == "no_cutoff_diagnostics_then_stop")) {
-    log_msg(log_path, "Q7: no numeric cutoff; histograms only; locked path runs in analyse")
+    log_msg(log_path, "Q7: no numeric cutoff; histograms only")
   }
 
   k_order <- as.integer(SAP$k_levels_study1)
@@ -30,7 +30,7 @@ save_study1_q8_histograms <- function(summary_df, log_path) {
     }
   }
 
-  p1 <- diag_png("study1_diag_accuracy_cells", 10, 6)
+  p1 <- diag_png(paste0(file_prefix, "_diag_accuracy_cells"), 10, 6)
   graphics::par(mfrow = c(2, 4), mar = c(3, 3, 2, 1))
   for (col in cell_cols) {
     graphics::hist(
@@ -44,7 +44,7 @@ save_study1_q8_histograms <- function(summary_df, log_path) {
   grDevices::dev.off()
   log_msg(log_path, "wrote diagnostic ", basename(p1))
 
-  p2 <- diag_png("study1_diag_h1_diff", 5, 4)
+  p2 <- diag_png(paste0(file_prefix, "_diag_h1_diff"), 5, 4)
   graphics::hist(
     summary_df$acc_diff_h1,
     main = "H1 Optimized-Original (diagnostic)",
@@ -55,7 +55,7 @@ save_study1_q8_histograms <- function(summary_df, log_path) {
   grDevices::dev.off()
   log_msg(log_path, "wrote diagnostic ", basename(p2))
 
-  p3 <- diag_png("study1_diag_h2_k_diffs", 8, 6)
+  p3 <- diag_png(paste0(file_prefix, "_diag_h2_k_diffs"), 8, 6)
   graphics::par(mfrow = c(2, 2), mar = c(3, 3, 2, 1))
   for (k in k_order) {
     col <- paste0("acc_diff_K", k)
@@ -70,7 +70,16 @@ save_study1_q8_histograms <- function(summary_df, log_path) {
   grDevices::dev.off()
   log_msg(log_path, "wrote diagnostic ", basename(p3))
 
-  log_msg(log_path, "Q8 diagnostics saved. Locked Q7 tests run in analyse, not here.")
-  message("Q7: diagnostic histograms written. Locked tests run in analyse.")
+  log_msg(log_path, after_note)
+  message(after_note)
   c(p1, p2, p3)
+}
+
+save_study1_q8_histograms <- function(summary_df, log_path) {
+  save_q8_histograms(
+    summary_df,
+    log_path,
+    "study1",
+    "Q8 diagnostics saved. Locked Q7 tests run in analyse, not here."
+  )
 }

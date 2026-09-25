@@ -2,7 +2,7 @@
 
 **SYNTHETIC DATA: pipeline test only** when `DATA_SOURCE` is `"synthetic"`. Those numbers are not findings.
 
-Study 1 load through H1–H3, RT/AE, tables, and figures is implemented. Studies 2 and 3 are not.
+Study 1 is implemented. Study 2 load through H1–H3, RT/AE, tables, and figures is implemented on the SAP recommended ANOVA/t path. Study 1’s Wilcoxon/Friedman lock is **not** applied to Study 2 until you say so (Q32). Study 3 is not implemented.
 
 ## Run on your machine (R 4.6.1)
 
@@ -11,7 +11,16 @@ PROJECT_ROOT <- "put/the/path/to/this/folder/here"
 source(file.path(PROJECT_ROOT, "run_all.R"))
 ```
 
-`run_all.R` sources `config/config.R` and `scripts/00_setup.R` for you. Do **not** run `renv::restore()`.
+Study 2:
+
+```r
+PROJECT_ROOT <- "put/the/path/to/this/folder/here"
+source(file.path(PROJECT_ROOT, "run_study2.R"))
+```
+
+`run_all.R` / `run_study2.R` source `config/config.R` and `scripts/00_setup.R` for you. Do **not** run `renv::restore()`.
+
+Study 2 real files need your researcher ID (Q18) and task ids (Q33) before `DATA_SOURCE <- "real"` will run.
 
 ## Real export
 
