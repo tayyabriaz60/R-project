@@ -57,6 +57,9 @@ if (!exists("holm_adjust")) {
 if (!exists("fmt_p")) {
   source(file.path(PROJECT_ROOT, "R", "utils_format.R"), local = FALSE)
 }
+if (!exists("thesis_theme")) {
+  source(file.path(PROJECT_ROOT, "R", "utils_figures.R"), local = FALSE)
+}
 
 # Hand-checkable toy rows. IDs are placeholders, not real participants.
 toy_disc_raw <- function(condition = c("baseline", "sa"),

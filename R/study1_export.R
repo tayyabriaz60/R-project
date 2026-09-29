@@ -5,6 +5,7 @@ source(file.path(PROJECT_ROOT, "R", "utils_paths.R"))
 source(file.path(PROJECT_ROOT, "R", "utils_io.R"))
 source(file.path(PROJECT_ROOT, "R", "utils_logging.R"))
 source(file.path(PROJECT_ROOT, "R", "utils_format.R"))
+source(file.path(PROJECT_ROOT, "R", "utils_figures.R"))
 
 assert_no_gorilla_ids <- function(df, label) {
   bad <- intersect(names(df), c("participant_id", "participant_public_id", "participant_private_id"))
@@ -39,6 +40,7 @@ write_table_csv_docx <- function(df, name, title, notes, log_path) {
   docx_path <- file.path(OUTPUT_TABLES, paste0(name, OUTPUT_SUFFIX, ".docx"))
   write_qc_csv(df, csv_path)
   ft <- flextable::flextable(df)
+  ft <- format_thesis_table(ft)
   ft <- flextable::autofit(ft)
   doc <- officer::read_docx()
   doc <- officer::body_add_par(doc, title, style = "heading 1")
@@ -60,8 +62,22 @@ save_report_figure <- function(plot, name, width_in, height_in, log_path) {
   pdf_path <- file.path(OUTPUT_FIGURES, paste0(name, OUTPUT_SUFFIX, ".pdf"))
   ggplot2::ggsave(png_path, plot, width = width_in, height = height_in, dpi = 300, units = "in")
   ggplot2::ggsave(pdf_path, plot, width = width_in, height = height_in, device = "pdf")
+  sn <- synthetic_note()
+  if (nzchar(sn)) {
+    log_msg(log_path, "figure ", basename(png_path), ": ", sn)
+  }
   log_msg(log_path, "wrote ", basename(png_path), " and ", basename(pdf_path))
   c(png_path, pdf_path)
+}
+
+# Thesis-ready report figures live in R/utils_figures.R (shared by Study 1 and 2).
+
+format_thesis_table <- function(ft) {
+  ft <- flextable::theme_booktabs(ft)
+  ft <- flextable::bold(ft, part = "header")
+  ft <- flextable::fontsize(ft, size = 10, part = "all")
+  ft <- flextable::align(ft, align = "center", part = "all")
+  ft
 }
 
 # Cell means + t CI for a Condition × K table (descriptive figure / AE×K).
@@ -316,88 +332,15 @@ write_study1_tables <- function(primary, vision_tab, ae_k, pw_rt, log_path) {
 
 write_study1_figures <- function(acc_cells, h3, rt_ms, ae_k, log_path) {
   pal <- study1_palette(log_path)
-  cap <- paste0(
-    "Palette: Original ", pal$Original, ", Optimized ", pal$Optimized,
-    " (Q30). ", synthetic_note()
+  k_levels <- as.integer(SAP$k_levels_study1)
+  save_report_figure(
+    plot_condition_by_k(acc_cells, "Mean participant-level accuracy", pal, k_levels),
+    "study1_fig_accuracy_condition_k", 7, 4.5, log_path
   )
-  acc_cells$K <- factor(acc_cells$K, levels = as.integer(SAP$k_levels_study1))
-  acc_cells$condition <- factor(acc_cells$condition, levels = require_param("condition_level_order"))
-  p_acc <- ggplot2::ggplot(acc_cells, ggplot2::aes(x = K, y = mean, colour = condition, group = condition)) +
-    ggplot2::geom_point(position = ggplot2::position_dodge(width = 0.3), size = 2.5) +
-    ggplot2::geom_errorbar(
-      ggplot2::aes(ymin = ci_low, ymax = ci_high),
-      width = 0.15,
-      position = ggplot2::position_dodge(width = 0.3)
-    ) +
-    ggplot2::scale_colour_manual(values = c(Original = pal$Original, Optimized = pal$Optimized)) +
-    ggplot2::labs(
-      title = "Study 1: Accuracy by Condition × K (95% CI)",
-      y = "Mean participant-level accuracy",
-      x = "K",
-      colour = "Condition",
-      caption = cap
-    ) +
-    ggplot2::theme_bw()
-  save_report_figure(p_acc, "study1_fig_accuracy_condition_k", 7, 4.5, log_path)
-
-  h3_df <- data.frame(
-    x = "Optimized-choice proportion",
-    mean = h3$mean,
-    ci_low = h3$ci_low,
-    ci_high = h3$ci_high,
-    stringsAsFactors = FALSE
+  save_report_figure(plot_pairwise_prop(h3, pal), "study1_fig_pairwise_prop", 5, 4.5, log_path)
+  save_report_figure(plot_rt_by_condition(rt_ms, pal), "study1_fig_rt_by_condition", 5.5, 4.5, log_path)
+  save_report_figure(
+    plot_condition_by_k(ae_k, "Mean absolute error", pal, k_levels),
+    "study1_fig_ae_condition_k", 7, 4.5, log_path
   )
-  p_pw <- ggplot2::ggplot(h3_df, ggplot2::aes(x = x, y = mean)) +
-    ggplot2::geom_hline(yintercept = as.numeric(SAP$h3_null), colour = pal$reference, linetype = "dashed") +
-    ggplot2::geom_point(size = 3, colour = pal$Optimized) +
-    ggplot2::geom_errorbar(ggplot2::aes(ymin = ci_low, ymax = ci_high), width = 0.1, colour = pal$Optimized) +
-    ggplot2::coord_cartesian(ylim = c(0, 1)) +
-    ggplot2::labs(
-      title = "Study 1: Optimized-choice proportion (95% CI) vs 0.50",
-      y = "Mean proportion",
-      x = NULL,
-      caption = cap
-    ) +
-    ggplot2::theme_bw()
-  save_report_figure(p_pw, "study1_fig_pairwise_prop", 5, 4.5, log_path)
-
-  rt_df <- data.frame(
-    condition = factor(c("Original", "Optimized"), levels = require_param("condition_level_order")),
-    mean = c(rt_ms$orig$mean, rt_ms$opt$mean),
-    ci_low = c(rt_ms$orig$ci_low, rt_ms$opt$ci_low),
-    ci_high = c(rt_ms$orig$ci_high, rt_ms$opt$ci_high),
-    stringsAsFactors = FALSE
-  )
-  p_rt <- ggplot2::ggplot(rt_df, ggplot2::aes(x = condition, y = mean, fill = condition)) +
-    ggplot2::geom_col(width = 0.6, colour = "grey20") +
-    ggplot2::geom_errorbar(ggplot2::aes(ymin = ci_low, ymax = ci_high), width = 0.15) +
-    ggplot2::scale_fill_manual(values = c(Original = pal$Original, Optimized = pal$Optimized), guide = "none") +
-    ggplot2::labs(
-      title = "Study 1: Descriptive discrimination RT by Condition (ms)",
-      y = "Mean RT (ms)",
-      x = "Condition",
-      caption = cap
-    ) +
-    ggplot2::theme_bw()
-  save_report_figure(p_rt, "study1_fig_rt_by_condition", 5, 4.5, log_path)
-
-  ae_k$K <- factor(ae_k$K, levels = as.integer(SAP$k_levels_study1))
-  ae_k$condition <- factor(ae_k$condition, levels = require_param("condition_level_order"))
-  p_ae <- ggplot2::ggplot(ae_k, ggplot2::aes(x = K, y = mean, colour = condition, group = condition)) +
-    ggplot2::geom_point(position = ggplot2::position_dodge(width = 0.3), size = 2.5) +
-    ggplot2::geom_errorbar(
-      ggplot2::aes(ymin = ci_low, ymax = ci_high),
-      width = 0.15,
-      position = ggplot2::position_dodge(width = 0.3)
-    ) +
-    ggplot2::scale_colour_manual(values = c(Original = pal$Original, Optimized = pal$Optimized)) +
-    ggplot2::labs(
-      title = "Study 1: Descriptive absolute error by Condition × K (95% CI)",
-      y = "Mean absolute error",
-      x = "K",
-      colour = "Condition",
-      caption = cap
-    ) +
-    ggplot2::theme_bw()
-  save_report_figure(p_ae, "study1_fig_ae_condition_k", 7, 4.5, log_path)
 }

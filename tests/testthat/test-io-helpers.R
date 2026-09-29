@@ -75,3 +75,8 @@ test_that("fmt_p uses < .001 under 0.001", {
   expect_identical(fmt_p(0.042), "0.042")
   expect_true(is.na(fmt_p(NA_real_)))
 })
+
+test_that("fmt_ci and fmt_df wrap formatted numbers", {
+  expect_identical(fmt_ci(0.12, 0.34, 2), "[0.12, 0.34]")
+  expect_identical(fmt_df(1, 49, 2), "1.00, 49.00")
+})

@@ -176,3 +176,13 @@ Fresh Kaggle clone of `1550fe8`. Synthetic only. Not findings.
 | Vision N=43 | same tests; sig_agrees H1/H2/H3 TRUE |
 | Tables / figures | 12 table pairs; 4 fig png+pdf; 6 diag png; no Gorilla IDs |
 | Helper tests | n_passed=124 n_failed=0 n_error=0 |
+
+## Study 2 thesis figure style (29 Sep 2026) — NOT EXECUTED
+
+After switching `write_study2_figures` to `R/utils_figures.R` (same as Study 1):
+
+1. Re-run `kaggle/run_study2.R` on synthetic data.
+2. Open `study2_fig_accuracy_condition_k_*`.png: no title inside the figure; x-axis “Number of classes (K)”; legend “Condition” on the right; orange/blue lines and points.
+3. Re-run `kaggle/run_tests.R`; expect prior pass count **plus** `test-thesis-figures.R` (2 tests).
+
+Local R parse: NOT EXECUTED (no R on developer machine).

@@ -2,7 +2,7 @@
 
 **SYNTHETIC DATA: pipeline test only** when `DATA_SOURCE` is `"synthetic"`. Those numbers are not findings.
 
-Study 1 is implemented. Study 2 load through H1–H3, RT/AE, tables, and figures is implemented on the SAP recommended ANOVA/t path. Study 1’s Wilcoxon/Friedman lock is **not** applied to Study 2 until you say so (Q32). Study 3 is not implemented.
+Study 1 is implemented. Study 2 load through H1–H3, RT/AE, tables, and figures is implemented on the SAP recommended ANOVA/t path. Report figures and table `.docx` files use the thesis layout (no title inside the figure; axis labels and legend as in your Study 1 example; tables with consistent flextable styling). All outputs are regenerated from `run_study2.R`. Study 1’s Wilcoxon/Friedman lock is **not** applied to Study 2 until you say so (Q32). Study 3 is not implemented.
 
 ## Run on your machine (R 4.6.1)
 
