@@ -115,7 +115,7 @@ plot_study2_accuracy_panels <- function(disc, pal) {
   ))))
   p_b <- ggplot2::ggplot(panel_b, ggplot2::aes(x = x, y = mean)) +
     ggplot2::geom_hline(yintercept = 0, colour = "grey40", linewidth = 0.4) +
-    ggplot2::geom_vline(x = sep_x, linetype = "dotted", colour = "grey60") +
+    ggplot2::geom_vline(xintercept = sep_x, linetype = "dotted", colour = "grey60") +
     ggplot2::geom_point(size = 2.8, colour = pal$Optimized) +
     ggplot2::geom_errorbar(ggplot2::aes(ymin = ci_low, ymax = ci_high), width = 0.12, colour = pal$Optimized) +
     ggplot2::scale_x_continuous(
