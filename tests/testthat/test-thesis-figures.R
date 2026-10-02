@@ -21,12 +21,11 @@ test_that("plot_condition_by_k uses thesis axis labels and no in-figure title", 
   expect_identical(built$plot$theme$legend.position, "right")
 })
 
-test_that("Study 2 figure writer uses the same shared plot helpers as Study 1", {
+test_that("Study 2 figure writer uses revised Study 2 presentation helpers", {
   src <- readLines(file.path(PROJECT_ROOT, "R", "study2_export.R"), warn = FALSE)
   body <- paste(src, collapse = "\n")
-  expect_match(body, "plot_condition_by_k\\(")
-  expect_match(body, "plot_pairwise_prop\\(")
-  expect_match(body, "plot_rt_by_condition\\(")
-  expect_false(grepl("thesis_report_theme", body, fixed = TRUE))
-  expect_false(grepl("THESIS_LABEL_K", body, fixed = TRUE))
+  expect_match(body, "plot_study2_accuracy_panels")
+  expect_match(body, "plot_study2_h3_stacked_dots")
+  expect_false(grepl("plot_rt_by_condition", body, fixed = TRUE))
+  expect_false(grepl("plot_condition_by_k\\(", body))
 })

@@ -47,9 +47,9 @@ test_that("drop_study2_researcher stops if the configured ID matches nobody", {
   expect_error(drop_study2_researcher(df, "toy_s2"), "matched 0")
 })
 
-test_that("study2_researcher_ids on synthetic is the README token, not a guessed real ID", {
+test_that("study2_researcher_ids on synthetic uses the README token even when real ID is in config", {
   expect_identical(study2_researcher_ids(), "S2_RESEARCHER_EXCLUDE")
-  expect_true(is.na(SAP$study2_researcher_ids_real))
+  expect_true(nzchar(trimws(as.character(SAP$study2_researcher_ids_real))))
   expect_true(is.na(SAP$study2_q7_inherit_study1_lock))
 })
 
