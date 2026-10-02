@@ -92,4 +92,6 @@ Methodological choices that the SAP leaves open are **not** decided here; they a
 | 2026-09-25 | Study 2 pipeline verified on Kaggle R 4.4.0 | Pasted Cell 2+3; commit 1550fe8 | Synthetic only, not findings. Researcher 51→50. H1 F=0.2363 p=0.6290; H2 GG F=2.6179 p=0.0678 followups=FALSE; H3 t=3.4357 p=0.0012; RT t=-0.9902 log; AE t=0.4861. Vision N=43, sig_agrees TRUE. Tests 124/0/0. |
 | 2026-09-29 | Thesis-ready tables and report figures | Fatimah M2 message; Study 1 example plot | Report figures via `R/utils_figures.R` (`thesis_theme`, `plot_condition_by_k`, etc.): no in-figure title/caption; x-axis “Number of classes (K)”; legend right; lines + points + CI; Q30 colours unchanged. Table .docx: booktabs-style flextable, bold header. Synthetic label in table notes/logs only. Study 2 `write_study2_figures` calls the same helpers as Study 1. Helper test `test-thesis-figures.R`. Kaggle re-run after this change: NOT EXECUTED. |
 
-Q15–Q17 remain NA. Study 2 Q18 / Q32 / Q33 remain NA.
+| 2026-10-02 | Study 2 figure presentation revision | Fatimah message | Two-panel accuracy: Panel A Cousineau-Morey within-subject CIs (8 cells); Panel B descriptive paired diffs by K plus All K (H1-style); shapes + Q30 colours. H3 participant stacked dots at 1/12 increments. RT/AE report figures dropped (tables only). Study 1 unchanged. Kaggle: NOT EXECUTED. |
+
+Q15–Q17 remain NA. Study 2 Q32 open. Q18/Q33 answered 1 Oct 2026.

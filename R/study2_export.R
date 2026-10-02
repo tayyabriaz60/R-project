@@ -238,17 +238,16 @@ write_study2_tables <- function(primary, vision_tab, ae_k, pw_rt, log_path) {
   )
 }
 
-write_study2_figures <- function(acc_cells, h3, rt_ms, ae_k, log_path) {
+write_study2_figures <- function(disc, pw, h3, log_path) {
+  source(file.path(PROJECT_ROOT, "R", "utils_figures_study2.R"), local = FALSE)
   pal <- study1_palette(log_path)
-  k_levels <- as.integer(SAP$k_levels_study2)
+  log_msg(log_path, "Study 2 figures: two-panel accuracy (Cousineau-Morey); H3 stacked dots; RT/AE tables only.")
   save_report_figure(
-    plot_condition_by_k(acc_cells, "Mean participant-level accuracy", pal, k_levels),
-    "study2_fig_accuracy_condition_k", 7, 4.5, log_path
+    plot_study2_accuracy_panels(disc, pal),
+    "study2_fig_accuracy_condition_k", 10, 4.5, log_path
   )
-  save_report_figure(plot_pairwise_prop(h3, pal), "study2_fig_pairwise_prop", 5, 4.5, log_path)
-  save_report_figure(plot_rt_by_condition(rt_ms, pal), "study2_fig_rt_by_condition", 5.5, 4.5, log_path)
   save_report_figure(
-    plot_condition_by_k(ae_k, "Mean absolute error", pal, k_levels),
-    "study2_fig_ae_condition_k", 7, 4.5, log_path
+    plot_study2_h3_stacked_dots(pw, h3, pal),
+    "study2_fig_pairwise_prop", 7, 3.5, log_path
   )
 }

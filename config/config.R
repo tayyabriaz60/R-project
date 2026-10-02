@@ -136,10 +136,10 @@ REAL_STUDY1_FILES <- list(
 # Real Study 2: task IDs pending Q33. Do not guess. Combined file optional.
 # Dictionary §10 names: Discrimination Task G1/G2 (Clone); Pairwise Comparison Task2 (Clone).
 REAL_STUDY2_TASK_IDS <- list(
-  study2_disc_g1 = NA_character_,
-  study2_disc_g2 = NA_character_,
-  study2_pairwise = NA_character_,
-  study2_vision = NA_character_
+  study2_disc_g1 = "task-fxg1",
+  study2_disc_g2 = "task-a5wf",
+  study2_pairwise = "task-44yr",
+  study2_vision = "task-e9t3"
 )
 REAL_STUDY2_FILES <- list(
   study2_disc_g1 = NA_character_,
@@ -259,7 +259,7 @@ SAP <- list(
   anonymous_id_prefix_study2 = "S2_P",
   # Synthetic researcher Public ID (README). Real ID is Q18 — must stay NA.
   study2_researcher_ids_synthetic = "S2_RESEARCHER_EXCLUDE",
-  study2_researcher_ids_real = NA_character_, # PENDING client answer Q18
+  study2_researcher_ids_real = "1z935utu", # Q18; Participant Public ID (1 Oct 2026)
   # SAP §4.1 recommended path (same as Study 1 before the Study 1 Q7 lock).
   # Q32: do not inherit Study 1 Wilcoxon/Friedman until she answers.
   study2_h1_test = "rm_anova_condition",

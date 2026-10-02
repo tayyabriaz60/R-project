@@ -12,7 +12,8 @@ required_packages <- c(
   "effectsize",# Q9: partial eta-squared, Cohen's d/dz, rank-biserial, Kendall's W
   "ggplot2",   # Q13 report figures
   "officer",   # Q14 .docx tables
-  "flextable"  # Q14 .docx tables
+  "flextable", # Q14 .docx tables
+  "gridExtra"  # Study 2 two-panel accuracy figure layout
 )
 # Data reading uses utils::read.csv (base). No readr.
 

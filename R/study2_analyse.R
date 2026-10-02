@@ -156,15 +156,8 @@ run_study2_analyse <- function(study2, study2_prep) {
           " H2_sig_agrees=", vision_tab$sig_agrees_with_primary[2],
           " H3_sig_agrees=", vision_tab$sig_agrees_with_primary[3])
 
-  acc_cells <- cell_mean_ci(accuracy_long_from_summary(summaries), "accuracy")
   write_study2_tables(primary, vision_tab, ae_k, pw_rt, log_path)
-  write_study2_figures(
-    acc_cells,
-    primary$h3,
-    list(orig = primary$rt_ms_orig, opt = primary$rt_ms_opt),
-    ae_k,
-    log_path
-  )
+  write_study2_figures(disc, pw, primary$h3, log_path)
 
   log_msg(log_path, "ANALYSIS COMPLETE. SAP recommended ANOVA/t. Q32 npar not applied. Numbers are ",
           if (identical(DATA_SOURCE, "synthetic")) "synthetic pipeline output." else "from the loaded data.")

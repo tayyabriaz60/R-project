@@ -60,6 +60,9 @@ if (!exists("fmt_p")) {
 if (!exists("thesis_theme")) {
   source(file.path(PROJECT_ROOT, "R", "utils_figures.R"), local = FALSE)
 }
+if (!exists("cousinau_morey_cell_stats")) {
+  source(file.path(PROJECT_ROOT, "R", "utils_figures_study2.R"), local = FALSE)
+}
 
 # Hand-checkable toy rows. IDs are placeholders, not real participants.
 toy_disc_raw <- function(condition = c("baseline", "sa"),
