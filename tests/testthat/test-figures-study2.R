@@ -8,10 +8,11 @@ test_that("cousinau_morey returns one mean and CI per column", {
   expect_true(all(st$mean <= st$ci_high))
 })
 
-test_that("Study 2 export uses revised figure writers only", {
+test_that("Study 2 export uses unified Study 2 figure helpers", {
   src <- readLines(file.path(PROJECT_ROOT, "R", "study2_export.R"), warn = FALSE)
   body <- paste(src, collapse = "\n")
   expect_match(body, "plot_study2_accuracy_panels")
+  expect_match(body, "plot_study2_ae_by_k")
   expect_match(body, "plot_study2_h3_stacked_dots")
-  expect_false(grepl("plot_rt_by_condition", body, fixed = TRUE))
+  expect_match(body, "plot_study2_rt_by_condition")
 })

@@ -238,16 +238,27 @@ write_study2_tables <- function(primary, vision_tab, ae_k, pw_rt, log_path) {
   )
 }
 
-write_study2_figures <- function(disc, pw, h3, log_path) {
+write_study2_figures <- function(disc, pw, h3, rt_ms, log_path) {
   source(file.path(PROJECT_ROOT, "R", "utils_figures_study2.R"), local = FALSE)
   pal <- study1_palette(log_path)
-  log_msg(log_path, "Study 2 figures: two-panel accuracy (Cousineau-Morey); H3 stacked dots; RT/AE tables only.")
+  log_msg(
+    log_path,
+    "Study 2 figures: unified style; accuracy two-panel; AE by K; H3 dots; RT by condition (presentation only)."
+  )
   save_report_figure(
     plot_study2_accuracy_panels(disc, pal),
     "study2_fig_accuracy_condition_k", 10, 4.5, log_path
   )
   save_report_figure(
+    plot_study2_ae_by_k(disc, pal),
+    "study2_fig_ae_condition_k", 7, 4.5, log_path
+  )
+  save_report_figure(
     plot_study2_h3_stacked_dots(pw, h3, pal),
     "study2_fig_pairwise_prop", 7, 3.5, log_path
+  )
+  save_report_figure(
+    plot_study2_rt_by_condition(rt_ms, pal),
+    "study2_fig_rt_by_condition", 5.5, 4.5, log_path
   )
 }

@@ -26,6 +26,6 @@ test_that("Study 2 figure writer uses revised Study 2 presentation helpers", {
   body <- paste(src, collapse = "\n")
   expect_match(body, "plot_study2_accuracy_panels")
   expect_match(body, "plot_study2_h3_stacked_dots")
-  expect_false(grepl("plot_rt_by_condition", body, fixed = TRUE))
+  expect_match(body, "plot_study2_rt_by_condition")
   expect_false(grepl("plot_condition_by_k\\(", body))
 })
