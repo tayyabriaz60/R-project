@@ -192,10 +192,10 @@ apply_study2_vision_primary_exclusions <- function(study2, log_path) {
     )
   }
 
-  merged$exclude <- !merged$ishihara_pass | isTRUE(merged$questionnaire_fail)
+  merged$exclude <- !merged$ishihara_pass | (merged$questionnaire_fail %in% TRUE)
   n_excl_ish <- sum(!merged$ishihara_pass, na.rm = TRUE)
-  n_excl_q <- sum(isTRUE(merged$questionnaire_fail), na.rm = TRUE)
-  n_excl_both <- sum(!merged$ishihara_pass & isTRUE(merged$questionnaire_fail), na.rm = TRUE)
+  n_excl_q <- sum(merged$questionnaire_fail %in% TRUE, na.rm = TRUE)
+  n_excl_both <- sum(!merged$ishihara_pass & (merged$questionnaire_fail %in% TRUE), na.rm = TRUE)
   keep <- merged$participant_id[!merged$exclude]
   log_msg(log_path, "vision primary exclude n_ishihara_below4=", n_excl_ish)
   log_msg(log_path, "vision primary exclude n_questionnaire_uncorrected=", n_excl_q)
