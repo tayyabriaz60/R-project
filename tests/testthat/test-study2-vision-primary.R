@@ -25,18 +25,16 @@ test_that("study2_ishihara_scores keeps participant_id names", {
 test_that("read_study2_questionnaire_vision returns one row per participant", {
   td <- tempfile(fileext = ".csv")
   on.exit(unlink(td), add = TRUE)
-  lines <- c(
-    paste(
-      "Question,Response Type,Key,Response,Participant Public ID",
-      sep = ","
-    ),
-    paste0(
-      "Do you have normal or corrected-to-normal vision?,response,value,",
-      shQuote("Yes, I can see normally or am wearing glasses/contact lenses to see normally."),
-      ",P1"
-    )
+  toy <- data.frame(
+    Question = "Do you have normal or corrected-to-normal vision?",
+    `Response Type` = "response",
+    Key = "value",
+    Response = "Yes, I can see normally or am wearing glasses/contact lenses to see normally.",
+    `Participant Public ID` = "P1",
+    check.names = FALSE,
+    stringsAsFactors = FALSE
   )
-  writeLines(lines, td)
+  utils::write.csv(toy, td, row.names = FALSE)
   old <- SAP$study2_id_column
   SAP$study2_id_column <<- "participant_public_id"
   on.exit({ SAP$study2_id_column <<- old }, add = TRUE)
