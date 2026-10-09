@@ -105,6 +105,27 @@ run_study2_analyse <- function(study2, study2_prep) {
   q8 <- list.files(OUTPUT_FIGURES, pattern = "study2_diag_.*\\.png$", full.names = TRUE)
   q7_path <- write_study2_q7_report(sort(unique(c(q8, extra_diag))), log_path)
   log_effectsize_versions(log_path)
+  hold_inferential <- identical(DATA_SOURCE, "real") && isTRUE(SAP$study2_q32_hold_inferential)
+  if (hold_inferential) {
+    source(file.path(PROJECT_ROOT, "R", "utils_figures_study2.R"), local = FALSE)
+    log_msg(
+      log_path,
+      "Q32 hold: inferential tests and inferential tables deferred until client reviews diagnostics."
+    )
+    log_msg(log_path, "Figures and Q7 review note are still written for the final primary sample.")
+    h3_fig <- h3_mean_ci_for_figure(summaries)
+    rt_ms <- list(
+      orig = mean_sd_ci(summaries$mean_rt_ms_Original),
+      opt = mean_sd_ci(summaries$mean_rt_ms_Optimized)
+    )
+    write_study2_figures(
+      study2$discrimination, study2$pairwise, h3_fig, rt_ms, log_path
+    )
+    log_msg(log_path, "ANALYSIS HELD at diagnostics + figures (Q32). No inferential tables written.")
+    message("run_study2_analyse finished. Q32 hold: inferential outputs skipped on real data.")
+    return(list(primary = NULL, vision = NULL, q7_path = q7_path, log_path = log_path, q32_hold = TRUE))
+  }
+
   log_msg(log_path, "Study 2 tests: H1=", require_param("study2_h1_test"),
           " H2=", require_param("study2_h2_test"),
           " H3=", require_param("study2_h3_test"),
@@ -124,37 +145,55 @@ run_study2_analyse <- function(study2, study2_prep) {
   ae_k <- cell_mean_ci(ae_part, "absolute_error")
   pw_rt <- pairwise_rt_desc(pw)
 
-  keep <- vision_subset_ids(vis)
-  log_msg(log_path, "vision_sensitivity n_ids=", length(keep),
-          " (SAP expected ", as.integer(SAP$vision_subset_n_study2), ")")
-  if (identical(DATA_SOURCE, "synthetic") &&
-      length(keep) != as.integer(SAP$vision_subset_n_study2)) {
-    stop("Vision sensitivity N is not ", SAP$vision_subset_n_study2, ".", call. = FALSE)
+  if (isTRUE(SAP$study2_primary_vision_exclusion)) {
+    log_msg(log_path, "vision_sensitivity skipped: primary already applies Ishihara 4/4 rule.")
+    vision_tab <- data.frame(
+      analysis = character(),
+      n = integer(),
+      statistic = numeric(),
+      df_num = numeric(),
+      df_den = numeric(),
+      p = numeric(),
+      effect_size = numeric(),
+      es_name = character(),
+      primary_p = numeric(),
+      sig_agrees_with_primary = logical(),
+      stringsAsFactors = FALSE
+    )
+    sens <- list(n = 0L)
+  } else {
+    keep <- vision_subset_ids(vis)
+    log_msg(log_path, "vision_sensitivity n_ids=", length(keep),
+            " (SAP expected ", as.integer(SAP$vision_subset_n_study2), ")")
+    if (identical(DATA_SOURCE, "synthetic") &&
+        length(keep) != as.integer(SAP$vision_subset_n_study2)) {
+      stop("Vision sensitivity N is not ", SAP$vision_subset_n_study2, ".", call. = FALSE)
+    }
+    disc_s <- disc[disc$participant_id %in% keep, , drop = FALSE]
+    pw_s <- pw[pw$participant_id %in% keep, , drop = FALSE]
+    sum_s <- summarise_study1_participants(disc_s, pw_s, log_path)
+    sens <- run_study2_h1_h2_h3(sum_s, log_path, "vision_sens")
+    vision_tab <- data.frame(
+      analysis = c("H1_condition", "H2_condition_K", "H3_onesample_t"),
+      n = sens$n,
+      statistic = c(sens$h1$F, sens$h2$F, sens$h3$t),
+      df_num = c(sens$h1$df_num, sens$h2$df_num, sens$h3$df),
+      df_den = c(sens$h1$df_den, sens$h2$df_den, NA_real_),
+      p = c(sens$h1$p, sens$h2$p, sens$h3$p),
+      effect_size = c(sens$h1$pes, sens$h2$pes, sens$h3$d),
+      es_name = c("partial_eta_sq", "partial_eta_sq", "cohens_d"),
+      primary_p = c(primary$h1$p, primary$h2$p, primary$h3$p),
+      sig_agrees_with_primary = c(
+        (sens$h1$p < SAP$alpha) == (primary$h1$p < SAP$alpha),
+        (sens$h2$p < SAP$alpha) == (primary$h2$p < SAP$alpha),
+        (sens$h3$p < SAP$alpha) == (primary$h3$p < SAP$alpha)
+      ),
+      stringsAsFactors = FALSE
+    )
+    log_msg(log_path, "vision_sensitivity H1_sig_agrees=", vision_tab$sig_agrees_with_primary[1],
+            " H2_sig_agrees=", vision_tab$sig_agrees_with_primary[2],
+            " H3_sig_agrees=", vision_tab$sig_agrees_with_primary[3])
   }
-  disc_s <- disc[disc$participant_id %in% keep, , drop = FALSE]
-  pw_s <- pw[pw$participant_id %in% keep, , drop = FALSE]
-  sum_s <- summarise_study1_participants(disc_s, pw_s, log_path)
-  sens <- run_study2_h1_h2_h3(sum_s, log_path, "vision_sens")
-  vision_tab <- data.frame(
-    analysis = c("H1_condition", "H2_condition_K", "H3_onesample_t"),
-    n = sens$n,
-    statistic = c(sens$h1$F, sens$h2$F, sens$h3$t),
-    df_num = c(sens$h1$df_num, sens$h2$df_num, sens$h3$df),
-    df_den = c(sens$h1$df_den, sens$h2$df_den, NA_real_),
-    p = c(sens$h1$p, sens$h2$p, sens$h3$p),
-    effect_size = c(sens$h1$pes, sens$h2$pes, sens$h3$d),
-    es_name = c("partial_eta_sq", "partial_eta_sq", "cohens_d"),
-    primary_p = c(primary$h1$p, primary$h2$p, primary$h3$p),
-    sig_agrees_with_primary = c(
-      (sens$h1$p < SAP$alpha) == (primary$h1$p < SAP$alpha),
-      (sens$h2$p < SAP$alpha) == (primary$h2$p < SAP$alpha),
-      (sens$h3$p < SAP$alpha) == (primary$h3$p < SAP$alpha)
-    ),
-    stringsAsFactors = FALSE
-  )
-  log_msg(log_path, "vision_sensitivity H1_sig_agrees=", vision_tab$sig_agrees_with_primary[1],
-          " H2_sig_agrees=", vision_tab$sig_agrees_with_primary[2],
-          " H3_sig_agrees=", vision_tab$sig_agrees_with_primary[3])
 
   write_study2_tables(primary, vision_tab, ae_k, pw_rt, log_path)
   write_study2_figures(

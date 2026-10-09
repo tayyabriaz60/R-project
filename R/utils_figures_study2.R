@@ -5,12 +5,16 @@ source(file.path(PROJECT_ROOT, "R", "summarise_participants.R"))
 
 STUDY2_CONDITION_SHAPES <- c(Original = 16L, Optimized = 17L)
 
-STUDY2_FIGURE_NOTE <- paste(
-  "Panel B per-K differences and CIs are descriptive only;",
-  "they are not inferential H2 follow-ups (interaction not significant; follow-ups not run)."
+STUDY2_ACCURACY_FIGURE_CAPTION <- paste(
+  "Panel B shows Optimized minus Original accuracy by K with 95% CIs.",
+  "Per-K and All K values are descriptive only;",
+  "they are not inferential H2 follow-ups when the interaction is not significant."
 )
 
-STUDY2_AE_FIGURE_NOTE <- "Descriptive means and 95% CIs by K; no inferential tests or significance annotations."
+STUDY2_AE_FIGURE_CAPTION <- paste(
+  "Descriptive means and 95% CIs by K (Cousineau-Morey).",
+  "No inferential tests or significance annotations."
+)
 
 study2_theme <- function() {
   thesis_theme() +
@@ -21,6 +25,10 @@ study2_theme <- function() {
       legend.text = ggplot2::element_text(size = 10),
       legend.title = ggplot2::element_text(size = 11)
     )
+}
+
+study2_legend_top <- function() {
+  ggplot2::theme(legend.position = "top", legend.justification = "left")
 }
 
 cousinau_morey_cell_stats <- function(mat, ci_level = 0.95) {
@@ -98,7 +106,8 @@ plot_study2_condition_by_k <- function(panel_df, y_lab, pal, ylim = NULL, ref_hl
       colour = "Condition",
       shape = "Condition"
     ) +
-    study2_theme()
+    study2_theme() +
+    study2_legend_top()
   if (!is.null(ref_hline)) {
     p <- p + ggplot2::geom_hline(yintercept = ref_hline, colour = "grey75", linewidth = 0.35)
   }
@@ -158,18 +167,13 @@ plot_study2_accuracy_panels <- function(disc, pal) {
     study2_theme() +
     ggplot2::theme(legend.position = "none")
 
-  gridExtra::grid.arrange(
-    p_a, p_b, ncol = 2,
-    bottom = grid::textGrob(STUDY2_FIGURE_NOTE, x = 0, hjust = 0, gp = grid::gpar(cex = 0.85))
-  )
+  gridExtra::grid.arrange(p_a, p_b, ncol = 2)
 }
 
 plot_study2_ae_by_k <- function(disc, pal) {
   prep <- metric_mat_condition_k(disc, "absolute_error")
   panel <- cousinau_morey_panel(prep$mat, prep$k_levels, prep$ord)
-  p <- plot_study2_condition_by_k(panel, "Mean absolute error", pal)
-  p + ggplot2::labs(caption = STUDY2_AE_FIGURE_NOTE) +
-    ggplot2::theme(plot.caption = ggplot2::element_text(hjust = 0, size = 9))
+  plot_study2_condition_by_k(panel, "Mean absolute error", pal)
 }
 
 plot_study2_rt_by_condition <- function(rt_ms, pal) {
@@ -192,14 +196,21 @@ plot_study2_rt_by_condition <- function(rt_ms, pal) {
       colour = "Condition",
       shape = "Condition"
     ) +
-    study2_theme()
+    study2_theme() +
+    study2_legend_top()
+}
+
+h3_mean_ci_for_figure <- function(summary_df) {
+  x <- summary_df$pairwise_prop_optimized
+  st <- mean_sd_ci(x)
+  list(mean = st$mean, ci_low = st$ci_low, ci_high = st$ci_high)
 }
 
 plot_study2_h3_stacked_dots <- function(pw, h3, pal) {
   props <- pairwise_proportion(pw)
-  props$prop_snapped <- round(props$chose_optimized * 12L) / 12L
+  props$prop <- props$chose_optimized
   mean_df <- data.frame(prop = h3$mean, ci_low = h3$ci_low, ci_high = h3$ci_high, y = 0)
-  ggplot2::ggplot(props, ggplot2::aes(x = prop_snapped, y = 0)) +
+  ggplot2::ggplot(props, ggplot2::aes(x = prop, y = 0)) +
     ggplot2::geom_vline(xintercept = as.numeric(SAP$h3_null), linetype = "dashed", colour = pal$reference) +
     ggplot2::geom_jitter(width = 0.012, height = 0.14, size = 1.9, alpha = 0.75, colour = pal$Optimized) +
     ggplot2::geom_point(data = mean_df, ggplot2::aes(x = prop, y = y), inherit.aes = FALSE, size = 3.5, colour = pal$Optimized) +
@@ -211,12 +222,15 @@ plot_study2_h3_stacked_dots <- function(pw, h3, pal) {
       linewidth = 0.5,
       colour = pal$Optimized
     ) +
-    ggplot2::annotate("text", x = 0.08, y = 0.28, label = "Favors Original", size = 3.5) +
-    ggplot2::annotate("text", x = 0.92, y = 0.28, label = "Favors Optimized", size = 3.5) +
-    ggplot2::scale_x_continuous(breaks = seq(0, 1, by = 1 / 12), labels = function(x) format(x, digits = 3)) +
+    ggplot2::annotate("text", x = 0.08, y = 0.28, label = "Original", size = 3.5) +
+    ggplot2::annotate("text", x = 0.92, y = 0.28, label = "Optimized", size = 3.5) +
+    ggplot2::scale_x_continuous(
+      breaks = seq(0, 1, by = 0.25),
+      labels = function(x) sprintf("%.2f", x)
+    ) +
     ggplot2::coord_cartesian(xlim = c(-0.02, 1.02), ylim = c(-0.35, 0.35)) +
     ggplot2::labs(
-      x = "Proportion of Optimized choices (12 trials)",
+      x = "Proportion of Optimized choices",
       y = NULL
     ) +
     study2_theme() +

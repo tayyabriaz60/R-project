@@ -15,9 +15,10 @@ Implementation of the **frozen SAP** (21 September 2026). The scripts follow the
 | H1–H3, RT, AE, signed error, vision sensitivity | Ready (Q7 locked: H1/H2/H3 npar; RT/AE paired t) |
 | Q13/Q14 tables (`.csv` + `.docx`) and figures (`.png` 300 dpi + `.pdf`) | Ready |
 | Helper unit tests (toy data) | 79 passed on Kaggle (fresh session) |
-| Study 2 load, prepare, H1–H3, RT/AE, tables, figures | Coded (Kaggle of this pipeline: **NOT EXECUTED**) |
-| Study 2 test path | SAP recommended ANOVA / t. Study 1 npar lock **not** inherited (Q32) |
-| Study 3 | **Not written yet** |
+| Study 2 load, prepare, figures, vision primary exclusion, diagnostics | Ready (Kaggle synthetic: 152 helper tests, Oct 2026) |
+| Study 2 inferential (real) | Held until Q32 diagnostic review (`study2_q32_hold_inferential`); synthetic runs full ANOVA/t pipeline test |
+| Study 2 test path | SAP recommended ANOVA / t. Study 1 npar lock **not** inherited until Q32 answered |
+| Study 3 | **Not implemented** |
 
 ## R versions
 

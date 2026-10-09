@@ -139,13 +139,15 @@ REAL_STUDY2_TASK_IDS <- list(
   study2_disc_g1 = "task-fxg1",
   study2_disc_g2 = "task-a5wf",
   study2_pairwise = "task-44yr",
-  study2_vision = "task-e9t3"
+  study2_vision = "task-e9t3",
+  study2_questionnaire = "questionnaire-z5c3"
 )
 REAL_STUDY2_FILES <- list(
   study2_disc_g1 = NA_character_,
   study2_disc_g2 = NA_character_,
   study2_pairwise = NA_character_,
-  study2_vision = NA_character_
+  study2_vision = NA_character_,
+  study2_questionnaire = NA_character_
 )
 # If she drops one combined Gorilla CSV, set this to that filename under data/real/.
 REAL_STUDY2_COMBINED_FILE <- NA_character_
@@ -247,8 +249,13 @@ SAP <- list(
   duplicate_keep_rule = "min_utc_timestamp_then_min_event_index",
   duplicate_dedup_apply = TRUE,
   # --- Study 2 (SAP §4; Dictionary §5, §9–§10) -----------------------------
-  primary_n_study2 = 50L,                # SAP §4.4 after researcher exclusion
-  vision_subset_n_study2 = 43L,          # SAP §4.4 (sensitivity size; not a primary exclusion)
+  primary_n_study2 = 50L,                # synthetic pipeline; real primary N after vision exclusions
+  vision_subset_n_study2 = 43L,          # legacy SAP §4.4 sensitivity (skipped when primary vision rule on)
+  study2_primary_vision_exclusion = TRUE, # Fatimah Oct 2026: Ishihara 4/4 + questionnaire pass
+  study2_vision_question_snippet = "normal or corrected-to-normal vision",
+  study2_vision_questionnaire_exclude_pattern = "not corrected by glasses",
+  study2_vision_questionnaire_pass_pattern = "see normally or am wearing",
+  study2_q32_hold_inferential = TRUE,    # real: skip inferential tables until post-diagnostic Q32 lock
   k_levels_study2 = c(5, 10, 20, 30),    # SAP §4.1 same as Study 1
   study2_difficulty_index_levels = c(1L, 2L, 3L), # Dict §5.1; average across for H1/H2
   study2_task_disc_g1 = "Discrimination Task G1 (Clone)",

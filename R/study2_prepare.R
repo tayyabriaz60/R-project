@@ -6,14 +6,19 @@ source(file.path(PROJECT_ROOT, "R", "study1_clean.R"))
 source(file.path(PROJECT_ROOT, "R", "study1_gates.R"))
 source(file.path(PROJECT_ROOT, "R", "study1_summarise.R"))
 source(file.path(PROJECT_ROOT, "R", "study1_diagnostics.R"))
+source(file.path(PROJECT_ROOT, "R", "study2_vision_primary.R"))
 
 apply_study2_primary_population <- function(study2, log_path) {
+  log_msg(log_path, "SAP §4.4 population: researcher excluded at load.")
+  study2 <- apply_study2_vision_primary_exclusions(study2, log_path)
   disc <- study2$discrimination
   n_id <- n_unique_nonempty(disc$participant_id)
-  log_msg(log_path, "SAP §4.4 population: researcher excluded at load; no outcome-based exclusion")
-  log_msg(log_path, "Q1 vision subset: not applied as a primary exclusion")
   log_msg(log_path, "primary n_unique_participant_id=", n_id,
-          " (synthetic expected ", as.integer(SAP$primary_n_study2), ")")
+          if (identical(DATA_SOURCE, "synthetic")) {
+            paste0(" (synthetic expected ", as.integer(SAP$primary_n_study2), ")")
+          } else {
+            " (real; after vision primary exclusions when enabled)"
+          })
   if (identical(DATA_SOURCE, "synthetic") && n_id != as.integer(SAP$primary_n_study2)) {
     stop("Study 2: synthetic primary N is not ", SAP$primary_n_study2, ".", call. = FALSE)
   }

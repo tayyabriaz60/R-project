@@ -2,7 +2,11 @@
 
 **SYNTHETIC DATA: pipeline test only** when `DATA_SOURCE` is `"synthetic"`. Those numbers are not findings.
 
-Study 1 is implemented. Study 2 load through H1–H3, RT/AE, tables, and figures is implemented on the SAP recommended ANOVA/t path. Report figures and table `.docx` files use the thesis layout (no title inside the figure; axis labels and legend as in your Study 1 example; tables with consistent flextable styling). All outputs are regenerated from `run_study2.R`. Study 1’s Wilcoxon/Friedman lock is **not** applied to Study 2 until you say so (Q32). Study 3 is not implemented.
+Study 1 is implemented with the Q7-locked non-parametric path for H1/H2/H3 (RT/AE paired t).
+
+Study 2: load, prepare, thesis-style report figures, and (when enabled) inferential tables on the SAP recommended ANOVA/t path. Study 1's Wilcoxon/Friedman lock is **not** applied until you confirm Q32 after reviewing Study 2 diagnostics.
+
+Study 3 is **not** implemented.
 
 ## Run on your machine (R 4.6.1)
 
@@ -11,44 +15,55 @@ PROJECT_ROOT <- "put/the/path/to/this/folder/here"
 source(file.path(PROJECT_ROOT, "run_all.R"))
 ```
 
-Study 2:
+Study 2 only:
 
 ```r
 PROJECT_ROOT <- "put/the/path/to/this/folder/here"
 source(file.path(PROJECT_ROOT, "run_study2.R"))
 ```
 
-`run_all.R` / `run_study2.R` source `config/config.R` and `scripts/00_setup.R` for you. Do **not** run `renv::restore()`.
+Do **not** run `renv::restore()`.
 
-Study 2 real files need your researcher ID (Q18) and task ids (Q33) before `DATA_SOURCE <- "real"` will run.
+## Study 2 real export
 
-## Real export
+1. Put unedited Gorilla CSVs under `data/real/` (subfolders are fine). Filenames should contain:
+   - Discrimination G1: `task-fxg1`
+   - Discrimination G2: `task-a5wf`
+   - Pairwise: `task-44yr`
+   - Vision (Ishihara): `task-e9t3`
+   - Background questionnaire: `questionnaire-z5c3` (vision item for primary inclusion)
+2. Do not filter rows, rename columns, or deduplicate. Cleaning runs in the pipeline.
+3. Set `DATA_SOURCE <- "real"` in `config/config.R`.
+4. Run `run_study2.R`.
 
-1. Put the unedited Gorilla CSVs under `data/real/` (subfolders are fine). Filenames must contain: Discrimination G1 `task-y3n9`, G2 `task-z8oq`, Pairwise `task-yfcn`, Vision `task-hxml`.
-2. Do not filter rows, rename columns, or remove duplicates. Object Name filter and Q31 cleaning run inside the pipeline.
-3. In `config/config.R` set `DATA_SOURCE <- "real"`.
-4. Run `run_all.R` as above.
+### Primary sample (Study 2, confirmed Oct 2026)
 
-If more than one file matches a task id, set `REAL_STUDY1_FILES$...` in `config/config.R` to the exact filename.
+After researcher exclusion at load, the **primary** analysis includes participants who:
 
-Do not email raw participant files. If something fails, send the full console text (no data rows, no IDs) and, if needed, the Q7 diagnostic plots.
+- score **4/4** on the Ishihara colour-vision screening, **and**
+- answer the background questionnaire with normal or corrected-to-normal vision (not the uncorrected abnormal-vision option).
 
-## Recorded answers (22 Sep 2026)
+Participants failing either criterion are excluded from the primary analysis. Missing or ambiguous Ishihara or questionnaire responses **stop** the run with a count-only message (no guessing).
 
-- **Q30:** Original `#E69F00`, Optimized `#0072B2`.
-- **Q31:** key = Participant × Condition × K × configuration_instance (variation). Keep earliest UTC Timestamp; Event Index is the tie-breaker.
+Figure captions for report plots are in `output/logs/study2_figure_captions*.txt` (not inside the PNG/PDF).
+
+### Q32 / inferential hold (real data)
+
+While `study2_q32_hold_inferential` is `TRUE` (default after Oct 2026), a real-data run writes **diagnostic plots**, the **Q7 review note**, and **report figures**, but **does not** write inferential H1/H2/H3/RT/AE tables until you review diagnostics and confirm the parametric vs non-parametric path. Set `study2_q32_hold_inferential <- FALSE` in `config/config.R` after that review to produce full inferential tables.
+
+## Study 1 real export
+
+Filenames must contain: `task-y3n9`, `task-z8oq`, `task-yfcn`, `task-hxml`.
 
 ## Privacy
 
-Shareable logs and tables use anonymous IDs (`S1_P001`, …), never Gorilla Public/Private IDs.
+Shareable logs and tables use anonymous IDs (`S1_P001`, `S2_P001`, …), never Gorilla Public/Private IDs.
 
-## Q7 path (locked 22 Sep 2026)
+## Recorded answers
 
-After your review of the real-data diagnostic plots:
+- **Q30:** Original `#E69F00`, Optimized `#0072B2`.
+- **Q31:** Participant × Condition × K × configuration_instance; earliest UTC Timestamp, Event Index tie-break.
 
-- H1: paired Wilcoxon (overall Original vs Optimized accuracy)
-- H2: Friedman on Optimized−Original differences at K = 5, 10, 20, 30. Pairwise Wilcoxon + Holm only if Friedman is significant
-- H3: one-sample Wilcoxon vs 0.50
-- RT: paired t on the analysis scale (log if trial-level skewness > 1)
-- AE: paired t
-- Vision subset (N = 48): the same tests. Primary N stays 50
+## Study 1 Q7 path (locked 22 Sep 2026)
+
+H1 Wilcoxon, H2 Friedman (+ Holm follow-ups if significant), H3 Wilcoxon vs 0.50, RT/AE paired t; vision sensitivity subset as previously locked for Study 1.

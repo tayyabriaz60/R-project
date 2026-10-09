@@ -219,23 +219,43 @@ write_study2_tables <- function(primary, vision_tab, ae_k, pw_rt, log_path) {
   )
 
   vis <- vision_tab
-  write_table_csv_docx(
-    data.frame(
-      Analysis = vis$analysis,
-      N = vis$n,
-      Statistic = fmt_num(vis$statistic, 3),
-      p = fmt_p(vis$p),
-      `Effect size` = fmt_num(vis$effect_size, 3),
-      `ES name` = vis$es_name,
-      `Agrees with primary` = ifelse(vis$sig_agrees_with_primary, "Yes", "No"),
-      check.names = FALSE,
-      stringsAsFactors = FALSE
-    ),
-    "study2_table_vision_sensitivity",
-    "Study 2: Vision-screen sensitivity (not the primary analysis)",
-    c("Score = 4 subset, N = 43. Primary N remains 50. Same tests as the primary analysis."),
-    log_path
+  if (nrow(vis) > 0L) {
+    write_table_csv_docx(
+      data.frame(
+        Analysis = vis$analysis,
+        N = vis$n,
+        Statistic = fmt_num(vis$statistic, 3),
+        p = fmt_p(vis$p),
+        `Effect size` = fmt_num(vis$effect_size, 3),
+        `ES name` = vis$es_name,
+        `Agrees with primary` = ifelse(vis$sig_agrees_with_primary, "Yes", "No"),
+        check.names = FALSE,
+        stringsAsFactors = FALSE
+      ),
+      "study2_table_vision_sensitivity",
+      "Study 2: Vision-screen sensitivity (not the primary analysis)",
+      c("Score = 4 subset. Same tests as the primary analysis."),
+      log_path
+    )
+  } else {
+    log_msg(log_path, "study2_table_vision_sensitivity skipped (not applicable with primary vision rule).")
+  }
+}
+
+write_study2_figure_captions <- function(log_path) {
+  ensure_output_dirs()
+  path <- file.path(OUTPUT_LOGS, paste0("study2_figure_captions", OUTPUT_SUFFIX, ".txt"))
+  lines <- c(
+    "Study 2 report figure captions (thesis; not embedded in PNG/PDF).",
+    "",
+    paste0("study2_fig_accuracy_condition_k: ", STUDY2_ACCURACY_FIGURE_CAPTION),
+    paste0("study2_fig_ae_condition_k: ", STUDY2_AE_FIGURE_CAPTION),
+    "study2_fig_pairwise_prop: Participant-level Optimized choice proportions; mean with 95% CI.",
+    "study2_fig_rt_by_condition: Mean response time (ms) by condition with 95% CIs."
   )
+  writeLines(lines, path, useBytes = TRUE)
+  log_msg(log_path, "wrote ", basename(path))
+  path
 }
 
 write_study2_figures <- function(disc, pw, h3, rt_ms, log_path) {
@@ -243,7 +263,7 @@ write_study2_figures <- function(disc, pw, h3, rt_ms, log_path) {
   pal <- study1_palette(log_path)
   log_msg(
     log_path,
-    "Study 2 figures: unified style; accuracy two-panel; AE by K; H3 dots; RT by condition (presentation only)."
+    "Study 2 figures: legend top; captions external; accuracy two-panel; AE; H3; RT."
   )
   save_report_figure(
     plot_study2_accuracy_panels(disc, pal),
@@ -261,4 +281,5 @@ write_study2_figures <- function(disc, pw, h3, rt_ms, log_path) {
     plot_study2_rt_by_condition(rt_ms, pal),
     "study2_fig_rt_by_condition", 5.5, 4.5, log_path
   )
+  write_study2_figure_captions(log_path)
 }

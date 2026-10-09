@@ -1,7 +1,7 @@
 # Study 2 load + map + QC. SAP §4; Dictionary §5, §9–§10.
 # Applies: Object Name filter (Q5), Task Name split, participant_id, researcher
 # exclusion (SAP §4.4; synthetic ID only — real ID is Q18).
-# Does NOT: Q31 dedup, Q3/Q4 gates, vision-subset as a primary exclusion,
+# Does NOT: Q31 dedup, Q3/Q4 gates, vision primary exclusion (prepare step),
 # H1–H3, or any Q7 test choice (Q32).
 
 source(file.path(PROJECT_ROOT, "R", "study1_load.R"))
