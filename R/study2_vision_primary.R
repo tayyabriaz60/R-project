@@ -10,7 +10,7 @@ study2_ishihara_scores <- function(vis) {
     stop("vision_item_correct missing from Study 2 vision data.", call. = FALSE)
   }
   scores <- tapply(vis$vision_item_correct, vis$participant_id, sum, na.rm = TRUE)
-  as.integer(unname(scores))
+  structure(as.integer(scores), names = names(scores))
 }
 
 resolve_study2_questionnaire_path <- function() {
@@ -132,6 +132,15 @@ apply_study2_vision_primary_exclusions <- function(study2, log_path) {
     return(study2)
   }
 
+  if (identical(DATA_SOURCE, "synthetic")) {
+    log_msg(
+      log_path,
+      "SYNTHETIC: questionnaire vision item not applied; Ishihara primary exclusion skipped for pipeline N=50."
+    )
+    log_msg(log_path, "Real data: Ishihara 4/4 + questionnaire pass required for primary inclusion.")
+    return(study2)
+  }
+
   disc <- study2$discrimination
   vis <- study2$vision
   all_ids <- sort(unique(disc$participant_id))
@@ -142,15 +151,6 @@ apply_study2_vision_primary_exclusions <- function(study2, log_path) {
     stringsAsFactors = FALSE
   )
   score_df$ishihara_pass <- score_df$ishihara_score == 4L
-
-  if (identical(DATA_SOURCE, "synthetic")) {
-    log_msg(
-      log_path,
-      "SYNTHETIC: questionnaire vision item not applied; Ishihara primary exclusion skipped for pipeline N=50."
-    )
-    log_msg(log_path, "Real data: Ishihara 4/4 + questionnaire pass required for primary inclusion.")
-    return(study2)
-  }
 
   q_path <- resolve_study2_questionnaire_path()
   log_msg(log_path, "questionnaire file resolved (basename only): ", basename(q_path))

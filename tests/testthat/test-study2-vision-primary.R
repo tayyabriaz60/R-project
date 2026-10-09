@@ -10,6 +10,18 @@ test_that("questionnaire pass and exclude patterns are detected", {
   expect_true(is.na(questionnaire_fails_vision("Something else entirely")))
 })
 
+test_that("study2_ishihara_scores keeps participant_id names", {
+  vis <- data.frame(
+    participant_id = rep(c("A", "B"), each = 4L),
+    vision_item_correct = c(1, 1, 1, 1, 1, 1, 0, 1),
+    stringsAsFactors = FALSE
+  )
+  sc <- study2_ishihara_scores(vis)
+  expect_equal(length(sc), 2L)
+  expect_equal(names(sc), c("A", "B"))
+  expect_equal(unname(sc), c(4L, 3L))
+})
+
 test_that("read_study2_questionnaire_vision returns one row per participant", {
   td <- tempfile(fileext = ".csv")
   on.exit(unlink(td), add = TRUE)
