@@ -96,5 +96,6 @@ Methodological choices that the SAP leaves open are **not** decided here; they a
 | 2026-10-05 | Study 2 unified figure style (round 2) | Fatimah message | Shared colours/shapes/CIs; Panel B All K = filled diamond; AE by-K figure (Cousineau-Morey, descriptive); H3 vertical 0.50 line + Favors Original/Optimized labels; RT by condition restored with same style. Kaggle: 150 tests, 4 figures (2026-10-06). |
 | 2026-10-08 | Study 2 figure style (round 3) | Fatimah message | Legend top on Panel A/AE; in-figure notes removed (captions in study2_figure_captions.txt); H3 labels Original/Optimized; x-axis two decimals; Panel B no lines (unchanged). |
 | 2026-10-08 | Study 2 primary vision exclusion | Fatimah message | Primary: Ishihara 4/4 AND questionnaire normal/corrected-to-normal; exclude uncorrected abnormal; flag missing/ambiguous; questionnaire-z5c3; synthetic skips Ishihara primary filter (N=50 pipeline). Real: Q32 hold skips inferential tables until diagnostic review. |
+| 2026-10-09 | Kaggle verify post vision + figure v3 | Pasted output | run_study2.R synthetic OK (4 figs, captions file, vision skip log). run_tests.R 158/0/0 (R 4.4.0). Commits through a664dc0. |
 
 Q15–Q17 remain NA. Study 2 Q32 open. Q18/Q33 answered 1 Oct 2026.
