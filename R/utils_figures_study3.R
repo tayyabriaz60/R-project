@@ -12,7 +12,8 @@ STUDY3_CONDITION_SHAPES <- c(Original = 16L, Optimized = 17L)
 
 STUDY3_ACCURACY_FIGURE_CAPTION <- paste(
   "Panel A: participant-level mean accuracy in each Condition x Background cell",
-  "(averaged across K and Difficulty), Cousineau-Morey 95% CIs; points/shapes only.",
+  "(averaged across K and Difficulty); points are arithmetic means of the summary table",
+  "cells, with Cousineau-Morey 95% CIs; points/shapes only.",
   "Panel B: Optimized minus Original accuracy differences for White, Black, and Overall."
 )
 
@@ -37,14 +38,16 @@ STUDY3_PAIRWISE_BY_BG_CAPTION <- paste(
 
 STUDY3_RT_FIGURE_CAPTION <- paste(
   "Descriptive mean response time (ms) by Condition and Background;",
-  "points/shapes with Cousineau-Morey 95% CIs (no lines across Background).",
+  "plotted points are arithmetic means of participant summary cells;",
+  "Cousineau-Morey 95% CIs (no lines across Background).",
   "Inferential RT analysis uses log-transformed participant means when trial-level",
   "skewness exceeds 1."
 )
 
 STUDY3_AE_FIGURE_CAPTION <- paste(
   "Descriptive mean absolute error by Condition and Background;",
-  "points/shapes with Cousineau-Morey 95% CIs (no lines across Background)."
+  "plotted points are arithmetic means of participant summary cells;",
+  "Cousineau-Morey 95% CIs (no lines across Background)."
 )
 
 study3_theme <- function() {
@@ -106,22 +109,130 @@ summary_to_wide_mat <- function(summary_df, ord, levels, value_prefix) {
   mat
 }
 
-cousinau_panel_aligned <- function(mat, ord, levels, level_name) {
-  cm <- cousinau_morey_cell_stats(mat, SAP$ci_level)
-  n_o <- length(ord)
-  n_x <- length(levels)
-  if (ncol(mat) != n_o * n_x) {
-    stop("Wide matrix ncol does not match condition x level cells.", call. = FALSE)
+study3_cell_colname <- function(cond, level) {
+  paste(cond, level, sep = "_")
+}
+
+# Wide columns: t(outer(condition, level)). Rows built level-major, condition-minor
+# (matches summary column order and ggplot dodge at each x level).
+study3_panel_from_wide_mat <- function(mat, ord, levels, level_name) {
+  cols <- study3_wide_cols(ord, levels)
+  if (!identical(colnames(mat), cols)) {
+    stop(
+      "Wide matrix columns must be ", paste(cols, collapse = ", "),
+      call. = FALSE
+    )
   }
-  df <- data.frame(
-    mean = cm$mean,
-    ci_low = cm$ci_low,
-    ci_high = cm$ci_high,
-    condition = rep(factor(ord, levels = ord), times = n_x),
-    stringsAsFactors = FALSE
+  cm <- cousinau_morey_cell_stats(mat, SAP$ci_level)
+  raw <- colMeans(mat, na.rm = TRUE)
+  rows <- vector("list", length(levels) * length(ord))
+  idx <- 1L
+  for (lev in levels) {
+    for (cond in ord) {
+      cn <- study3_cell_colname(cond, lev)
+      j <- match(cn, cols)
+      half <- (cm$ci_high[j] - cm$ci_low[j]) / 2
+      m <- raw[j]
+      row <- data.frame(
+        mean = m,
+        ci_low = m - half,
+        ci_high = m + half,
+        condition = factor(cond, levels = ord),
+        stringsAsFactors = FALSE
+      )
+      row[[level_name]] <- factor(lev, levels = levels)
+      rows[[idx]] <- row
+      idx <- idx + 1L
+    }
+  }
+  do.call(rbind, rows)
+}
+
+cousinau_panel_aligned <- function(mat, ord, levels, level_name) {
+  study3_panel_from_wide_mat(mat, ord, levels, level_name)
+}
+
+verify_study3_panel_vs_summary <- function(
+    mat, summary_df, ord, levels, level_name, value_prefix, tol, log_path, label) {
+  panel <- study3_panel_from_wide_mat(mat, ord, levels, level_name)
+  for (lev in levels) {
+    for (cond in ord) {
+      cn <- study3_cell_colname(cond, lev)
+      sum_nm <- paste(value_prefix, cond, lev, sep = "_")
+      if (!sum_nm %in% names(summary_df)) {
+        stop("Study 3 figure QA: missing ", sum_nm, call. = FALSE)
+      }
+      exp <- mean(summary_df[[sum_nm]], na.rm = TRUE)
+      got <- mean(mat[, cn], na.rm = TRUE)
+      d <- abs(exp - got)
+      if (d > tol) {
+        stop(
+          "Study 3 figure QA (", label, "): wide cell ", cn,
+          " does not match summary ", sum_nm, " (diff=", d, ").",
+          call. = FALSE
+        )
+      }
+      hit <- panel$condition == cond & panel[[level_name]] == lev
+      if (sum(hit) != 1L) {
+        stop("Study 3 figure QA: panel row not unique for ", cn, call. = FALSE)
+      }
+      d2 <- abs(panel$mean[hit] - exp)
+      if (d2 > tol) {
+        stop(
+          "Study 3 figure QA (", label, "): panel mean for ", cn,
+          " differs from summary (diff=", d2, "). Check label mapping.",
+          call. = FALSE
+        )
+      }
+    }
+  }
+  log_msg(log_path, "Study3 figure QA ", label, " panel means match summary columns.")
+  invisible(TRUE)
+}
+
+verify_study3_k_panels_vs_disc <- function(disc, ord, k_levels, bg_order, tol, log_path) {
+  cells_k <- stats::aggregate(
+    accuracy ~ participant_id + condition + background + K,
+    data = disc,
+    FUN = function(x) mean(as.numeric(x), na.rm = TRUE)
   )
-  df[[level_name]] <- rep(factor(levels, levels = levels), each = n_o)
-  df
+  for (bg in bg_order) {
+    prep <- metric_mat_condition_k_by_background(disc, "accuracy", bg)
+    panel <- study3_panel_from_wide_mat(prep$mat, ord, k_levels, "K")
+    for (k in k_levels) {
+      for (cond in ord) {
+        cn <- study3_cell_colname(cond, k)
+        exp <- mean(prep$mat[, cn], na.rm = TRUE)
+        sub <- cells_k[cells_k$background == bg & cells_k$condition == cond & cells_k$K == k, , drop = FALSE]
+        if (nrow(sub) == 0L) {
+          stop("Study 3 figure QA: no K-level cells for ", cn, " ", bg, call. = FALSE)
+        }
+        by_pid <- stats::aggregate(accuracy ~ participant_id, data = sub, FUN = mean)
+        d <- abs(mean(by_pid$accuracy) - exp)
+        if (d > tol) {
+          stop(
+            "Study 3 figure QA (accuracy by K): ", bg, " ", cn,
+            " wide matrix differs from discrimination (diff=", d, ").",
+            call. = FALSE
+          )
+        }
+        hit <- panel$condition == cond & as.integer(panel$K) == as.integer(k)
+        if (sum(hit) != 1L) {
+          stop("Study 3 figure QA: K panel row not unique for ", cn, " ", bg, call. = FALSE)
+        }
+        d2 <- abs(panel$mean[hit] - exp)
+        if (d2 > tol) {
+          stop(
+            "Study 3 figure QA (accuracy by K): panel mean for ", bg, " ", cn,
+            " differs from data (diff=", d2, ").",
+            call. = FALSE
+          )
+        }
+      }
+    }
+  }
+  log_msg(log_path, "Study3 figure QA accuracy-by-K panel means match participant cells.")
+  invisible(TRUE)
 }
 
 metric_mat_condition_background <- function(disc, value_col) {
@@ -235,7 +346,21 @@ verify_study3_figure_cell_mapping <- function(disc, summary_df, log_path) {
       }
     }
   }
-  log_msg(log_path, "Study3 figure QA passed (figures use summary table; K aggregates match cells).")
+
+  verify_study3_panel_vs_summary(
+    mat_sum, summary_df, ord, bg_order, "background", "acc", tol, log_path, "accuracy"
+  )
+  mat_rt <- summary_to_wide_mat(summary_df, ord, bg_order, "mean_rt_ms")
+  verify_study3_panel_vs_summary(
+    mat_rt, summary_df, ord, bg_order, "background", "mean_rt_ms", tol, log_path, "RT"
+  )
+  mat_ae <- summary_to_wide_mat(summary_df, ord, bg_order, "mean_ae")
+  verify_study3_panel_vs_summary(
+    mat_ae, summary_df, ord, bg_order, "background", "mean_ae", tol, log_path, "AE"
+  )
+  verify_study3_k_panels_vs_disc(disc, ord, k_levels, bg_order, tol, log_path)
+
+  log_msg(log_path, "Study3 figure QA passed (panel labels match summary columns; K verified).")
   invisible(TRUE)
 }
 
@@ -305,7 +430,7 @@ plot_study3_accuracy_h4h5_panels <- function(disc, summary_df, pal) {
   ord <- require_param("condition_level_order")
   bg_order <- require_param("background_level_order")
   mat <- summary_to_wide_mat(summary_df, ord, bg_order, "acc")
-  panel_a_df <- cousinau_panel_aligned(mat, ord, bg_order, "background")
+  panel_a_df <- study3_panel_from_wide_mat(mat, ord, bg_order, "background")
   p_a <- plot_study3_nominal_condition_background(
     panel_a_df, "Mean participant-level accuracy", pal, ylim = c(0, 1)
   ) + ggplot2::labs(tag = "A")
@@ -340,7 +465,7 @@ plot_study3_accuracy_by_k_descriptive <- function(disc, pal) {
   bg_order <- require_param("background_level_order")
   panels <- lapply(bg_order, function(bg) {
     prep <- metric_mat_condition_k_by_background(disc, "accuracy", bg)
-    cousinau_panel_aligned(prep$mat, prep$ord, prep$levels, "K")
+    study3_panel_from_wide_mat(prep$mat, prep$ord, prep$levels, "K")
   })
   p_white <- plot_study3_condition_by_k_aligned(
     panels[[1L]], "Mean participant-level accuracy", pal, ylim = c(0, 1), ref_hline = 1
@@ -364,7 +489,7 @@ study3_pairwise_y_jitter <- function(ids) {
   stats::runif(length(base), -0.14, 0.14) + base
 }
 
-plot_study3_pairwise_horizontal <- function(prop, mean_ci, pal, tag_label) {
+plot_study3_pairwise_horizontal <- function(prop, mean_ci, pal, tag_label, panel_title = NULL) {
   yj <- study3_pairwise_y_jitter(seq_along(prop))
   pts <- data.frame(prop = prop, y = yj, stringsAsFactors = FALSE)
   mean_df <- data.frame(
@@ -391,7 +516,12 @@ plot_study3_pairwise_horizontal <- function(prop, mean_ci, pal, tag_label) {
     ggplot2::annotate("text", x = 0.92, y = y_top, label = "Optimized", size = 3.5) +
     ggplot2::scale_x_continuous(breaks = seq(0, 1, by = 0.25), labels = function(x) sprintf("%.2f", x)) +
     ggplot2::coord_cartesian(xlim = c(-0.02, 1.02)) +
-    ggplot2::labs(x = "Proportion of Optimized choices", y = NULL, tag = tag_label) +
+    ggplot2::labs(
+      x = "Proportion of Optimized choices",
+      y = NULL,
+      tag = tag_label,
+      title = panel_title
+    ) +
     study3_theme() +
     ggplot2::theme(axis.text.y = ggplot2::element_blank(), axis.ticks.y = ggplot2::element_blank())
 }
@@ -421,7 +551,12 @@ plot_study3_pairwise_diff_panel <- function(summary_df, pal) {
       colour = pal$Optimized
     ) +
     ggplot2::scale_x_continuous(labels = function(x) sprintf("%.2f", x)) +
-    ggplot2::labs(x = "White - Black (Optimized proportion)", y = NULL, tag = "B") +
+    ggplot2::labs(
+      x = "White - Black (Optimized proportion)",
+      y = NULL,
+      tag = "B",
+      title = "White - Black difference"
+    ) +
     study3_theme() +
     ggplot2::theme(axis.text.y = ggplot2::element_blank(), axis.ticks.y = ggplot2::element_blank())
 }
@@ -440,13 +575,15 @@ plot_study3_pairwise_by_background_descriptive <- function(summary_df, pal) {
     summary_df$pairwise_prop_optimized_White,
     list(mean = h6w$mean, ci_low = h6w$ci_low, ci_high = h6w$ci_high),
     pal,
-    "A"
+    "A",
+    panel_title = "White background"
   )
   p_b <- plot_study3_pairwise_horizontal(
     summary_df$pairwise_prop_optimized_Black,
     list(mean = h6b$mean, ci_low = h6b$ci_low, ci_high = h6b$ci_high),
     pal,
-    "B"
+    "B",
+    panel_title = "Black background"
   )
   gridExtra::grid.arrange(p_a, p_b, ncol = 2)
 }
@@ -455,7 +592,7 @@ plot_study3_rt_ms <- function(summary_df, pal) {
   ord <- require_param("condition_level_order")
   bg_order <- require_param("background_level_order")
   mat <- summary_to_wide_mat(summary_df, ord, bg_order, "mean_rt_ms")
-  panel <- cousinau_panel_aligned(mat, ord, bg_order, "background")
+  panel <- study3_panel_from_wide_mat(mat, ord, bg_order, "background")
   plot_study3_nominal_condition_background(panel, "Mean response time (ms)", pal)
 }
 
@@ -463,7 +600,7 @@ plot_study3_ae <- function(summary_df, pal) {
   ord <- require_param("condition_level_order")
   bg_order <- require_param("background_level_order")
   mat <- summary_to_wide_mat(summary_df, ord, bg_order, "mean_ae")
-  panel <- cousinau_panel_aligned(mat, ord, bg_order, "background")
+  panel <- study3_panel_from_wide_mat(mat, ord, bg_order, "background")
   plot_study3_nominal_condition_background(panel, "Mean absolute error", pal, ylim = c(0, NA))
 }
 
