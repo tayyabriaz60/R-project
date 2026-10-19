@@ -45,6 +45,17 @@ test_that("K columns match Study 2 t(outer) order", {
   )
 })
 
+test_that("panel row index is level-major condition-minor", {
+  source(file.path(PROJECT_ROOT, "R", "utils_figures_study3.R"), local = TRUE)
+  ord <- c("Original", "Optimized")
+  k <- c(10L, 20L, 30L)
+  expect_equal(study3_panel_row_index("Original", 10L, ord, k), 1L)
+  expect_equal(study3_panel_row_index("Optimized", 10L, ord, k), 2L)
+  expect_equal(study3_panel_row_index("Original", 20L, ord, k), 3L)
+  bg <- c("White", "Black")
+  expect_equal(study3_panel_row_index("Optimized", "Black", ord, bg), 4L)
+})
+
 test_that("summary_to_wide_mat reads acc columns in Study 2 column order", {
   source(file.path(PROJECT_ROOT, "R", "utils_figures_study3.R"), local = TRUE)
   ord <- c("Original", "Optimized")

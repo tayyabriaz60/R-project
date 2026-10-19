@@ -113,6 +113,27 @@ study3_cell_colname <- function(cond, level) {
   paste(cond, level, sep = "_")
 }
 
+# Panel rows are level-major, condition-minor (see study3_panel_from_wide_mat loops).
+study3_panel_row_index <- function(cond, lev, ord, levels) {
+  io <- match(as.character(cond), as.character(ord))
+  il <- match(as.character(lev), as.character(levels))
+  if (is.na(io) || is.na(il)) {
+    return(NA_integer_)
+  }
+  (il - 1L) * length(ord) + io
+}
+
+study3_panel_mean_for_cell <- function(panel, cond, lev, ord, levels) {
+  ri <- study3_panel_row_index(cond, lev, ord, levels)
+  if (is.na(ri) || ri < 1L || ri > nrow(panel)) {
+    stop(
+      "Study 3 figure QA: no panel row for condition=", cond, " level=", lev,
+      call. = FALSE
+    )
+  }
+  panel$mean[ri]
+}
+
 # Wide columns: t(outer(condition, level)). Rows built level-major, condition-minor
 # (matches summary column order and ggplot dodge at each x level).
 study3_panel_from_wide_mat <- function(mat, ord, levels, level_name) {
@@ -127,7 +148,8 @@ study3_panel_from_wide_mat <- function(mat, ord, levels, level_name) {
   raw <- colMeans(mat, na.rm = TRUE)
   rows <- vector("list", length(levels) * length(ord))
   idx <- 1L
-  for (lev in levels) {
+  lev_vals <- if (identical(level_name, "K")) as.integer(levels) else levels
+  for (lev in lev_vals) {
     for (cond in ord) {
       cn <- study3_cell_colname(cond, lev)
       j <- match(cn, cols)
@@ -137,10 +159,14 @@ study3_panel_from_wide_mat <- function(mat, ord, levels, level_name) {
         mean = m,
         ci_low = m - half,
         ci_high = m + half,
-        condition = factor(cond, levels = ord),
+        condition = factor(as.character(cond), levels = as.character(ord)),
         stringsAsFactors = FALSE
       )
-      row[[level_name]] <- factor(lev, levels = levels)
+      if (identical(level_name, "K")) {
+        row[[level_name]] <- factor(as.integer(lev), levels = as.integer(lev_vals))
+      } else {
+        row[[level_name]] <- factor(as.character(lev), levels = as.character(lev_vals))
+      }
       rows[[idx]] <- row
       idx <- idx + 1L
     }
@@ -172,11 +198,8 @@ verify_study3_panel_vs_summary <- function(
           call. = FALSE
         )
       }
-      hit <- panel$condition == cond & panel[[level_name]] == lev
-      if (sum(hit) != 1L) {
-        stop("Study 3 figure QA: panel row not unique for ", cn, call. = FALSE)
-      }
-      d2 <- abs(panel$mean[hit] - exp)
+      got_panel <- study3_panel_mean_for_cell(panel, cond, lev, ord, levels)
+      d2 <- abs(got_panel - exp)
       if (d2 > tol) {
         stop(
           "Study 3 figure QA (", label, "): panel mean for ", cn,
@@ -203,7 +226,13 @@ verify_study3_k_panels_vs_disc <- function(disc, ord, k_levels, bg_order, tol, l
       for (cond in ord) {
         cn <- study3_cell_colname(cond, k)
         exp <- mean(prep$mat[, cn], na.rm = TRUE)
-        sub <- cells_k[cells_k$background == bg & cells_k$condition == cond & cells_k$K == k, , drop = FALSE]
+        sub <- cells_k[
+          as.character(cells_k$background) == as.character(bg) &
+            as.character(cells_k$condition) == as.character(cond) &
+            as.integer(cells_k$K) == as.integer(k),
+          ,
+          drop = FALSE
+        ]
         if (nrow(sub) == 0L) {
           stop("Study 3 figure QA: no K-level cells for ", cn, " ", bg, call. = FALSE)
         }
@@ -216,17 +245,8 @@ verify_study3_k_panels_vs_disc <- function(disc, ord, k_levels, bg_order, tol, l
             call. = FALSE
           )
         }
-        # K is a factor in the panel; do not use as.integer() (that is level index, not K).
-        hit <- as.character(panel$condition) == cond &
-          as.character(panel$K) == as.character(k)
-        if (sum(hit) != 1L) {
-          stop(
-            "Study 3 figure QA: K panel row not unique for ", cn, " ", bg,
-            " (matched ", sum(hit), " rows).",
-            call. = FALSE
-          )
-        }
-        d2 <- abs(panel$mean[hit] - exp)
+        got_panel <- study3_panel_mean_for_cell(panel, cond, k, ord, k_levels)
+        d2 <- abs(got_panel - exp)
         if (d2 > tol) {
           stop(
             "Study 3 figure QA (accuracy by K): panel mean for ", bg, " ", cn,
