@@ -216,9 +216,15 @@ verify_study3_k_panels_vs_disc <- function(disc, ord, k_levels, bg_order, tol, l
             call. = FALSE
           )
         }
-        hit <- panel$condition == cond & as.integer(panel$K) == as.integer(k)
+        # K is a factor in the panel; do not use as.integer() (that is level index, not K).
+        hit <- as.character(panel$condition) == cond &
+          as.character(panel$K) == as.character(k)
         if (sum(hit) != 1L) {
-          stop("Study 3 figure QA: K panel row not unique for ", cn, " ", bg, call. = FALSE)
+          stop(
+            "Study 3 figure QA: K panel row not unique for ", cn, " ", bg,
+            " (matched ", sum(hit), " rows).",
+            call. = FALSE
+          )
         }
         d2 <- abs(panel$mean[hit] - exp)
         if (d2 > tol) {
