@@ -506,7 +506,7 @@ plot_study3_pairwise_horizontal <- function(prop, mean_ci, pal, tag_label, panel
     stringsAsFactors = FALSE
   )
   y_top <- max(yj) + 0.35
-  ggplot2::ggplot(pts, ggplot2::aes(x = prop, y = y)) +
+  p <- ggplot2::ggplot(pts, ggplot2::aes(x = prop, y = y)) +
     ggplot2::geom_vline(xintercept = as.numeric(SAP$h3_null), linetype = "dashed", colour = pal$reference) +
     ggplot2::geom_point(size = 1.9, alpha = 0.75, colour = pal$Optimized) +
     ggplot2::geom_point(data = mean_df, ggplot2::aes(x = prop, y = y), inherit.aes = FALSE, size = 3.5, colour = pal$Optimized) +
@@ -522,14 +522,15 @@ plot_study3_pairwise_horizontal <- function(prop, mean_ci, pal, tag_label, panel
     ggplot2::annotate("text", x = 0.92, y = y_top, label = "Optimized", size = 3.5) +
     ggplot2::scale_x_continuous(breaks = seq(0, 1, by = 0.25), labels = function(x) sprintf("%.2f", x)) +
     ggplot2::coord_cartesian(xlim = c(-0.02, 1.02)) +
-    ggplot2::labs(
-      x = "Proportion of Optimized choices",
-      y = NULL,
-      tag = tag_label,
-      title = panel_title
-    ) +
+    ggplot2::labs(x = "Proportion of Optimized choices", y = NULL, tag = tag_label) +
     study3_theme() +
     ggplot2::theme(axis.text.y = ggplot2::element_blank(), axis.ticks.y = ggplot2::element_blank())
+  if (!is.null(panel_title)) {
+    p <- p + ggplot2::annotate(
+      "text", x = 0.5, y = y_top + 0.55, label = panel_title, size = 3.5, hjust = 0.5
+    )
+  }
+  p
 }
 
 plot_study3_pairwise_diff_panel <- function(summary_df, pal) {
@@ -544,6 +545,7 @@ plot_study3_pairwise_diff_panel <- function(summary_df, pal) {
     y = mean(yj),
     stringsAsFactors = FALSE
   )
+  y_top <- max(yj) + 0.35
   ggplot2::ggplot(pts, ggplot2::aes(x = diff, y = y)) +
     ggplot2::geom_vline(xintercept = 0, colour = "grey40", linewidth = 0.4) +
     ggplot2::geom_point(size = 1.9, alpha = 0.75, colour = pal$Optimized) +
@@ -556,13 +558,11 @@ plot_study3_pairwise_diff_panel <- function(summary_df, pal) {
       linewidth = 0.5,
       colour = pal$Optimized
     ) +
-    ggplot2::scale_x_continuous(labels = function(x) sprintf("%.2f", x)) +
-    ggplot2::labs(
-      x = "White - Black (Optimized proportion)",
-      y = NULL,
-      tag = "B",
-      title = "White - Black difference"
+    ggplot2::annotate(
+      "text", x = 0, y = y_top + 0.55, label = "White - Black difference", size = 3.5, hjust = 0.5
     ) +
+    ggplot2::scale_x_continuous(labels = function(x) sprintf("%.2f", x)) +
+    ggplot2::labs(x = "White - Black (Optimized proportion)", y = NULL, tag = "B") +
     study3_theme() +
     ggplot2::theme(axis.text.y = ggplot2::element_blank(), axis.ticks.y = ggplot2::element_blank())
 }
