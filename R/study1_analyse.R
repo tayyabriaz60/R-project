@@ -1,6 +1,5 @@
 # Study 1 primary tests, sensitivity, tables, figures.
-# Q7 report is written BEFORE any Condition p-value is examined.
-# Locked path (22 Sep 2026): H1 Wilcoxon, H2 Friedman, H3 Wilcoxon; RT/AE paired t.
+# Q7 path open (Oct 2026): real inferential held until diagnostic review.
 
 source(file.path(PROJECT_ROOT, "R", "study1_models.R"))
 source(file.path(PROJECT_ROOT, "R", "study1_q7.R"))
@@ -13,40 +12,8 @@ vision_subset_ids <- function(vis) {
   keep
 }
 
-run_h1_h2_h3 <- function(summary_df, log_path, label) {
-  n <- nrow(summary_df)
-  log_msg(log_path, label, " n_participants=", n)
-  log_msg(log_path, label, " Q7 locked H1=paired_wilcoxon H2=friedman H3=onesample_wilcoxon")
-
-  h1 <- paired_wilcoxon_opt_minus_orig(summary_df$acc_Optimized, summary_df$acc_Original)
-  log_msg(log_path, label, " H1 V=", sprintf("%.4f", h1$V),
-          " p=", sprintf("%.4f", h1$p),
-          " n_nonzero=", h1$n_nonzero, " n_zero=", h1$n_zero,
-          " r_rb=", sprintf("%.4f", h1$r_rb))
-
-  h2 <- friedman_h2_on_k_diffs(summary_df)
-  log_msg(log_path, label, " H2 Friedman chi2=", sprintf("%.4f", h2$statistic),
-          " df=", h2$df, " p=", sprintf("%.4f", h2$p),
-          " W=", sprintf("%.4f", h2$kendalls_w))
-
-  follow <- h2_friedman_followups(summary_df, h2$p)
-  log_msg(log_path, label, " H2_followups_ran=", follow$ran, " reason=", follow$reason)
-  if (isTRUE(follow$ran)) {
-    log_msg(log_path, label, " H2_followups_n_estimable=", sum(follow$rows$estimable),
-            " n_not_estimable=", sum(!follow$rows$estimable))
-  }
-
-  h3 <- onesample_wilcoxon_vs(summary_df$pairwise_prop_optimized, as.numeric(SAP$h3_null))
-  log_msg(log_path, label, " H3 V=", sprintf("%.4f", h3$V),
-          " p=", sprintf("%.4f", h3$p),
-          " mean=", sprintf("%.4f", h3$mean),
-          " n_nonzero=", h3$n_nonzero, " r_rb=", sprintf("%.4f", h3$r_rb))
-
-  list(n = n, h1 = h1, h2 = h2, follow = follow, h3 = h3)
-}
-
 run_study1_primary_bundle <- function(summary_df, log_path, label) {
-  tests <- run_h1_h2_h3(summary_df, log_path, label)
+  tests <- run_study1_h1_h2_h3(summary_df, log_path, label)
   acc_orig <- mean_sd_ci(summary_df$acc_Original)
   acc_opt <- mean_sd_ci(summary_df$acc_Optimized)
   rt_scale <- unique(as.character(summary_df$rt_analysis_scale))
@@ -114,17 +81,39 @@ run_study1_analyse <- function(study1, study1_prep) {
     "STUDY 1 ANALYSIS (aggregates only; real export; no participant IDs in this log)"
   }
   start_log(log_path, an_title)
-  log_msg(log_path, "SAP §3.1 H1/H2 fallback; §3.2 H3 fallback; §3.3 RT/AE t-tests; §3.4 vision sensitivity.")
-  log_msg(log_path, "Q7 path locked: H1 Wilcoxon, H2 Friedman, H3 Wilcoxon; RT paired t; AE paired t.")
+  log_msg(log_path, "Study 1 aligned with Study 2: vision primary, Difficulty levels, rank-diff rounding when rank tests used.")
+  if (isTRUE(SAP$study1_primary_vision_exclusion)) {
+    log_msg(log_path, "Primary vision exclusion: Ishihara 4/4 AND questionnaire pass (real data).")
+  }
 
   summaries <- study1_prep$summaries
   extra_diag <- save_study1_assumption_hists(summaries, log_path)
   q8 <- list.files(OUTPUT_FIGURES, pattern = "study1_diag_.*\\.png$", full.names = TRUE)
   q7_path <- write_q7_client_report(sort(unique(c(q8, extra_diag))), log_path)
   log_effectsize_versions(log_path)
-  log_study1_q7_lock(log_path)
+  log_study1_test_config(log_path)
 
+  hold_inferential <- identical(DATA_SOURCE, "real") && isTRUE(SAP$study1_q7_hold_inferential)
+  if (hold_inferential) {
+    source(file.path(PROJECT_ROOT, "R", "utils_figures_study1.R"), local = FALSE)
+    log_msg(log_path, "Q7 hold: inferential tables deferred until client reviews diagnostics and locks test path.")
+    h3_fig <- h3_mean_ci_for_figure(summaries)
+    rt_ms <- list(
+      orig = mean_sd_ci(summaries$mean_rt_ms_Original),
+      opt = mean_sd_ci(summaries$mean_rt_ms_Optimized)
+    )
+    write_study1_figures(
+      study1$discrimination, study1$pairwise, h3_fig, rt_ms, log_path
+    )
+    log_msg(log_path, "ANALYSIS HELD at diagnostics + figures (Q7). No inferential tables written.")
+    message("run_study1_analyse finished. Q7 hold: inferential outputs skipped on real data.")
+    return(list(primary = NULL, vision = NULL, q7_path = q7_path, log_path = log_path, q7_hold = TRUE))
+  }
+
+  n_primary <- nrow(summaries)
+  log_msg(log_path, "primary n_participants=", n_primary)
   primary <- run_study1_primary_bundle(summaries, log_path, "primary")
+  log_msg(log_path, "RT inferential analysis scale=", primary$rt_scale)
 
   disc <- study1$discrimination
   pw <- study1$pairwise
@@ -137,50 +126,54 @@ run_study1_analyse <- function(study1, study1_prep) {
   ae_k <- cell_mean_ci(ae_part, "absolute_error")
   pw_rt <- pairwise_rt_desc(pw)
 
-  keep <- vision_subset_ids(vis)
-  log_msg(log_path, "vision_sensitivity n_ids=", length(keep),
-          " (SAP expected ", as.integer(SAP$vision_subset_n_study1), ")")
-  if (identical(DATA_SOURCE, "synthetic") &&
-      length(keep) != as.integer(SAP$vision_subset_n_study1)) {
-    stop("Vision sensitivity N is not ", SAP$vision_subset_n_study1, ".", call. = FALSE)
+  if (isTRUE(SAP$study1_primary_vision_exclusion)) {
+    log_msg(log_path, "vision_sensitivity skipped: primary already applies Ishihara 4/4 rule.")
+    vision_tab <- data.frame(
+      analysis = character(),
+      n = integer(),
+      statistic = numeric(),
+      df = numeric(),
+      p = numeric(),
+      effect_size = numeric(),
+      es_name = character(),
+      primary_p = numeric(),
+      sig_agrees_with_primary = logical(),
+      stringsAsFactors = FALSE
+    )
+    sens <- list(n = 0L)
+  } else {
+    keep <- vision_subset_ids(vis)
+    log_msg(log_path, "vision_sensitivity n_ids=", length(keep),
+            " (SAP expected ", as.integer(SAP$vision_subset_n_study1), ")")
+    if (identical(DATA_SOURCE, "synthetic") &&
+        length(keep) != as.integer(SAP$vision_subset_n_study1)) {
+      stop("Vision sensitivity N is not ", SAP$vision_subset_n_study1, ".", call. = FALSE)
+    }
+    disc_s <- disc[disc$participant_id %in% keep, , drop = FALSE]
+    pw_s <- pw[pw$participant_id %in% keep, , drop = FALSE]
+    sum_s <- summarise_study1_participants(disc_s, pw_s, log_path)
+    sens <- run_study1_h1_h2_h3(sum_s, log_path, "vision_sens")
+    vision_tab <- build_study1_vision_sensitivity_table(sens, primary)
+    log_msg(log_path, "vision_sensitivity H1_sig_agrees=", vision_tab$sig_agrees_with_primary[1],
+            " H2_sig_agrees=", vision_tab$sig_agrees_with_primary[2],
+            " H3_sig_agrees=", vision_tab$sig_agrees_with_primary[3])
   }
-  disc_s <- disc[disc$participant_id %in% keep, , drop = FALSE]
-  pw_s <- pw[pw$participant_id %in% keep, , drop = FALSE]
-  sum_s <- summarise_study1_participants(disc_s, pw_s, log_path)
-  sens <- run_h1_h2_h3(sum_s, log_path, "vision_sens")
-  vision_tab <- data.frame(
-    analysis = c("H1_paired_wilcoxon", "H2_friedman", "H3_onesample_wilcoxon"),
-    n = sens$n,
-    statistic = c(sens$h1$V, sens$h2$statistic, sens$h3$V),
-    df = c(NA_real_, sens$h2$df, NA_real_),
-    p = c(sens$h1$p, sens$h2$p, sens$h3$p),
-    effect_size = c(sens$h1$r_rb, sens$h2$kendalls_w, sens$h3$r_rb),
-    es_name = c("rank_biserial", "kendalls_w", "rank_biserial"),
-    primary_p = c(primary$h1$p, primary$h2$p, primary$h3$p),
-    sig_agrees_with_primary = c(
-      (sens$h1$p < SAP$alpha) == (primary$h1$p < SAP$alpha),
-      (sens$h2$p < SAP$alpha) == (primary$h2$p < SAP$alpha),
-      (sens$h3$p < SAP$alpha) == (primary$h3$p < SAP$alpha)
-    ),
-    stringsAsFactors = FALSE
-  )
-  log_msg(log_path, "vision_sensitivity H1_sig_agrees=", vision_tab$sig_agrees_with_primary[1],
-          " H2_sig_agrees=", vision_tab$sig_agrees_with_primary[2],
-          " H3_sig_agrees=", vision_tab$sig_agrees_with_primary[3])
 
-  acc_cells <- cell_mean_ci(accuracy_long_from_summary(summaries), "accuracy")
   write_study1_tables(primary, vision_tab, ae_k, pw_rt, log_path)
+  h3_fig <- list(
+    mean = primary$h3$mean,
+    ci_low = primary$h3$ci_low,
+    ci_high = primary$h3$ci_high
+  )
   write_study1_figures(
-    acc_cells,
-    primary$h3,
+    disc, pw, h3_fig,
     list(orig = primary$rt_ms_orig, opt = primary$rt_ms_opt),
-    ae_k,
     log_path
   )
 
-  log_msg(log_path, "ANALYSIS COMPLETE. Q7 locked npar H1/H2/H3; RT/AE paired t. Numbers are ",
+  log_msg(log_path, "ANALYSIS COMPLETE. Configured test path. Numbers are ",
           if (identical(DATA_SOURCE, "synthetic")) "synthetic pipeline output." else "from the loaded data.")
-  message("run_study1_analyse finished. Q7 locked path applied.")
+  message("run_study1_analyse finished.")
   list(
     primary = primary,
     vision = sens,

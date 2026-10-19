@@ -16,6 +16,7 @@ run_study1_prepare <- function(study1) {
   }
   start_log(log_path, prep_title)
   log_msg(log_path, "Prepare step only. H1-H3 / ES / Q13 figures run in analyse, not here.")
+  log_msg(log_path, "Three Difficulty levels (1-3) averaged within Condition x K cells for H1/H2.")
 
   study1 <- apply_study1_primary_population(study1, log_path)
   study1 <- apply_study1_q31_dedup(study1, log_path)

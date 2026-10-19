@@ -466,8 +466,8 @@ extract_rank_biserial <- function(rb) {
 }
 
 # SAP §3.1 H1 / §3.2 H3 / Q10. Two-sided Wilcoxon on non-zero diffs.
-paired_wilcoxon_opt_minus_orig <- function(opt, orig) {
-  z <- nonzero_paired_diffs(opt, orig)
+paired_wilcoxon_on_diff <- function(d) {
+  z <- nonzero_paired_diffs(d, mu = 0)
   if (z$n_nonzero < 1L) {
     stop("Paired Wilcoxon: no non-zero differences after Q10 omit-zeros.", call. = FALSE)
   }
@@ -495,6 +495,14 @@ paired_wilcoxon_opt_minus_orig <- function(opt, orig) {
     r_ci_low = rb$r_ci_low,
     r_ci_high = rb$r_ci_high
   )
+}
+
+paired_wilcoxon_opt_minus_orig <- function(opt, orig) {
+  z <- nonzero_paired_diffs(opt, orig)
+  if (z$n_nonzero < 1L) {
+    stop("Paired Wilcoxon: no non-zero differences after Q10 omit-zeros.", call. = FALSE)
+  }
+  paired_wilcoxon_on_diff(opt - orig)
 }
 
 onesample_wilcoxon_vs <- function(x, mu) {
@@ -536,10 +544,18 @@ onesample_wilcoxon_vs <- function(x, mu) {
   )
 }
 
-k_diff_matrix <- function(summary_df) {
-  k_order <- as.integer(SAP$k_levels_study1)
+k_diff_matrix <- function(summary_df, k_levels = NULL, round_digits = NULL) {
+  k_order <- if (is.null(k_levels)) {
+    as.integer(SAP$k_levels_study1)
+  } else {
+    as.integer(k_levels)
+  }
   cols <- lapply(k_order, function(k) {
-    summary_df[[paste0("acc_Optimized_K", k)]] - summary_df[[paste0("acc_Original_K", k)]]
+    d <- summary_df[[paste0("acc_Optimized_K", k)]] - summary_df[[paste0("acc_Original_K", k)]]
+    if (!is.null(round_digits)) {
+      d <- round(as.numeric(d), as.integer(round_digits))
+    }
+    d
   })
   mat <- do.call(cbind, cols)
   colnames(mat) <- paste0("K", k_order)
@@ -550,8 +566,8 @@ k_diff_matrix <- function(summary_df) {
 }
 
 # SAP §3.1 H2 fallback: Friedman on Opt-Orig diffs across K. Q9 Kendall's W.
-friedman_h2_on_k_diffs <- function(summary_df) {
-  mat <- k_diff_matrix(summary_df)
+friedman_h2_on_k_diffs <- function(summary_df, k_levels = NULL, round_digits = NULL) {
+  mat <- k_diff_matrix(summary_df, k_levels = k_levels, round_digits = round_digits)
   ft <- stats::friedman.test(mat)
   w <- as.data.frame(effectsize::kendalls_w(
     mat,
@@ -577,8 +593,12 @@ friedman_h2_on_k_diffs <- function(summary_df) {
 }
 
 # SAP §3.1: if Friedman sig, pairwise Wilcoxon on the K-difference scores, Holm x 6.
-h2_friedman_followups <- function(summary_df, friedman_p) {
-  k_order <- as.integer(SAP$k_levels_study1)
+h2_friedman_followups <- function(summary_df, friedman_p, k_levels = NULL, round_digits = NULL) {
+  k_order <- if (is.null(k_levels)) {
+    as.integer(SAP$k_levels_study1)
+  } else {
+    as.integer(k_levels)
+  }
   alpha <- as.numeric(SAP$alpha)
   if (is.na(friedman_p) || friedman_p >= alpha) {
     return(list(
@@ -587,7 +607,7 @@ h2_friedman_followups <- function(summary_df, friedman_p) {
       rows = data.frame()
     ))
   }
-  mat <- k_diff_matrix(summary_df)
+  mat <- k_diff_matrix(summary_df, k_levels = k_levels, round_digits = round_digits)
   pairs <- utils::combn(k_order, 2)
   rows <- list()
   for (j in seq_len(ncol(pairs))) {
@@ -595,7 +615,12 @@ h2_friedman_followups <- function(summary_df, friedman_p) {
     kb <- pairs[2, j]
     da <- mat[, paste0("K", ka)]
     db <- mat[, paste0("K", kb)]
-    z <- nonzero_paired_diffs(da, db)
+    if (!is.null(round_digits)) {
+      d_pair <- round(as.numeric(da) - as.numeric(db), as.integer(round_digits))
+      z <- nonzero_paired_diffs(d_pair, mu = 0)
+    } else {
+      z <- nonzero_paired_diffs(da, db)
+    }
     if (z$n_nonzero < 1L) {
       rows[[length(rows) + 1L]] <- data.frame(
         K_a = ka,
@@ -614,7 +639,11 @@ h2_friedman_followups <- function(summary_df, friedman_p) {
         stringsAsFactors = FALSE
       )
     } else {
-      ww <- paired_wilcoxon_opt_minus_orig(da, db)
+      ww <- if (!is.null(round_digits)) {
+        paired_wilcoxon_on_diff(d_pair)
+      } else {
+        paired_wilcoxon_opt_minus_orig(da, db)
+      }
       rows[[length(rows) + 1L]] <- data.frame(
         K_a = ka,
         K_b = kb,
@@ -639,4 +668,138 @@ h2_friedman_followups <- function(summary_df, friedman_p) {
     out$p_holm[estim] <- holm_adjust(out$p_raw[estim])
   }
   list(ran = TRUE, reason = "friedman_significant", rows = out)
+}
+
+# --- Study 1 Q7 open path orchestration (Oct 2026; aligned with Study 2) ---
+
+study1_rank_diff_digits <- function() {
+  as.integer(require_param("study1_rank_diff_round_digits"))
+}
+
+study1_round_rank_diff <- function(d) {
+  round(as.numeric(d), study1_rank_diff_digits())
+}
+
+log_study1_test_config <- function(log_path) {
+  log_msg(
+    log_path,
+    "Study 1 configured tests: H1=", require_param("study1_h1_test"),
+    " H2=", require_param("study1_h2_test"),
+    " H3=", require_param("study1_h3_test"),
+    " RT=", require_param("study1_rt_test"),
+    " AE=", require_param("study1_ae_test"),
+    " q7_path_locked=", isTRUE(SAP$q7_path_locked),
+    " rank_diff_round_digits=", study1_rank_diff_digits()
+  )
+}
+
+run_study1_rank_h1_h2_h3 <- function(summary_df, log_path, label) {
+  n <- nrow(summary_df)
+  rd <- study1_rank_diff_digits()
+  k_levels <- as.integer(SAP$k_levels_study1)
+  log_msg(log_path, label, " n_participants=", n)
+  log_study1_test_config(log_path)
+  log_msg(
+    log_path, label,
+    " H1/H2 rank-based inputs: difference scores rounded to ",
+    rd, " decimal places before Wilcoxon/Friedman."
+  )
+
+  d_h1 <- study1_round_rank_diff(summary_df$acc_Optimized - summary_df$acc_Original)
+  h1 <- paired_wilcoxon_on_diff(d_h1)
+  log_msg(log_path, label, " H1 V=", sprintf("%.4f", h1$V),
+          " p=", sprintf("%.4f", h1$p),
+          " n_nonzero=", h1$n_nonzero, " n_zero=", h1$n_zero,
+          " r_rb=", sprintf("%.4f", h1$r_rb))
+
+  h2 <- friedman_h2_on_k_diffs(summary_df, k_levels = k_levels, round_digits = rd)
+  log_msg(log_path, label, " H2 Friedman chi2=", sprintf("%.4f", h2$statistic),
+          " df=", h2$df, " p=", sprintf("%.4f", h2$p),
+          " W=", sprintf("%.4f", h2$kendalls_w))
+
+  follow <- h2_friedman_followups(summary_df, h2$p, k_levels = k_levels, round_digits = rd)
+  log_msg(log_path, label, " H2_followups_ran=", follow$ran, " reason=", follow$reason)
+
+  h3_test <- require_param("study1_h3_test")
+  h3 <- if (identical(h3_test, "onesample_t")) {
+    onesample_t_vs(summary_df$pairwise_prop_optimized, as.numeric(SAP$h3_null))
+  } else {
+    onesample_wilcoxon_vs(summary_df$pairwise_prop_optimized, as.numeric(SAP$h3_null))
+  }
+  if (identical(h3_test, "onesample_t")) {
+    log_msg(log_path, label, " H3 t=", sprintf("%.4f", h3$t),
+            " p=", sprintf("%.4f", h3$p), " mean=", sprintf("%.4f", h3$mean))
+  } else {
+    log_msg(log_path, label, " H3 V=", sprintf("%.4f", h3$V),
+            " p=", sprintf("%.4f", h3$p), " mean=", sprintf("%.4f", h3$mean))
+  }
+
+  list(n = n, h1 = h1, h2 = h2, follow = follow, h3 = h3, rank_diff_digits = rd)
+}
+
+run_study1_anova_h1_h2_h3 <- function(summary_df, log_path, label) {
+  n <- nrow(summary_df)
+  log_msg(log_path, label, " n_participants=", n)
+  log_study1_test_config(log_path)
+  log_msg(log_path, label, " SAP recommended H1/H2 RM-ANOVA; H3 one-sample t (Q7 path open).")
+
+  long_acc <- accuracy_long_from_summary(summary_df)
+  fit <- fit_study1_rm_anova(long_acc)
+  sph <- mauchly_table(fit)
+  es <- partial_eta_table(fit)
+  h1 <- anova_effect_report(fit, "condition", 2L, sph, es)
+  h2 <- anova_effect_report(fit, "condition:K", 4L, sph, es)
+  follow <- h2_followups(summary_df, h2$p)
+  h3 <- onesample_t_vs(summary_df$pairwise_prop_optimized, as.numeric(SAP$h3_null))
+
+  list(n = n, h1 = h1, h2 = h2, follow = follow, h3 = h3, fit = fit)
+}
+
+run_study1_h1_h2_h3 <- function(summary_df, log_path, label) {
+  h1_test <- require_param("study1_h1_test")
+  if (identical(h1_test, "paired_wilcoxon")) {
+    return(run_study1_rank_h1_h2_h3(summary_df, log_path, label))
+  }
+  run_study1_anova_h1_h2_h3(summary_df, log_path, label)
+}
+
+build_study1_vision_sensitivity_table <- function(sens, primary) {
+  h1_rank <- identical(require_param("study1_h1_test"), "paired_wilcoxon")
+  if (h1_rank) {
+    h3_stat <- if (!is.null(sens$h3$V)) sens$h3$V else sens$h3$t
+    h3_es <- if (!is.null(sens$h3$r_rb)) sens$h3$r_rb else sens$h3$d
+    data.frame(
+      analysis = c("H1_condition", "H2_condition_K", "H3_onesample"),
+      n = sens$n,
+      statistic = c(sens$h1$V, sens$h2$statistic, h3_stat),
+      df = c(NA_real_, sens$h2$df, if (!is.null(sens$h3$df)) sens$h3$df else NA_real_),
+      p = c(sens$h1$p, sens$h2$p, sens$h3$p),
+      effect_size = c(sens$h1$r_rb, sens$h2$kendalls_w, h3_es),
+      es_name = c("rank_biserial", "kendalls_w", if (!is.null(sens$h3$r_rb)) "rank_biserial" else "cohens_d"),
+      primary_p = c(primary$h1$p, primary$h2$p, primary$h3$p),
+      sig_agrees_with_primary = c(
+        (sens$h1$p < SAP$alpha) == (primary$h1$p < SAP$alpha),
+        (sens$h2$p < SAP$alpha) == (primary$h2$p < SAP$alpha),
+        (sens$h3$p < SAP$alpha) == (primary$h3$p < SAP$alpha)
+      ),
+      stringsAsFactors = FALSE
+    )
+  } else {
+    data.frame(
+      analysis = c("H1_condition", "H2_condition_K", "H3_onesample_t"),
+      n = sens$n,
+      statistic = c(sens$h1$F, sens$h2$F, sens$h3$t),
+      df = c(sens$h1$df_den, sens$h2$df_den, sens$h3$df),
+      p = c(sens$h1$p, sens$h2$p, sens$h3$p),
+      effect_size = c(sens$h1$pes, sens$h2$pes, sens$h3$d),
+      es_name = c("partial_eta_sq", "partial_eta_sq", "cohens_d"),
+      primary_p = c(primary$h1$p, primary$h2$p, primary$h3$p),
+      sig_agrees_with_primary = c(
+        (sens$h1$p < SAP$alpha) == (primary$h1$p < SAP$alpha),
+        (sens$h2$p < SAP$alpha) == (primary$h2$p < SAP$alpha),
+        (sens$h3$p < SAP$alpha) == (primary$h3$p < SAP$alpha)
+      ),
+      stringsAsFactors = FALSE
+    )
+  }
 }

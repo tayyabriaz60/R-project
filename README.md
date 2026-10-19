@@ -16,9 +16,10 @@ Implementation of the **frozen SAP** (21 September 2026). The scripts follow the
 | Q13/Q14 tables (`.csv` + `.docx`) and figures (`.png` 300 dpi + `.pdf`) | Ready |
 | Helper unit tests (toy data) | 79 passed on Kaggle (fresh session) |
 | Study 2 load, prepare, figures, vision primary exclusion, diagnostics | Ready (Kaggle synthetic: 152 helper tests, Oct 2026) |
-| Study 2 inferential (real) | Held until Q32 diagnostic review (`study2_q32_hold_inferential`); synthetic runs full ANOVA/t pipeline test |
-| Study 2 test path | SAP recommended ANOVA / t. Study 1 npar lock **not** inherited until Q32 answered |
-| Study 3 | **Not implemented** |
+| Study 2 inferential (real) | Q32 mixed path enabled (`study2_q32_hold_inferential = FALSE`) |
+| Study 2 test path | H1 Wilcoxon, H2 Friedman (+ Holm Wilcoxon follow-ups), H3/RT/AE t; rank diffs rounded before rank tests |
+| Study 3 load, prepare, vision primary (Ishihara; synthetic N=46), H4–H7 + RT/AE | Ready on synthetic (`run_study3.R`) |
+| Study 3 inferential (real) | Parametric path enabled (`study3_q_hold_inferential = FALSE`; see `docs/STUDY3_Q7_RECOMMENDATION.md`) |
 
 ## R versions
 
@@ -61,6 +62,21 @@ Study 2 (separate from `run_all.R`):
 ```r
 PROJECT_ROOT <- "C:/path/to/this/folder"
 source(file.path(PROJECT_ROOT, "run_study2.R"))
+```
+
+Study 3:
+
+```r
+PROJECT_ROOT <- "C:/path/to/this/folder"
+source(file.path(PROJECT_ROOT, "run_study3.R"))
+```
+
+**Kaggle (clone + synthetic test):** add this repo as a dataset or clone in a notebook, then:
+
+```r
+PROJECT_ROOT <- "/kaggle/input/r-project"   # match your dataset folder name
+source(file.path(PROJECT_ROOT, "kaggle", "run_study3.R"))
+# optional: source(file.path(PROJECT_ROOT, "kaggle", "run_tests.R"))
 ```
 
 Switch synthetic vs real in **one place**: `DATA_SOURCE` in `config/config.R`.

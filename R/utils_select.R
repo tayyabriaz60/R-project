@@ -84,3 +84,7 @@ apply_study1_analysis_id <- function(df, file_label) {
 apply_study2_analysis_id <- function(df, file_label) {
   apply_analysis_id(df, require_param("study2_id_column"), file_label)
 }
+
+apply_study3_analysis_id <- function(df, file_label) {
+  apply_analysis_id(df, require_param("study3_id_column"), file_label)
+}

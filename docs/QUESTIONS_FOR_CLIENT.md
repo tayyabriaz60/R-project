@@ -196,13 +196,8 @@ A short polite cover note is at the bottom. You can paste the BLOCKING Study 1 q
 - **Until answered:** Synthetic Study 2 excludes `S2_RESEARCHER_EXCLUDE` (Public ID). Real load `stop()`s until the real identifier is set in config.
 - **Suggested message:** “For Study 2, what identifier marks the researcher session in the real Gorilla export so we do not hard-code only the synthetic ID?”
 
-### Q32 — BLOCKING Study 2 test path
-- **Where:** SAP §4.1 “same … fallback procedure as Study 1”; Study 1 Q7 path was locked after you reviewed **Study 1** real-data plots (H1 Wilcoxon, H2 Friedman, H3 Wilcoxon; RT/AE t).
-- **Issue:** That lock was a Study 1 decision. Study 2 data may look different. The SAP still names ANOVA as the recommended path, with npar only if severe non-normality.
-- **Options:** (A) I generate Study 2 Q8 diagnostics first; you review them; then we lock Study 2 (same process as Study 1). (B) You want Study 2 to use the same locked npar path as Study 1 without a second plot review.
-- **Impact:** Which tests are reported for Study 2 H1–H3 / RT / AE.
-- **Until answered:** Study 2 uses the SAP recommended ANOVA / t path on **synthetic** pipeline tests. On **real** data, inferential tables are **held** (`study2_q32_hold_inferential = TRUE`) until Fatimah reviews Study 2 diagnostics (Oct 2026).
-- **Suggested message:** “For Study 2, should I send you the diagnostic plots first (as we did for Study 1), or apply the same locked Wilcoxon/Friedman path you chose for Study 1?”
+### Q32 — ANSWERED (Oct 2026): Study 2 mixed path
+- **Decision:** H1 paired Wilcoxon; H2 Friedman with Holm pairwise Wilcoxon follow-ups only if Friedman is significant; H3 two-sided one-sample **t** vs 0.50; RT/AE paired **t**. Difference scores for rank tests rounded to 10 decimals before Wilcoxon/Friedman. Real primary N = 42 after vision exclusions. Documented in `DECISIONS_LOG.md` and `study2_q7_fallback_review` log.
 
 ### Q33 — BLOCKING Study 2 real files
 - **Where:** Dictionary §2 Study 2 export `data_exp_263105-vall`; Study 1 real files were found by task id (`task-y3n9`, …).

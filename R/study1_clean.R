@@ -1,5 +1,5 @@
 # Study 1 population + Q31 duplicate cleaning. Q2. SAP §1, §3.4.
-# Key (Q31): participant x Condition x K x configuration_instance (variation).
+# Key (Q31): participant x Condition x K x configuration_instance (Difficulty levels 1-3).
 # Keep: earliest UTC Timestamp, Event Index as tie-breaker.
 
 source(file.path(PROJECT_ROOT, "R", "utils_logging.R"))
@@ -112,15 +112,31 @@ apply_study1_discrimination_dedup <- function(disc) {
 }
 
 apply_study1_primary_population <- function(study1, log_path) {
+  source(file.path(PROJECT_ROOT, "R", "study1_vision_primary.R"), local = FALSE)
+  log_msg(log_path, "Population: researcher excluded at load (when configured).")
+  log_msg(log_path, "Accuracy cells average three Difficulty levels within each Condition x K.")
+  study1 <- apply_study1_vision_primary_exclusions(study1, log_path)
   disc <- study1$discrimination
   n_id <- n_unique_nonempty(disc$participant_id)
-  log_msg(log_path, "Q2 population: all recruited participants in the loaded files; no outcome-based exclusion")
-  log_msg(log_path, "Q2 self-test session: not present in these files (outside sample); no extra drop")
-  log_msg(log_path, "Q1 vision subset: not applied as a primary exclusion")
-  log_msg(log_path, "Q2 n_unique_participant_id=", n_id,
-          " (synthetic expected ", as.integer(SAP$primary_n_study1), ")")
+  log_msg(log_path, "primary n_unique_participant_id=", n_id,
+          if (identical(DATA_SOURCE, "synthetic")) {
+            paste0(" (synthetic expected ", as.integer(SAP$primary_n_study1), ")")
+          } else {
+            " (real; after Ishihara 4/4 + questionnaire when enabled)"
+          })
+  if (isTRUE(SAP$study1_primary_vision_exclusion)) {
+    log_msg(log_path, "study1_primary_vision_exclusion=TRUE (Ishihara 4/4 + questionnaire).")
+  }
   if (identical(DATA_SOURCE, "synthetic") && n_id != as.integer(SAP$primary_n_study1)) {
-    stop("Q2: synthetic primary N is not ", SAP$primary_n_study1, ".", call. = FALSE)
+    stop("Study 1: synthetic primary N is not ", SAP$primary_n_study1, ".", call. = FALSE)
+  }
+  if (identical(DATA_SOURCE, "real") && !is.na(SAP$study1_primary_n_real) &&
+      n_id != as.integer(SAP$study1_primary_n_real)) {
+    stop(
+      "Study 1: real primary N is ", n_id, " but expected ",
+      SAP$study1_primary_n_real, " after exclusions.",
+      call. = FALSE
+    )
   }
   study1
 }

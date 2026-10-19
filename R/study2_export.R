@@ -1,34 +1,8 @@
-# Study 2 Q13/Q14 tables and figures. SAP §4. Q30 colours. Q32 npar not applied.
+# Study 2 Q13/Q14 tables and figures. SAP §4. Q30 colours. Q32 mixed path.
 # Table/figure layout is thesis-ready (client 29 Sep 2026). Tests unchanged.
 
 source(file.path(PROJECT_ROOT, "R", "study1_export.R"))
-
-cond_mean_table <- function(n, mean_a, sd_a, lo_a, hi_a, mean_b, sd_b, lo_b, hi_b) {
-  data.frame(
-    Condition = c("Original", "Optimized"),
-    N = n,
-    Mean = c(fmt_num(mean_a, 3), fmt_num(mean_b, 3)),
-    SD = c(fmt_num(sd_a, 3), fmt_num(sd_b, 3)),
-    `95% CI` = c(fmt_ci(lo_a, hi_a, 3), fmt_ci(lo_b, hi_b, 3)),
-    check.names = FALSE,
-    stringsAsFactors = FALSE
-  )
-}
-
-paired_test_table <- function(diff, lo, hi, t, df, p, d, d_lo, d_hi) {
-  data.frame(
-    Comparison = "Optimized - Original",
-    `Mean difference` = fmt_num(diff, 3),
-    `95% CI` = fmt_ci(lo, hi, 3),
-    t = fmt_num(t, 3),
-    df = fmt_num(df, 2),
-    p = fmt_p(p),
-    `Cohen's dz` = fmt_num(d, 3),
-    `dz 95% CI` = fmt_ci(d_lo, d_hi, 3),
-    check.names = FALSE,
-    stringsAsFactors = FALSE
-  )
-}
+source(file.path(PROJECT_ROOT, "R", "export_table_helpers.R"))
 
 write_study2_tables <- function(primary, vision_tab, ae_k, pw_rt, log_path) {
   n <- primary$n
@@ -45,61 +19,128 @@ write_study2_tables <- function(primary, vision_tab, ae_k, pw_rt, log_path) {
     log_path
   )
 
-  write_table_csv_docx(
-    data.frame(
-      Hypothesis = c("H1 Condition", "H2 Condition x K"),
-      F = c(fmt_num(primary$h1$F, 3), fmt_num(primary$h2$F, 3)),
-      df = c(fmt_df(primary$h1$df_num, primary$h1$df_den), fmt_df(primary$h2$df_num, primary$h2$df_den)),
-      p = c(fmt_p(primary$h1$p), fmt_p(primary$h2$p)),
-      `Partial eta-squared` = c(fmt_num(primary$h1$pes, 3), fmt_num(primary$h2$pes, 3)),
-      `95% CI` = c(
-        fmt_ci(primary$h1$pes_ci_low, primary$h1$pes_ci_high, 3),
-        fmt_ci(primary$h2$pes_ci_low, primary$h2$pes_ci_high, 3)
-      ),
-      `Mauchly p` = c(fmt_p(primary$h1$mauchly_p), fmt_p(primary$h2$mauchly_p)),
-      Sphericity = c(primary$h1$sphericity_correction, primary$h2$sphericity_correction),
-      check.names = FALSE,
-      stringsAsFactors = FALSE
-    ),
-    "study2_table_h1_h2_anova",
-    "Study 2: H1/H2 repeated-measures ANOVA (Condition x K)",
-    c(note_n, "Greenhouse-Geisser applied when Mauchly p < .05. Holm follow-ups only if H2 is significant."),
-    log_path
-  )
-
-  if (isTRUE(primary$follow$ran) && nrow(primary$follow$rows) > 0L) {
-    fr <- primary$follow$rows
-    follow_df <- data.frame(
-      K = fr$K,
-      Estimable = fr$estimable,
-      `Mean difference` = fmt_num(fr$mean_diff, 3),
-      `95% CI` = fmt_ci(fr$ci_low, fr$ci_high, 3),
-      t = fmt_num(fr$t, 3),
-      df = fmt_num(fr$df, 2),
-      p = fmt_p(fr$p_raw),
-      `p (Holm)` = fmt_p(fr$p_holm),
-      `Cohen's dz` = fmt_num(fr$d_z, 3),
-      check.names = FALSE,
-      stringsAsFactors = FALSE
+  notes_acc <- c(
+    note_n,
+    "Accuracy is averaged across Difficulty instances within Condition x K, then across K for H1.",
+    paste0(
+      "Q32 locked path: rank-based tests use Optimized-Original difference scores rounded to ",
+      as.integer(SAP$study2_rank_diff_round_digits),
+      " decimals before ranking (Q10 zero handling unchanged)."
     )
+  )
+  if (identical(require_param("study2_h1_test"), "paired_wilcoxon")) {
+    h1 <- primary$h1
     write_table_csv_docx(
-      follow_df, "study2_table_h2_followups",
-      "Study 2: H2 follow-up paired t-tests at each K",
-      c(note_n, "Holm adjustment within this family of four comparisons."),
+      data.frame(
+        hypothesis = "H1_Condition",
+        test = "paired_wilcoxon",
+        n_pairs = h1$n_pairs,
+        n_zero = h1$n_zero,
+        n_nonzero = h1$n_nonzero,
+        V = h1$V,
+        p = h1$p,
+        rank_biserial = h1$r_rb,
+        r_ci_low = h1$r_ci_low,
+        r_ci_high = h1$r_ci_high,
+        stringsAsFactors = FALSE
+      ),
+      "study2_table_h1_wilcoxon",
+      "Study 2: H1 paired Wilcoxon signed-rank test (Optimized vs Original accuracy)",
+      notes_acc,
       log_path
     )
+    h2 <- primary$h2
+    write_table_csv_docx(
+      data.frame(
+        hypothesis = "H2_Condition_x_K",
+        test = "friedman_opt_minus_orig_by_k",
+        n = h2$n,
+        n_k = h2$n_k,
+        chi_squared = h2$statistic,
+        df = h2$df,
+        p = h2$p,
+        kendalls_w = h2$kendalls_w,
+        w_ci_low = h2$w_ci_low,
+        w_ci_high = h2$w_ci_high,
+        stringsAsFactors = FALSE
+      ),
+      "study2_table_h2_friedman",
+      "Study 2: H2 Friedman test of Optimized-Original accuracy differences across K",
+      notes_acc,
+      log_path
+    )
+    if (isTRUE(primary$follow$ran) && nrow(primary$follow$rows) > 0L) {
+      write_table_csv_docx(
+        primary$follow$rows, "study2_table_h2_followups",
+        "Study 2: H2 Friedman follow-up pairwise Wilcoxon tests on K-difference scores",
+        c(notes_acc, "Six pairwise Wilcoxon tests on Opt-Orig diffs between K levels. Holm within this family."),
+        log_path
+      )
+    } else {
+      write_table_csv_docx(
+        data.frame(followups_run = FALSE, reason = primary$follow$reason, stringsAsFactors = FALSE),
+        "study2_table_h2_followups",
+        "Study 2: H2 Friedman follow-ups not run",
+        c(notes_acc, paste("Reason:", primary$follow$reason)),
+        log_path
+      )
+    }
   } else {
     write_table_csv_docx(
       data.frame(
-        Follow_ups = "Not run",
-        Reason = primary$follow$reason,
+        Hypothesis = c("H1 Condition", "H2 Condition x K"),
+        F = c(fmt_num(primary$h1$F, 3), fmt_num(primary$h2$F, 3)),
+        df = c(fmt_df(primary$h1$df_num, primary$h1$df_den), fmt_df(primary$h2$df_num, primary$h2$df_den)),
+        p = c(fmt_p(primary$h1$p), fmt_p(primary$h2$p)),
+        `Partial eta-squared` = c(fmt_num(primary$h1$pes, 3), fmt_num(primary$h2$pes, 3)),
+        `95% CI` = c(
+          fmt_ci(primary$h1$pes_ci_low, primary$h1$pes_ci_high, 3),
+          fmt_ci(primary$h2$pes_ci_low, primary$h2$pes_ci_high, 3)
+        ),
+        `Mauchly p` = c(fmt_p(primary$h1$mauchly_p), fmt_p(primary$h2$mauchly_p)),
+        Sphericity = c(primary$h1$sphericity_correction, primary$h2$sphericity_correction),
+        check.names = FALSE,
         stringsAsFactors = FALSE
       ),
-      "study2_table_h2_followups",
-      "Study 2: H2 follow-ups not run",
-      c(note_n, paste("Follow-ups are run only if the Condition x K interaction is significant. Reason:", primary$follow$reason)),
+      "study2_table_h1_h2_anova",
+      "Study 2: H1/H2 repeated-measures ANOVA (Condition x K)",
+      c(note_n, "Greenhouse-Geisser applied when Mauchly p < .05. Holm follow-ups only if H2 is significant."),
       log_path
     )
+    if (isTRUE(primary$follow$ran) && nrow(primary$follow$rows) > 0L) {
+      fr <- primary$follow$rows
+      follow_df <- data.frame(
+        K = fr$K,
+        Estimable = fr$estimable,
+        `Mean difference` = fmt_num(fr$mean_diff, 3),
+        `95% CI` = fmt_ci(fr$ci_low, fr$ci_high, 3),
+        t = fmt_num(fr$t, 3),
+        df = fmt_num(fr$df, 2),
+        p = fmt_p(fr$p_raw),
+        `p (Holm)` = fmt_p(fr$p_holm),
+        `Cohen's dz` = fmt_num(fr$d_z, 3),
+        check.names = FALSE,
+        stringsAsFactors = FALSE
+      )
+      write_table_csv_docx(
+        follow_df, "study2_table_h2_followups",
+        "Study 2: H2 follow-up paired t-tests at each K",
+        c(note_n, "Holm adjustment within this family of four comparisons."),
+        log_path
+      )
+    } else {
+      write_table_csv_docx(
+        data.frame(
+          Follow_ups = "Not run",
+          Reason = primary$follow$reason,
+          stringsAsFactors = FALSE
+        ),
+        "study2_table_h2_followups",
+        "Study 2: H2 follow-ups not run",
+        c(note_n, paste("Follow-ups are run only if the Condition x K interaction is significant. Reason:", primary$follow$reason)),
+        log_path
+      )
+    }
   }
 
   h3 <- primary$h3

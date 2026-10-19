@@ -122,7 +122,8 @@ REAL_STUDY1_TASK_IDS <- list(
   study1_disc_g1 = "task-y3n9",
   study1_disc_g2 = "task-z8oq",
   study1_pairwise = "task-yfcn",
-  study1_vision = "task-hxml"
+  study1_vision = "task-hxml",
+  study1_questionnaire = "questionnaire-oj8k"
 )
 
 # Optional exact path under data/real/ (relative or absolute). NA = find by task id.
@@ -130,11 +131,12 @@ REAL_STUDY1_FILES <- list(
   study1_disc_g1 = NA_character_,
   study1_disc_g2 = NA_character_,
   study1_pairwise = NA_character_,
-  study1_vision = NA_character_
+  study1_vision = NA_character_,
+  study1_questionnaire = NA_character_
 )
 
 # Real Study 2: task IDs pending Q33. Do not guess. Combined file optional.
-# Dictionary §10 names: Discrimination Task G1/G2 (Clone); Pairwise Comparison Task2 (Clone).
+# Dictionary ?10 names: Discrimination Task G1/G2 (Clone); Pairwise Comparison Task2 (Clone).
 REAL_STUDY2_TASK_IDS <- list(
   study2_disc_g1 = "task-fxg1",
   study2_disc_g2 = "task-a5wf",
@@ -152,6 +154,26 @@ REAL_STUDY2_FILES <- list(
 # If she drops one combined Gorilla CSV, set this to that filename under data/real/.
 REAL_STUDY2_COMBINED_FILE <- NA_character_
 
+# Real Study 3: combined export optional; task ids for filename search under data/real/.
+REAL_STUDY3_TASK_IDS <- list(
+  study3_vision = "task-42o4",
+  study3_disc = "task-vq91",
+  study3_pairwise = "task-z9og",
+  study3_questionnaire = "questionnaire-woc5"
+)
+REAL_STUDY3_DISC_TASK_IDS <- c("task-vq91", "task-kywx", "task-pni8", "task-3dnm")
+REAL_STUDY3_PAIRWISE_TASK_IDS <- c("task-z9og", "task-xj8i", "task-efvq", "task-bjwl")
+REAL_STUDY3_QUESTIONNAIRE_TASK_IDS <- c("questionnaire-woc5", "questionnaire-bvmq")
+REAL_STUDY3_FILES <- list(
+  study3_disc = NA_character_,
+  study3_pairwise = NA_character_,
+  study3_vision = NA_character_,
+  # Separate questionnaires export (Fatimah local real run, Oct 2026).
+  study3_questionnaire = "data_exp_275904-v7_questionnaires.csv"
+)
+# Combined tasks export under data/real/ (disc + pairwise + vision in one file).
+REAL_STUDY3_COMBINED_FILE <- "data_exp_275904-v7_tasks.csv"
+
 # -----------------------------------------------------------------------------
 # Seed (technical only; SAP does not specify a seed)
 # Logged in docs/DECISIONS_LOG.md as non-methodological.
@@ -165,26 +187,26 @@ set.seed(SEED)
 # -----------------------------------------------------------------------------
 SAP <- list(
   # --- specified -------------------------------------------------------------
-  alpha = 0.05,                          # SAP §1
-  ci_level = 0.95,                       # SAP §1
-  holm_method = "holm",                  # SAP §1
-  across_hypothesis_correction = FALSE,  # SAP §1; Brief §1
-  h3_null = 0.50,                        # SAP §3.2
-  h3_alternative = "two.sided",          # SAP §3.2
-  rt_include_incorrect_trials = TRUE,    # SAP §3.3.1
-  rt_no_extra_trimming = TRUE,           # SAP §3.3.1
-  rt_skew_log_threshold = 1,             # SAP §3.3.1 (trial-level RT)
-  primary_n_study1 = 50L,                # SAP §3.4
-  vision_subset_n_study1 = 48L,          # SAP §3.4 (size only; rule is Q1)
-  k_levels_study1 = c(5, 10, 20, 30),    # SAP §3.1
-  n_configuration_instances = 3L,        # SAP §3.1
-  disc_trials_per_participant = 24L,     # Dictionary §9
-  pairwise_trials_per_participant = 12L, # SAP §3.2; Dictionary §9
-  vision_n_items = 4L,                   # Dictionary §7
-  vision_correct_keys = c(12, 16, 29, 26), # Dictionary §7
-  sphericity_correction = "greenhouse_geisser", # SAP §3.1 if Mauchly violated
-  keep_k30 = TRUE,                       # SAP §3.4
-  mixed_effects_as_primary = FALSE,      # Brief §1 / §15
+  alpha = 0.05,                          # SAP ?1
+  ci_level = 0.95,                       # SAP ?1
+  holm_method = "holm",                  # SAP ?1
+  across_hypothesis_correction = FALSE,  # SAP ?1; Brief ?1
+  h3_null = 0.50,                        # SAP ?3.2
+  h3_alternative = "two.sided",          # SAP ?3.2
+  rt_include_incorrect_trials = TRUE,    # SAP ?3.3.1
+  rt_no_extra_trimming = TRUE,           # SAP ?3.3.1
+  rt_skew_log_threshold = 1,             # SAP ?3.3.1 (trial-level RT)
+  primary_n_study1 = 50L,                # SAP ?3.4
+  vision_subset_n_study1 = 48L,          # SAP ?3.4 (size only; rule is Q1)
+  k_levels_study1 = c(5, 10, 20, 30),    # SAP ?3.1
+  n_configuration_instances = 3L,        # SAP ?3.1
+  disc_trials_per_participant = 24L,     # Dictionary ?9
+  pairwise_trials_per_participant = 12L, # SAP ?3.2; Dictionary ?9
+  vision_n_items = 4L,                   # Dictionary ?7
+  vision_correct_keys = c(12, 16, 29, 26), # Dictionary ?7
+  sphericity_correction = "greenhouse_geisser", # SAP ?3.1 if Mauchly violated
+  keep_k30 = TRUE,                       # SAP ?3.4
+  mixed_effects_as_primary = FALSE,      # Brief ?1 / ?15
   # --- answered Q1-Q14 (22 Sep 2026); recorded in DECISIONS_LOG ------------
   vision_subset_rule = "score_equals_4", # Q1; sensitivity only, not a primary exclusion
   vision_subset_is_primary_exclusion = FALSE, # Q1
@@ -192,20 +214,31 @@ SAP <- list(
   pairwise_failed_row_rule = "flag_and_stop", # Q3; gate in prepare
   incomplete_cell_rule = "flag_and_stop", # Q4; gate in prepare
   object_name_filter_when_blank = "keep_filter", # Q5
-  object_name_disc = "Response",         # Dict §10; Q5
+  object_name_disc = "Response",         # Dict ?10; Q5
   object_name_pairwise = "Image Response",
   object_name_vision = "Number Entry",
   study1_id_raw_column = "Participant Public ID", # Q6; configurable
   study1_id_column = "participant_public_id",     # Q6 canonical after map
   anonymous_id_prefix_study1 = "S1_P",   # Q6 reporting IDs: S1_P001, ...
   fallback_normality_cutoff = "no_cutoff_diagnostics_then_stop", # Q7
-  # Locked 22 Sep 2026 after her review of the real-data Q7 plots (and Tayyab agree).
+  # Q7 locked 12 Oct 2026 after vision-filtered N=48 diagnostics (same mixed path as Study 2 Q32).
   study1_h1_test = "paired_wilcoxon",
   study1_h2_test = "friedman_on_opt_minus_orig_by_k",
-  study1_h3_test = "onesample_wilcoxon",
+  study1_h3_test = "onesample_t",
   study1_rt_test = "paired_t",
   study1_ae_test = "paired_t",
   q7_path_locked = TRUE,
+  study1_q7_hold_inferential = FALSE,
+  study1_primary_n_real = 48L,
+  study1_primary_vision_exclusion = TRUE,
+  study1_vision_question_snippet = "normal or corrected-to-normal vision",
+  study1_vision_questionnaire_exclude_pattern = "not corrected by glasses",
+  study1_vision_questionnaire_pass_pattern = "see normally or am wearing",
+  study1_rank_diff_round_digits = 10L,
+  study1_researcher_ids_synthetic = "S1_RESEARCHER_EXCLUDE",
+  study1_researcher_ids_real = "9lwz9o9r", # Fatimah 12 Oct 2026; researcher session Public ID
+  study1_researcher_skip_if_unmatched_synthetic = TRUE,
+  study1_difficulty_index_levels = c(1L, 2L, 3L),
   accuracy_histogram_which = c(
     "condition_k_cells_8",
     "h1_opt_minus_orig",
@@ -248,33 +281,76 @@ SAP <- list(
   duplicate_trial_key = "participant_id|condition|K|configuration_instance",
   duplicate_keep_rule = "min_utc_timestamp_then_min_event_index",
   duplicate_dedup_apply = TRUE,
-  # --- Study 2 (SAP §4; Dictionary §5, §9–§10) -----------------------------
+  # --- Study 2 (SAP ?4; Dictionary ?5, ?9??10) -----------------------------
   primary_n_study2 = 50L,                # synthetic pipeline; real primary N after vision exclusions
-  vision_subset_n_study2 = 43L,          # legacy SAP §4.4 sensitivity (skipped when primary vision rule on)
+  vision_subset_n_study2 = 43L,          # legacy SAP ?4.4 sensitivity (skipped when primary vision rule on)
   study2_primary_vision_exclusion = TRUE, # Fatimah Oct 2026: Ishihara 4/4 + questionnaire pass
   study2_vision_question_snippet = "normal or corrected-to-normal vision",
   study2_vision_questionnaire_exclude_pattern = "not corrected by glasses",
   study2_vision_questionnaire_pass_pattern = "see normally or am wearing",
-  study2_q32_hold_inferential = TRUE,    # real: skip inferential tables until post-diagnostic Q32 lock
-  k_levels_study2 = c(5, 10, 20, 30),    # SAP §4.1 same as Study 1
-  study2_difficulty_index_levels = c(1L, 2L, 3L), # Dict §5.1; average across for H1/H2
+  study2_q32_hold_inferential = FALSE,   # Q32 answered Oct 2026: mixed path; inferential tables enabled
+  study2_q32_path_locked = TRUE,         # client-confirmed mixed Wilcoxon/Friedman/t path
+  study2_rank_diff_round_digits = 10L,   # round Opt-Orig diffs before rank tests (float 1/3 ties)
+  study2_primary_n_real = 42L,           # expected primary N after vision exclusions (real data)
+  k_levels_study2 = c(5, 10, 20, 30),    # SAP ?4.1 same as Study 1
+  study2_difficulty_index_levels = c(1L, 2L, 3L), # Dict ?5.1; average across for H1/H2
   study2_task_disc_g1 = "Discrimination Task G1 (Clone)",
   study2_task_disc_g2 = "Discrimination Task G2 (Clone)",
   study2_task_pairwise = "Pairwise Comparison Task2 (Clone)",
   study2_task_vision = "Vision Check",
   study2_id_column = "participant_public_id",
   anonymous_id_prefix_study2 = "S2_P",
-  # Synthetic researcher Public ID (README). Real ID is Q18 — must stay NA.
+  # Synthetic researcher Public ID (README). Real ID is Q18 ? must stay NA.
   study2_researcher_ids_synthetic = "S2_RESEARCHER_EXCLUDE",
   study2_researcher_ids_real = "1z935utu", # Q18; Participant Public ID (1 Oct 2026)
-  # SAP §4.1 recommended path (same as Study 1 before the Study 1 Q7 lock).
-  # Q32: do not inherit Study 1 Wilcoxon/Friedman until she answers.
-  study2_h1_test = "rm_anova_condition",
-  study2_h2_test = "rm_anova_condition_k",
+  # Q32 locked Oct 2026: mixed path (H1/H2 rank-based; H3/RT/AE parametric t).
+  study2_h1_test = "paired_wilcoxon",
+  study2_h2_test = "friedman_on_opt_minus_orig_by_k",
   study2_h3_test = "onesample_t",
   study2_rt_test = "paired_t",
   study2_ae_test = "paired_t",
-  study2_q7_inherit_study1_lock = NA,    # PENDING client answer Q32
+  study2_q7_inherit_study1_lock = FALSE,
+  # --- Study 3 (SAP ?5; Dictionary ?6, ?9??10) -----------------------------
+  primary_n_study3 = 50L,
+  study3_primary_n_after_vision_synthetic = 46L,
+  study3_raw_sessions_real = 51L,
+  study3_primary_n_after_researcher = 50L,
+  study3_primary_n_real = 46L,
+  study3_primary_vision_exclusion = TRUE,
+  study3_vision_question_snippet = "normal or corrected-to-normal vision",
+  study3_vision_questionnaire_exclude_pattern = "not corrected by glasses",
+  study3_vision_questionnaire_pass_pattern = "see normally or am wearing",
+  study3_q_hold_inferential = FALSE,
+  study3_inferential_path_locked = TRUE,
+  study3_accuracy_pairwise_use_fallback = FALSE,
+  disc_trials_per_participant_study3 = 36L,
+  pairwise_trials_per_participant_study3 = 18L,
+  k_levels_study3 = c(10L, 20L, 30L),
+  study3_difficulty_index_levels = c(1L, 2L, 3L),
+  background_level_order = c("White", "Black"),
+  study3_task_disc = "Discrimination Task",
+  study3_task_pairwise = "Task 2 Pairwise Comparison",
+  study3_task_vision = "Vision Check (Clone)",
+  study3_id_column = "participant_public_id",
+  anonymous_id_prefix_study3 = "S3_P",
+  study3_researcher_ids_synthetic = "S3_RESEARCHER_EXCLUDE",
+  study3_researcher_ids_real = "68780190e411d08beb1f706d",
+  study3_researcher_skip_if_unmatched_synthetic = TRUE,
+  study3_object_name_disc = "Response",
+  study3_object_name_pairwise = "Response",
+  study3_pairwise_filter_response_left_right = TRUE,
+  study3_rank_diff_round_digits = 10L,
+  study3_duplicate_trial_key = "participant_id|condition|background|K|difficulty_index",
+  study3_h4_test = "rm_anova",
+  study3_h5_test = "rm_anova_interaction",
+  study3_h4_fallback = "paired_wilcoxon_opt_minus_orig_overall",
+  study3_h5_fallback = "wilcoxon_white_minus_black_opt_orig_diff",
+  study3_h6_test = "onesample_t",
+  study3_h7_test = "paired_t",
+  study3_h6_fallback = "onesample_wilcoxon",
+  study3_h7_fallback = "paired_wilcoxon",
+  study3_rt_test = "rm_anova_2x2",
+  study3_ae_test = "paired_t",
   # --- still pending (must stay NA; do not guess) --------------------------
   geometric_mean_rt_ratio = NA,          # PENDING client answer Q15
   side_label_case = NA,                  # PENDING client answer Q16

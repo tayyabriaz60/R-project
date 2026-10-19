@@ -8,6 +8,7 @@ source(file.path(PROJECT_ROOT, "R", "utils_logging.R"))
 source(file.path(PROJECT_ROOT, "R", "utils_validation.R"))
 source(file.path(PROJECT_ROOT, "R", "utils_io.R"))
 source(file.path(PROJECT_ROOT, "R", "utils_select.R"))
+source(file.path(PROJECT_ROOT, "R", "utils_researcher_exclude.R"))
 
 STUDY1_DISC_RAW <- c(
   "Participant Public ID", "Participant Private ID",
@@ -212,7 +213,8 @@ run_study1_load <- function() {
   log_msg(qc_txt, "DATA_SOURCE=", DATA_SOURCE)
   log_msg(qc_txt, "Applied at load: Q5 Object Name filter; Q6 participant_id from ",
           require_param("study1_id_column"), " + anonymous reporting IDs")
-  log_msg(qc_txt, "Not applied at load: Q2 exclusions/Q31 dedup; Q3 pairwise analysis stop; Q4 incomplete-cell stop; Q1 vision subset as exclusion")
+  log_msg(qc_txt, "Applied at load: SAP researcher exclude (when ID configured); Q5 Object Name")
+  log_msg(qc_txt, "Not applied at load: Q31 dedup; Q3 pairwise analysis stop; Q4 incomplete-cell stop; vision primary (prepare)")
 
   p_g1 <- resolve_study1_file("study1_disc_g1")
   p_g2 <- resolve_study1_file("study1_disc_g2")
@@ -237,6 +239,12 @@ run_study1_load <- function() {
   disc <- apply_study1_analysis_id(disc, "study1_disc")
   pw <- apply_study1_analysis_id(pw, "study1_pairwise")
   vis <- apply_study1_analysis_id(vis, "study1_vision")
+  disc$difficulty_index <- disc$configuration_instance
+  log_msg(qc_txt, "before_researcher_exclude n_unique_participant_id=",
+          n_unique_nonempty(disc$participant_id))
+  disc <- drop_study_researcher(disc, "study1", "study1_disc", qc_txt)
+  pw <- drop_study_researcher(pw, "study1", "study1_pairwise", qc_txt)
+  vis <- drop_study_researcher(vis, "study1", "study1_vision", qc_txt)
   anon_map <- make_anonymous_id_map(
     c(disc$participant_id, pw$participant_id, vis$participant_id),
     prefix = require_param("anonymous_id_prefix_study1")
@@ -251,7 +259,10 @@ run_study1_load <- function() {
 
   assert_allowed_values(disc$condition, c("Original", "Optimized"), "condition", "study1_disc")
   assert_allowed_values(disc$K, SAP$k_levels_study1, "K", "study1_disc")
-  assert_allowed_values(disc$configuration_instance, c(1, 2, 3), "configuration_instance", "study1_disc")
+  assert_allowed_values(disc$configuration_instance, SAP$study1_difficulty_index_levels,
+                       "configuration_instance", "study1_disc")
+  assert_allowed_values(disc$difficulty_index, SAP$study1_difficulty_index_levels,
+                       "difficulty_index", "study1_disc")
   assert_allowed_values(disc$response_type, "response", "response_type", "study1_disc")
   if (identical(DATA_SOURCE, "synthetic")) {
     assert_allowed_values(disc$task_name, c("Discrimination Task G1", "Discrimination Task G2"), "task_name", "study1_disc")
@@ -285,6 +296,9 @@ run_study1_load <- function() {
   log_msg(qc_txt, "disc_condition_counts: Original=", sum(disc$condition == "Original"),
           " Optimized=", sum(disc$condition == "Optimized"))
   log_msg(qc_txt, "disc_K_counts: ", paste(names(table(disc$K)), "=", as.integer(table(disc$K)), collapse = "; "))
+  log_msg(qc_txt, "disc_difficulty_index_counts: ",
+          paste(names(table(disc$difficulty_index)), "=",
+                as.integer(table(disc$difficulty_index)), collapse = "; "))
   log_msg(qc_txt, "disc_object_name_missing=", n_missing(disc$object_name),
           " disc_object_name_expected=", require_param("object_name_disc"))
   log_msg(qc_txt, "disc_correct_mismatch_rows=", sum(disc$correct_mismatch == 1L, na.rm = TRUE))
@@ -327,7 +341,7 @@ run_study1_load <- function() {
       "disc_n_participant_id", "pairwise_n_participant_id", "vision_n_participant_id",
       "disc_n_anon", "disc_correct_mismatch", "pairwise_mapping_fail",
       "vision_n_score4", "vision_subset_applied_as_exclusion",
-      "exclusions_applied", "object_name_filter_applied"
+      "researcher_excluded", "object_name_filter_applied"
     ),
     value = c(
       nrow(disc), nrow(pw), nrow(vis),
@@ -338,7 +352,7 @@ run_study1_load <- function() {
       sum(disc$correct_mismatch == 1L, na.rm = TRUE),
       sum(pw$mapping_fail == 1L, na.rm = TRUE),
       sum(vis_score == 4, na.rm = TRUE),
-      0, 0, 1
+      0, 1, 1
     ),
     stringsAsFactors = FALSE
   )

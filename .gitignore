@@ -1,11 +1,13 @@
 ﻿# Client / local-only (never commit)
 data/real/*
 !data/real/README.md
-output/
+output/*
+!output/README.txt
 docs/spec/
 data/_synthetic_v3_extract/
 *.zip
 *.docx
+delivery/
 
 # R
 .Rhistory

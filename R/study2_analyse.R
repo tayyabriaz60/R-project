@@ -1,7 +1,7 @@
-# Study 2 primary tests. SAP §4: same approach as Study 1 unless stated.
-# Recommended path: 2x4 RM-ANOVA, one-sample t, paired t. Q32 npar not applied.
+# Study 2 primary tests. SAP §4. Q32 locked mixed path (Oct 2026).
 
 source(file.path(PROJECT_ROOT, "R", "study1_models.R"))
+source(file.path(PROJECT_ROOT, "R", "study2_models.R"))
 source(file.path(PROJECT_ROOT, "R", "study1_q7.R"))
 source(file.path(PROJECT_ROOT, "R", "study2_q7.R"))
 source(file.path(PROJECT_ROOT, "R", "study2_export.R"))
@@ -9,9 +9,12 @@ source(file.path(PROJECT_ROOT, "R", "study1_summarise.R"))
 source(file.path(PROJECT_ROOT, "R", "study1_analyse.R"))
 
 run_study2_h1_h2_h3 <- function(summary_df, log_path, label) {
+  if (identical(require_param("study2_h1_test"), "paired_wilcoxon")) {
+    return(run_study2_mixed_h1_h2_h3(summary_df, log_path, label))
+  }
   n <- nrow(summary_df)
   log_msg(log_path, label, " n_participants=", n)
-  log_msg(log_path, label, " SAP recommended H1=rm_anova H2=rm_anova H3=onesample_t (Q32 npar not applied)")
+  log_msg(log_path, label, " legacy parametric H1/H2 RM-ANOVA (not the Q32 locked path)")
 
   long_acc <- accuracy_long_from_summary(summary_df)
   fit <- fit_study1_rm_anova(long_acc)
@@ -92,11 +95,16 @@ run_study2_analyse <- function(study2, study2_prep) {
     "STUDY 2 ANALYSIS (aggregates only; real export; no participant IDs in this log)"
   }
   start_log(log_path, an_title)
-  log_msg(log_path, "SAP §4.1 H1/H2 ANOVA; §4.2 H3 t; §4.3 RT/AE t; §4.4 vision N=43.")
-  log_msg(log_path, "Q32: Study 1 npar lock not inherited. Recommended parametric path used.")
+  log_msg(log_path, "SAP §4: Q32 locked mixed path when study2_h1_test=paired_wilcoxon.")
+  if (isTRUE(SAP$study2_primary_vision_exclusion)) {
+    log_msg(log_path, "Primary vision exclusion: Ishihara 4/4 AND questionnaire pass (real data).")
+  }
+  if (isTRUE(SAP$study2_q32_path_locked)) {
+    log_study2_q32_lock(log_path)
+  }
 
   if (!is.na(SAP$study2_q7_inherit_study1_lock) && isTRUE(SAP$study2_q7_inherit_study1_lock)) {
-    stop("study2_q7_inherit_study1_lock is TRUE but the npar Study 2 path is not implemented.",
+    stop("study2_q7_inherit_study1_lock is TRUE but Study 2 uses its own Q32 mixed path.",
          call. = FALSE)
   }
 
@@ -132,7 +140,18 @@ run_study2_analyse <- function(study2, study2_prep) {
           " RT=", require_param("study2_rt_test"),
           " AE=", require_param("study2_ae_test"))
 
+  n_primary <- nrow(summaries)
+  log_msg(
+    log_path,
+    "primary n_participants=", n_primary,
+    if (identical(DATA_SOURCE, "real")) {
+      paste0(" (expected ", as.integer(SAP$study2_primary_n_real), " after vision exclusions)")
+    } else {
+      paste0(" (synthetic expected ", as.integer(SAP$primary_n_study2), ")")
+    }
+  )
   primary <- run_study2_primary_bundle(summaries, log_path, "primary")
+  log_msg(log_path, "RT inferential analysis scale=", primary$rt_scale)
 
   disc <- study2$discrimination
   pw <- study2$pairwise
@@ -173,6 +192,19 @@ run_study2_analyse <- function(study2, study2_prep) {
     pw_s <- pw[pw$participant_id %in% keep, , drop = FALSE]
     sum_s <- summarise_study1_participants(disc_s, pw_s, log_path)
     sens <- run_study2_h1_h2_h3(sum_s, log_path, "vision_sens")
+    if (identical(require_param("study2_h1_test"), "paired_wilcoxon")) {
+      vision_tab <- data.frame(
+        analysis = c("H1_condition", "H2_condition_K", "H3_onesample_t"),
+        n = sens$n,
+        statistic = c(sens$h1$V, sens$h2$statistic, sens$h3$t),
+        df_num = c(NA_real_, sens$h2$df, sens$h3$df),
+        df_den = c(NA_real_, NA_real_, NA_real_),
+        p = c(sens$h1$p, sens$h2$p, sens$h3$p),
+        effect_size = c(sens$h1$r_rb, sens$h2$kendalls_w, sens$h3$d),
+        es_name = c("rank_biserial", "kendalls_w", "cohens_d"),
+        stringsAsFactors = FALSE
+      )
+    } else {
     vision_tab <- data.frame(
       analysis = c("H1_condition", "H2_condition_K", "H3_onesample_t"),
       n = sens$n,
@@ -190,6 +222,7 @@ run_study2_analyse <- function(study2, study2_prep) {
       ),
       stringsAsFactors = FALSE
     )
+    }
     log_msg(log_path, "vision_sensitivity H1_sig_agrees=", vision_tab$sig_agrees_with_primary[1],
             " H2_sig_agrees=", vision_tab$sig_agrees_with_primary[2],
             " H3_sig_agrees=", vision_tab$sig_agrees_with_primary[3])
@@ -202,9 +235,9 @@ run_study2_analyse <- function(study2, study2_prep) {
     log_path
   )
 
-  log_msg(log_path, "ANALYSIS COMPLETE. SAP recommended ANOVA/t. Q32 npar not applied. Numbers are ",
+  log_msg(log_path, "ANALYSIS COMPLETE. Q32 mixed path. Numbers are ",
           if (identical(DATA_SOURCE, "synthetic")) "synthetic pipeline output." else "from the loaded data.")
-  message("run_study2_analyse finished. Recommended parametric path applied.")
+  message("run_study2_analyse finished. Q32 mixed inferential path applied.")
   list(
     primary = primary,
     vision = sens,

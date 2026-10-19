@@ -17,10 +17,22 @@ apply_study2_primary_population <- function(study2, log_path) {
           if (identical(DATA_SOURCE, "synthetic")) {
             paste0(" (synthetic expected ", as.integer(SAP$primary_n_study2), ")")
           } else {
-            " (real; after vision primary exclusions when enabled)"
+            paste0(" (real; expected ", as.integer(SAP$study2_primary_n_real),
+                   " after vision primary exclusions when enabled)")
           })
+  if (isTRUE(SAP$study2_primary_vision_exclusion)) {
+    log_msg(log_path, "study2_primary_vision_exclusion=TRUE (Ishihara 4/4 + questionnaire).")
+  }
   if (identical(DATA_SOURCE, "synthetic") && n_id != as.integer(SAP$primary_n_study2)) {
     stop("Study 2: synthetic primary N is not ", SAP$primary_n_study2, ".", call. = FALSE)
+  }
+  if (identical(DATA_SOURCE, "real") && !is.na(SAP$study2_primary_n_real) &&
+      n_id != as.integer(SAP$study2_primary_n_real)) {
+    stop(
+      "Study 2: real primary N is ", n_id, " but expected ",
+      SAP$study2_primary_n_real, " after vision exclusions.",
+      call. = FALSE
+    )
   }
   study2
 }
@@ -65,7 +77,7 @@ run_study2_prepare <- function(study2) {
     summaries,
     log_path,
     "study2",
-    "Q8 diagnostics saved. SAP recommended ANOVA/t run in analyse. Npar not applied (Q32)."
+    "Q8 diagnostics saved. Q32 mixed path (Wilcoxon/Friedman + t) runs in analyse."
   )
 
   list(

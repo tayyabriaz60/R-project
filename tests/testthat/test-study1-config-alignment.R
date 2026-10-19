@@ -1,0 +1,12 @@
+test_that("Study 1 is aligned with Study 2 pipeline conventions", {
+  expect_true(isTRUE(SAP$study1_primary_vision_exclusion))
+  expect_false(isTRUE(SAP$study1_q7_hold_inferential))
+  expect_true(isTRUE(SAP$q7_path_locked))
+  expect_identical(as.integer(SAP$study1_rank_diff_round_digits), 10L)
+  expect_identical(REAL_STUDY1_TASK_IDS$study1_questionnaire, "questionnaire-oj8k")
+  expect_identical(require_param("study1_h1_test"), "paired_wilcoxon")
+  expect_identical(require_param("study1_h2_test"), "friedman_on_opt_minus_orig_by_k")
+  expect_identical(require_param("study1_h3_test"), "onesample_t")
+  expect_identical(as.character(SAP$study1_researcher_ids_real), "9lwz9o9r")
+  expect_identical(as.integer(SAP$study1_primary_n_real), 48L)
+})
