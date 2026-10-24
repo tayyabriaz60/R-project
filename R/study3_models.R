@@ -165,10 +165,11 @@ run_study3_accuracy_tests <- function(summary_df, log_path, use_fallback = FALSE
     sph <- mauchly_table(fit)
     es <- partial_eta_table(fit)
     h4 <- anova_effect_report(fit, "condition", 2L, sph, es)
+    h_bg <- anova_effect_report(fit, "background", 2L, sph, es)
     # 2×2 within design: interaction has 1 df; no Mauchly/GG (SAP §5.1), not 4 cells.
     h5 <- anova_effect_report(fit, "condition:background", 2L, sph, es)
     follow <- study3_h5_followups(summary_df, h5$p)
-    list(mode = "anova", h4 = h4, h5 = h5, follow = follow, fit = fit, n = n)
+    list(mode = "anova", h4 = h4, h_background = h_bg, h5 = h5, follow = follow, fit = fit, n = n)
   } else {
     d_h4 <- study3_round_rank_diff(summary_df$acc_diff_h4)
     h4 <- paired_wilcoxon_on_diff(d_h4)
@@ -219,9 +220,17 @@ run_study3_rt_tests <- function(summary_df, log_path) {
   sph <- mauchly_table(fit)
   es <- partial_eta_table(fit)
   h_cond <- anova_effect_report(fit, "condition", 2L, sph, es)
+  h_bg <- anova_effect_report(fit, "background", 2L, sph, es)
   h_int <- anova_effect_report(fit, "condition:background", 2L, sph, es)
   follow <- study3_rt_h5_followups(summary_df, h_int$p)
-  list(condition = h_cond, interaction = h_int, follow = follow, fit = fit)
+  list(
+    condition = h_cond,
+    background = h_bg,
+    interaction = h_int,
+    follow = follow,
+    fit = fit,
+    scale = unique(as.character(summary_df$rt_analysis_scale))
+  )
 }
 
 run_study3_ae_test <- function(summary_df, log_path) {

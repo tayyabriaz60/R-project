@@ -8,6 +8,8 @@ Study 2: load, prepare, thesis-style report figures, and inferential tables on t
 
 Study 3: full pipeline via `run_study3.R`. Real primary **N = 46** after researcher + vision rules. Inferential path **locked parametric** (Oct 2026 diagnostics): H4/H5 RM-ANOVA, H6/H7 *t*, log RT when trial skew > 1. See `docs/STUDY3_Q7_RECOMMENDATION.md`. Real loader defaults: `REAL_STUDY3_COMBINED_FILE` + `REAL_STUDY3_FILES$study3_questionnaire`.
 
+Study 3 tables (Oct 2026): exported `.csv`/`.docx` pairs under `output/tables/` include full RM-ANOVA rows (Condition, Background, interaction) with *F*, df, *p*, partial ηp² and 95% CIs; Condition × Background descriptives for accuracy, RT (ms), AE, and signed error; H6/H7 inferential and background descriptives; accuracy-by-K descriptives; follow-up tables when interactions are significant. Tests and models are unchanged—only reporting was expanded.
+
 ## Run on your machine (R 4.6.1)
 
 ```r

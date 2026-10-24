@@ -48,7 +48,7 @@ run_study3_analyse <- function(study3, study3_prep) {
   rt_tests <- run_study3_rt_tests(summaries, log_path)
   ae_test <- run_study3_ae_test(summaries, log_path)
 
-  write_study3_tables(acc_tests, pw_tests, rt_tests, ae_test, log_path)
+  write_study3_tables(summaries, disc, acc_tests, pw_tests, rt_tests, ae_test, log_path)
   write_study3_figures(disc, pw, summaries, log_path)
   write_study3_output_manifest(log_path)
 
